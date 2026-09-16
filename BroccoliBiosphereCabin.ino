@@ -612,57 +612,71 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      /* Warm Pastel & Daylight Palette */
-      --bg-page: #f7f4ee;
+      /* Soft Strawberry Cream, Pastel Milk & Girly Palette */
+      --bg-page: #fef7f9;
       --bg-card: #ffffff;
-      --bg-card-subtle: #fcfbf9;
-      --border-card: #e4decb;
-      --border-subtle: #eeeadf;
+      --bg-card-subtle: #fffafa;
+      --border-card: #f9d8e2;
+      --border-subtle: #fce7ec;
 
-      /* Pastel Accent Hues */
-      --pastel-mint: #48bb78;
-      --pastel-mint-light: #edf7ed;
-      --pastel-mint-deep: #22543d;
+      /* Girly Pastel Accents */
+      --pastel-pink: #fb7185;
+      --pastel-pink-soft: #ffe4e6;
+      --pastel-pink-deep: #be123c;
 
-      --pastel-sky: #0284c7;
-      --pastel-sky-light: #e0f2fe;
+      --pastel-peach: #fb923c;
+      --pastel-peach-soft: #ffedd5;
+      --pastel-peach-deep: #9a3412;
+
+      --pastel-matcha: #34d399;
+      --pastel-matcha-soft: #d1fae5;
+      --pastel-matcha-deep: #065f46;
+
+      --pastel-sky: #38bdf8;
+      --pastel-sky-soft: #e0f2fe;
       --pastel-sky-deep: #0369a1;
 
-      --pastel-butter: #d97706;
-      --pastel-butter-light: #fef3c7;
-      --pastel-butter-deep: #78350f;
+      --pastel-lavender: #c084fc;
+      --pastel-lavender-soft: #f3e8ff;
+      --pastel-lavender-deep: #6b21a8;
 
-      --pastel-coral: #e11d48;
-      --pastel-coral-light: #ffe4e6;
-      --pastel-coral-deep: #881337;
+      --pastel-butter: #facc15;
+      --pastel-butter-soft: #fef9c3;
+      --pastel-butter-deep: #854d0e;
 
-      --pastel-lavender: #7e22ce;
-      --pastel-lavender-light: #f3e8ff;
+      /* Text Colors (High Contrast Warm Charcoal/Berry) */
+      --text-main: #2e262c;
+      --text-sub: #63535e;
+      --text-muted: #948590;
 
-      /* Text Colors (High Contrast Warm Charcoal) */
-      --text-main: #242c38;
-      --text-sub: #526071;
-      --text-muted: #7e8c9f;
-
-      /* Radii & Shadows */
-      --radius-card: 18px;
-      --radius-btn: 12px;
+      /* Radii & Depth */
+      --radius-card: 24px;
+      --radius-btn: 16px;
       --radius-pill: 9999px;
-      --shadow-soft: 0 2px 8px rgba(50, 40, 30, 0.05), 0 1px 2px rgba(50, 40, 30, 0.03);
-      --shadow-hover: 0 6px 16px rgba(50, 40, 30, 0.08);
+      --shadow-soft: 0 4px 18px rgba(244, 63, 94, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+      --shadow-hover: 0 8px 26px rgba(244, 63, 94, 0.10);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background-color: var(--bg-page);
-      background-image: radial-gradient(#e5dfd2 1px, transparent 1px);
-      background-size: 20px 20px;
+      background-image: radial-gradient(#fad4df 1.2px, transparent 1.2px);
+      background-size: 22px 22px;
       color: var(--text-main);
       font-family: 'Quicksand', -apple-system, sans-serif;
       min-height: 100vh;
-      padding: 24px;
       line-height: 1.5;
+    }
+
+    /* --- Centered App Container for Generous Margins --- */
+    .app-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 24px 60px;
+    }
+    @media (max-width: 640px) {
+      .app-container { padding: 18px 14px 40px; }
     }
 
     /* --- Top Navigation Header --- */
@@ -681,7 +695,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     }
     .title-group h1 {
       font-size: 1.45rem;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: -0.02em;
       color: var(--text-main);
       display: flex;
@@ -689,9 +703,9 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       gap: 8px;
     }
     .title-group p {
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       color: var(--text-sub);
-      font-weight: 500;
+      font-weight: 600;
     }
     .header-badges {
       display: flex;
@@ -703,18 +717,18 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 12px;
+      padding: 6px 14px;
       border-radius: var(--radius-pill);
       font-size: 0.76rem;
       font-weight: 700;
       border: 1px solid currentColor;
     }
-    .badge-optimal { color: var(--pastel-mint-deep); background: var(--pastel-mint-light); border-color: #a7f3d0; }
-    .badge-waspada { color: var(--pastel-butter-deep); background: var(--pastel-butter-light); border-color: #fde68a; }
-    .badge-kritis  { color: var(--pastel-coral-deep); background: var(--pastel-coral-light); border-color: #fecdd3; animation: pulse-crit 1.6s infinite; }
-    .badge-safe    { color: #6b21a8; background: #f3e8ff; border-color: #e9d5ff; }
-    .badge-sky     { color: var(--pastel-sky-deep); background: var(--pastel-sky-light); border-color: #bae6fd; }
-    .badge-muted   { color: var(--text-sub); background: #f1ede4; border-color: #e2dcce; }
+    .badge-optimal { color: var(--pastel-matcha-deep); background: var(--pastel-matcha-soft); border-color: #a7f3d0; }
+    .badge-waspada { color: var(--pastel-peach-deep); background: var(--pastel-peach-soft); border-color: #fed7aa; }
+    .badge-kritis  { color: var(--pastel-pink-deep); background: var(--pastel-pink-soft); border-color: #fecdd3; animation: pulse-crit 1.6s infinite; }
+    .badge-safe    { color: var(--pastel-lavender-deep); background: var(--pastel-lavender-soft); border-color: #e9d5ff; }
+    .badge-sky     { color: var(--pastel-sky-deep); background: var(--pastel-sky-soft); border-color: #bae6fd; }
+    .badge-muted   { color: var(--text-sub); background: #fdf2f4; border-color: #fce7ec; }
 
     .pulse-dot {
       width: 8px;
@@ -731,8 +745,8 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     /* --- Hero Companion Section (Brocco Virtual Pet) --- */
     .hero-companion-grid {
       display: grid;
-      grid-template-columns: 340px 1fr;
-      gap: 20px;
+      grid-template-columns: 350px 1fr;
+      gap: 22px;
       margin-bottom: 24px;
     }
     @media (max-width: 900px) {
@@ -743,7 +757,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       background: var(--bg-card);
       border: 1.5px solid var(--border-card);
       border-radius: var(--radius-card);
-      padding: 20px;
+      padding: 22px;
       box-shadow: var(--shadow-soft);
       transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
@@ -757,33 +771,33 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       align-items: center;
       justify-content: space-between;
       background: #ffffff;
-      border: 1.5px solid #d5cebe;
+      border: 1.5px solid #f9ccd7;
       position: relative;
       overflow: hidden;
     }
 
     .brocco-bubble-wrapper {
-      min-height: 58px;
+      min-height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100%;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     .brocco-bubble {
       background: #ffffff;
-      border: 2px solid var(--pastel-mint);
-      border-radius: 16px;
-      padding: 10px 16px;
+      border: 2px solid var(--pastel-pink);
+      border-radius: 20px;
+      padding: 10px 18px;
       font-size: 0.82rem;
       font-weight: 700;
       color: var(--text-main);
       text-align: center;
       position: relative;
-      box-shadow: 0 4px 12px rgba(72, 187, 120, 0.12);
+      box-shadow: 0 4px 14px rgba(244, 63, 94, 0.14);
       transition: opacity 0.15s ease;
       max-width: 95%;
-      line-height: 1.4;
+      line-height: 1.45;
     }
     .brocco-bubble::after {
       content: '';
@@ -795,12 +809,12 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       height: 0;
       border-left: 8px solid transparent;
       border-right: 8px solid transparent;
-      border-top: 8px solid var(--pastel-mint);
+      border-top: 8px solid var(--pastel-pink);
     }
 
     .brocco-svg-container {
-      width: 190px;
-      height: 195px;
+      width: 195px;
+      height: 205px;
       cursor: pointer;
       user-select: none;
       transition: transform 0.15s;
@@ -822,7 +836,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       flex: 1 1 45%;
       font-size: 0.78rem;
       font-weight: 700;
-      padding: 9px 12px;
+      padding: 10px 12px;
       border-radius: var(--radius-btn);
       border: 1.5px solid transparent;
       cursor: pointer;
@@ -833,10 +847,10 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       transition: all 0.15s ease;
     }
     .btn-nurture:active {
-      transform: translateY(2px);
+      transform: scale(0.97) translateY(2px);
     }
     .btn-nurture-water {
-      background: var(--pastel-sky-light);
+      background: var(--pastel-sky-soft);
       color: var(--pastel-sky-deep);
       border-color: #bae6fd;
     }
@@ -844,36 +858,35 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       background: #bae6fd;
     }
     .btn-nurture-nutrient {
-      background: var(--pastel-lavender-light);
-      color: var(--pastel-lavender);
+      background: var(--pastel-lavender-soft);
+      color: var(--pastel-lavender-deep);
       border-color: #e9d5ff;
     }
     .btn-nurture-nutrient:hover {
       background: #e9d5ff;
     }
     .btn-nurture-breeze {
-      background: var(--pastel-mint-light);
-      color: var(--pastel-mint-deep);
-      border-color: #bbf7d0;
+      background: var(--pastel-matcha-soft);
+      color: var(--pastel-matcha-deep);
+      border-color: #a7f3d0;
     }
     .btn-nurture-breeze:hover {
-      background: #bbf7d0;
+      background: #a7f3d0;
     }
     .btn-sound {
       font-size: 0.72rem;
-      font-weight: 600;
-      padding: 5px 12px;
-      background: #f4efe4;
-      border: 1px solid #dcd5c5;
+      font-weight: 700;
+      padding: 5px 14px;
+      background: #fdf2f4;
+      border: 1px solid #f9ccd7;
       border-radius: var(--radius-pill);
-      color: var(--text-sub);
+      color: var(--pastel-pink-deep);
       cursor: pointer;
       margin-top: 6px;
       transition: all 0.15s;
     }
     .btn-sound:hover {
-      color: var(--text-main);
-      background: #eadecb;
+      background: #ffe4e6;
     }
 
     /* Companion Overview Card */
@@ -898,35 +911,35 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     .companion-stats-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
       margin: 10px 0;
     }
     .comp-stat-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 9px 14px;
-      background: #faf8f2;
-      border: 1px solid #e8e3d6;
-      border-radius: 12px;
-      font-size: 0.84rem;
+      padding: 10px 16px;
+      background: #fffafa;
+      border: 1px solid #f9d8e2;
+      border-radius: 14px;
+      font-size: 0.85rem;
     }
     .comp-stat-name { color: var(--text-sub); font-weight: 600; }
-    .comp-stat-val { font-weight: 800; color: var(--text-main); }
+    .comp-stat-val { font-weight: 700; color: var(--text-main); }
     .comp-tip-box {
-      background: var(--pastel-butter-light);
-      border: 1.5px dashed #fcd34d;
-      border-radius: 14px;
-      padding: 12px 16px;
-      font-size: 0.80rem;
-      color: var(--pastel-butter-deep);
-      line-height: 1.45;
+      background: var(--pastel-pink-soft);
+      border: 1.5px dashed #f472b6;
+      border-radius: 16px;
+      padding: 12px 18px;
+      font-size: 0.82rem;
+      color: var(--pastel-pink-deep);
+      line-height: 1.5;
     }
 
     /* --- Mascot Animations --- */
     @keyframes brocco-idle {
       0%, 100% { transform: translateY(0) scale(1, 1); }
-      50% { transform: translateY(-3px) scale(0.99, 1.01); }
+      50% { transform: translateY(-3.5px) scale(0.99, 1.01); }
     }
     @keyframes brocco-shiver {
       0%, 100% { transform: translate(0, 0); }
@@ -982,7 +995,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
 
     .mood-heat-crit svg { animation: brocco-pant 0.32s ease-in-out infinite; }
     .mood-heat-crit .mouth-happy { display: none; }
-    .mood-heat-crit .mouth-pant { display: block; fill: var(--pastel-coral) !important; }
+    .mood-heat-crit .mouth-pant { display: block; fill: var(--pastel-pink) !important; }
     .mood-heat-crit .prop-sweat { display: block; }
 
     .mood-thirsty svg { animation: brocco-droop 2.5s ease-in-out infinite; }
@@ -1010,7 +1023,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     .mood-panic .eyes-open { display: none; }
     .mood-panic .eyes-sad { display: block; }
     .mood-panic .mouth-happy { display: none; }
-    .mood-panic .mouth-shiver { display: block; stroke: var(--pastel-coral); }
+    .mood-panic .mouth-shiver { display: block; stroke: var(--pastel-pink); }
 
     /* --- 4x Primary Telemetry Cards --- */
     .telemetry-grid {
@@ -1026,7 +1039,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     }
     .card-value {
       font-size: 2.3rem;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: -0.03em;
       color: var(--text-main);
       margin: 6px 0 10px;
@@ -1062,17 +1075,18 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       align-items: center;
     }
     .pcs-meter {
-      height: 12px;
-      background: #eee8db;
+      height: 14px;
+      background: #fce7ec;
       border-radius: var(--radius-pill);
       overflow: hidden;
       margin: 10px 0;
     }
     .pcs-fill {
       height: 100%;
-      background: linear-gradient(90deg, #f59e0b, #48bb78);
+      background: linear-gradient(90deg, #fde047, #f472b6, #34d399);
       border-radius: var(--radius-pill);
-      transform-origin: left; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-origin: left;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .tank-row {
@@ -1081,26 +1095,26 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       gap: 10px;
     }
     .tank-item {
-      background: #faf8f2;
-      border: 1px solid #e8e3d6;
-      border-radius: 12px;
+      background: #fffafa;
+      border: 1px solid #f9d8e2;
+      border-radius: 14px;
       padding: 10px 14px;
     }
     .tank-header {
       display: flex;
       justify-content: space-between;
       font-size: 0.80rem;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 6px;
     }
     .tank-bar {
-      height: 8px;
-      background: #eee8db;
+      height: 10px;
+      background: #fce7ec;
       border-radius: var(--radius-pill);
       overflow: hidden;
     }
     .tank-fill-1 { height: 100%; background: #38bdf8; transform-origin: left; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
-    .tank-fill-2 { height: 100%; background: #a855f7; transform-origin: left; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+    .tank-fill-2 { height: 100%; background: #c084fc; transform-origin: left; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
 
     /* --- 6-Channel Hardware Matrix --- */
     .matrix-grid {
@@ -1110,20 +1124,20 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       margin-top: 10px;
     }
     .matrix-node {
-      background: #faf8f2;
-      border: 1.5px solid #e6e0d3;
-      border-radius: 14px;
+      background: #fffafa;
+      border: 1.5px solid #f9d8e2;
+      border-radius: 16px;
       padding: 12px 10px;
       text-align: center;
       transition: all 0.15s;
     }
     .matrix-node.active {
-      border-color: var(--pastel-mint);
-      background: var(--pastel-mint-light);
+      border-color: var(--pastel-matcha);
+      background: var(--pastel-matcha-soft);
     }
     .matrix-node.active-fan {
       border-color: var(--pastel-sky);
-      background: var(--pastel-sky-light);
+      background: var(--pastel-sky-soft);
     }
     .matrix-name {
       font-size: 0.70rem;
@@ -1136,13 +1150,13 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: #cbd5e1;
+      background: #e2e8f0;
       margin: 0 auto 6px;
       transition: all 0.2s;
     }
     .matrix-node.active .matrix-led {
-      background: var(--pastel-mint);
-      box-shadow: 0 0 6px rgba(72, 187, 120, 0.6);
+      background: var(--pastel-matcha);
+      box-shadow: 0 0 6px rgba(52, 211, 153, 0.6);
     }
     .matrix-node.active-fan .matrix-led {
       background: var(--pastel-sky);
@@ -1150,7 +1164,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     }
     .matrix-val {
       font-size: 0.76rem;
-      font-weight: 800;
+      font-weight: 700;
       color: var(--text-main);
     }
 
@@ -1159,16 +1173,16 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       background: var(--bg-card);
       border: 1.5px solid var(--border-card);
       border-radius: var(--radius-card);
-      padding: 20px;
+      padding: 22px;
       margin-bottom: 24px;
       box-shadow: var(--shadow-soft);
     }
     .chart-svg-container {
       width: 100%;
       height: 180px;
-      background: #faf8f2;
-      border: 1px solid #e8e3d6;
-      border-radius: 12px;
+      background: #fffafa;
+      border: 1.5px solid #f9d8e2;
+      border-radius: 16px;
       padding: 10px;
     }
 
@@ -1187,7 +1201,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       color: var(--text-main);
       border: 1.5px solid var(--border-card);
       border-radius: var(--radius-btn);
-      padding: 9px 14px;
+      padding: 10px 16px;
       font-size: 0.80rem;
       font-weight: 700;
       cursor: pointer;
@@ -1198,47 +1212,47 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       transition: all 0.15s ease;
     }
     .btn:hover {
-      background: #f5f1e8;
-      border-color: #cfc7b4;
+      background: #fdf2f4;
+      border-color: #f9ccd7;
     }
     .btn:active {
-      transform: translateY(2px);
+      transform: scale(0.97) translateY(2px);
     }
     .btn-mint {
-      background: var(--pastel-mint-light);
-      border-color: #86efac;
-      color: var(--pastel-mint-deep);
+      background: var(--pastel-matcha-soft);
+      border-color: #a7f3d0;
+      color: var(--pastel-matcha-deep);
     }
     .btn-mint:hover {
-      background: #86efac;
+      background: #a7f3d0;
     }
     .btn-red {
-      background: var(--pastel-coral-light);
-      border-color: #fca5a5;
-      color: var(--pastel-coral-deep);
+      background: var(--pastel-pink-soft);
+      border-color: #fecdd3;
+      color: var(--pastel-pink-deep);
     }
     .btn-red:hover {
-      background: #fca5a5;
+      background: #fecdd3;
     }
     .toggle-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid #eeeadf;
+      padding: 12px 0;
+      border-bottom: 1px solid #fce7ec;
     }
     .toggle-label {
-      font-size: 0.84rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: var(--text-main);
     }
 
-    /* --- Garden Notebook Log --- */
+    /* --- Garden Diary Notebook Log --- */
     .terminal-card {
       background: #ffffff;
       border: 1.5px solid var(--border-card);
       border-radius: var(--radius-card);
-      padding: 18px;
+      padding: 20px;
       box-shadow: var(--shadow-soft);
     }
     .terminal-header {
@@ -1246,519 +1260,534 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       align-items: center;
       gap: 8px;
       margin-bottom: 12px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid #eeeadf;
-      font-size: 0.74rem;
-      font-weight: 800;
-      color: var(--text-sub);
+      padding-bottom: 10px;
+      border-bottom: 1px solid #fce7ec;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--pastel-pink-deep);
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
     .term-dot { width: 9px; height: 9px; border-radius: 50%; }
-    .term-red { background: #f87171; }
-    .term-yellow { background: #fbbf24; }
-    .term-green { background: #4ade80; }
+    .term-red { background: #fb7185; }
+    .term-yellow { background: #facc15; }
+    .term-green { background: #34d399; }
     .terminal-body {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      font-size: 0.80rem;
+      font-size: 0.82rem;
       min-height: 100px;
     }
     .term-log {
       display: flex;
       gap: 8px;
-      line-height: 1.4;
+      line-height: 1.45;
     }
     .term-time { color: var(--pastel-sky-deep); font-weight: 700; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; }
-    .term-msg { color: var(--text-main); font-weight: 500; }
+    .term-msg { color: var(--text-main); font-weight: 600; }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <div class="header">
-    <div class="title-group">
-      <h1>🌱 Kebun Biosfer Brokoli</h1>
-      <p>Smart Monitored Microgreens Cabin (Brassica oleracea var. italica)</p>
-    </div>
-    <div class="header-badges">
-      <div id="badgeStatus" class="badge badge-optimal">
-        <span class="pulse-dot"></span>
-        <span id="badgeStatusText">KONDISI PRIMA</span>
-      </div>
-      <div class="badge badge-sky">
-        IP: <span id="valIp" style="margin-left:3px;">ESP32</span>
-      </div>
-      <div class="badge badge-muted">
-        Aktif: <span id="valUptime" style="margin-left:3px; font-family:'JetBrains Mono',monospace;">00:00:00</span>
-      </div>
-    </div>
-  </div>
+  <!-- Centered App Container for Comfortable Framing -->
+  <div class="app-container">
 
-  <!-- Hero Companion Section (Brocco Virtual Pet) -->
-  <div class="hero-companion-grid">
-    <!-- Card 1: Interactive Brocco Mascot -->
-    <div class="card brocco-card">
-      <div class="brocco-bubble-wrapper">
-        <div id="broccoBubble" class="brocco-bubble">
-          <span id="broccoSpeech">Halo! Aku Brocco, maskot kabin biosfermu! 🌱</span>
+    <!-- Header -->
+    <div class="header">
+      <div class="title-group">
+        <h1>🌸 Kebun Biosfer Brokoli</h1>
+        <p>Smart Monitored Microgreens Cabin (Brassica oleracea var. italica)</p>
+      </div>
+      <div class="header-badges">
+        <div id="badgeStatus" class="badge badge-optimal">
+          <span class="pulse-dot"></span>
+          <span id="badgeStatusText">KONDISI PRIMA</span>
+        </div>
+        <div class="badge badge-sky">
+          IP: <span id="valIp" style="margin-left:3px;">ESP32</span>
+        </div>
+        <div class="badge badge-muted">
+          Aktif: <span id="valUptime" style="margin-left:3px; font-family:'JetBrains Mono',monospace;">00:00:00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Companion Section (Brocco Virtual Pet) -->
+    <div class="hero-companion-grid">
+      <!-- Card 1: Interactive Brocco Mascot -->
+      <div class="card brocco-card">
+        <div class="brocco-bubble-wrapper">
+          <div id="broccoBubble" class="brocco-bubble">
+            <span id="broccoSpeech">Hai manis! 🌸 Aku Brocco, maskot kabin biosfermu!</span>
+          </div>
+        </div>
+
+        <!-- Interactive SVG Mascot with Girly Blossom Bow -->
+        <div id="broccoMascot" class="brocco-svg-container mood-happy" onclick="handleBroccoTap()" title="Sentuh Brocco untuk berinteraksi!">
+          <svg viewBox="0 0 200 215" width="100%" height="100%">
+            <defs>
+              <linearGradient id="stemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#a7f3d0"/>
+                <stop offset="100%" stop-color="#34d399"/>
+              </linearGradient>
+              <linearGradient id="crownGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#6ee7b7"/>
+                <stop offset="50%" stop-color="#34d399"/>
+                <stop offset="100%" stop-color="#059669"/>
+              </linearGradient>
+              <radialGradient id="blushGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(251, 113, 133, 0.85)"/>
+                <stop offset="100%" stop-color="rgba(251, 113, 133, 0)"/>
+              </radialGradient>
+              <radialGradient id="heatBlushGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(244, 63, 94, 0.9)"/>
+                <stop offset="100%" stop-color="rgba(244, 63, 94, 0)"/>
+              </radialGradient>
+            </defs>
+
+            <!-- Shadow -->
+            <ellipse cx="100" cy="198" rx="55" ry="9" fill="rgba(244, 63, 94, 0.12)"/>
+
+            <!-- Body / Stem -->
+            <g class="brocco-body-group">
+              <path d="M 82,125 C 75,155 70,185 80,195 C 90,200 110,200 120,195 C 130,185 125,155 118,125 Z" fill="url(#stemGrad)" stroke="#065f46" stroke-width="2.5"/>
+              <!-- Little Leaf Hands -->
+              <path class="brocco-arm-left" d="M 76,155 C 55,150 50,135 62,130 C 72,135 74,148 76,155 Z" fill="#6ee7b7" stroke="#065f46" stroke-width="2"/>
+              <path class="brocco-arm-right" d="M 124,155 C 145,150 150,135 138,130 C 128,135 126,148 124,155 Z" fill="#6ee7b7" stroke="#065f46" stroke-width="2"/>
+            </g>
+
+            <!-- Crown / Florets -->
+            <g class="brocco-crown-group" stroke="#065f46" stroke-width="2.5">
+              <circle cx="65" cy="85" r="38" fill="url(#crownGrad)"/>
+              <circle cx="135" cy="85" r="38" fill="url(#crownGrad)"/>
+              <circle cx="100" cy="60" r="42" fill="url(#crownGrad)"/>
+              <circle cx="100" cy="92" r="36" fill="url(#crownGrad)"/>
+              <!-- Pastel Mint Texture Dots -->
+              <circle cx="75" cy="65" r="4" fill="#d1fae5" stroke="none"/>
+              <circle cx="120" cy="60" r="3.5" fill="#d1fae5" stroke="none"/>
+              <circle cx="100" cy="78" r="4" fill="#d1fae5" stroke="none"/>
+            </g>
+
+            <!-- Adorable Girly Cherry Blossom Flower Pin -->
+            <g class="brocco-flower-pin">
+              <circle cx="132" cy="46" r="6" fill="#fb7185"/>
+              <circle cx="140" cy="51" r="6" fill="#fda4af"/>
+              <circle cx="137" cy="60" r="6" fill="#ffe4e6"/>
+              <circle cx="127" cy="60" r="6" fill="#fda4af"/>
+              <circle cx="124" cy="51" r="6" fill="#fb7185"/>
+              <circle cx="132" cy="53.5" r="4" fill="#facc15"/>
+            </g>
+
+            <!-- Face -->
+            <g class="brocco-face">
+              <!-- Cheeks -->
+              <ellipse class="brocco-cheek" cx="72" cy="115" rx="9" ry="6" fill="url(#blushGrad)"/>
+              <ellipse class="brocco-cheek" cx="128" cy="115" rx="9" ry="6" fill="url(#blushGrad)"/>
+
+              <!-- Eyes: Happy Sparkling Anime Eyes -->
+              <g class="eyes-open">
+                <ellipse cx="80" cy="98" rx="8.5" ry="11.5" fill="#1f1a1d"/>
+                <ellipse cx="120" cy="98" rx="8.5" ry="11.5" fill="#1f1a1d"/>
+                <circle cx="82.5" cy="94" r="4" fill="#ffffff"/>
+                <circle cx="77.5" cy="102" r="2" fill="#ffffff"/>
+                <circle cx="122.5" cy="94" r="4" fill="#ffffff"/>
+                <circle cx="117.5" cy="102" r="2" fill="#ffffff"/>
+              </g>
+
+              <!-- Eyes: Sleeping -->
+              <g class="eyes-sleep">
+                <path d="M 72,100 Q 80,107 88,100" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round"/>
+                <path d="M 112,100 Q 120,107 128,100" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round"/>
+              </g>
+
+              <!-- Eyes: Sad / Droop -->
+              <g class="eyes-sad">
+                <path d="M 72,102 Q 80,95 88,102" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round"/>
+                <path d="M 112,102 Q 120,95 128,102" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round"/>
+                <path d="M 76,108 C 74,115 80,118 80,113 C 80,110 77,108 76,108 Z" fill="#38bdf8"/>
+              </g>
+
+              <!-- Mouth Variations -->
+              <path class="mouth-happy" d="M 90,112 Q 100,124 110,112" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round"/>
+              <path class="mouth-pant" d="M 92,112 Q 100,126 108,112 Z" fill="#fb7185" stroke="#1f1a1d" stroke-width="2"/>
+              <path class="mouth-shiver" d="M 91,114 Q 95,110 100,114 Q 105,110 109,114" fill="none" stroke="#1f1a1d" stroke-width="2.5" stroke-linecap="round"/>
+              <path class="mouth-sad" d="M 92,118 Q 100,110 108,118" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round"/>
+            </g>
+
+            <!-- Props & Effects -->
+            <g class="brocco-props">
+              <!-- Sweat Drops -->
+              <g class="prop-sweat">
+                <path d="M 148,70 C 145,78 152,82 152,77 C 152,73 149,70 148,70 Z" fill="#38bdf8"/>
+                <path d="M 52,75 C 49,83 56,87 56,82 C 56,78 53,75 52,75 Z" fill="#38bdf8"/>
+              </g>
+
+              <!-- Icicles (Cold) -->
+              <g class="prop-icicles">
+                <polygon points="62,115 65,130 68,115" fill="#38bdf8"/>
+                <polygon points="98,135 101,152 104,135" fill="#38bdf8"/>
+                <polygon points="132,115 135,130 138,115" fill="#38bdf8"/>
+              </g>
+
+              <!-- Zzz (Sleep) -->
+              <g class="prop-zzz">
+                <text x="145" y="60" fill="#c084fc" font-size="16" font-family="'Quicksand', sans-serif" font-weight="700" class="zzz-item z1">Z</text>
+                <text x="160" y="45" fill="#fb7185" font-size="12" font-family="'Quicksand', sans-serif" font-weight="700" class="zzz-item z2">z</text>
+                <text x="172" y="32" fill="#c084fc" font-size="9" font-family="'Quicksand', sans-serif" font-weight="700" class="zzz-item z3">z</text>
+              </g>
+
+              <!-- Sparkles -->
+              <g class="prop-sparkles">
+                <polygon points="45,50 48,42 50,50 58,52 50,54 48,62 45,54 37,52" fill="#facc15"/>
+                <polygon points="155,95 157,90 159,95 164,96 159,97 157,102 155,97 150,96" fill="#facc15"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="brocco-actions">
+          <button class="btn-nurture btn-nurture-water" onclick="nurtureBrocco('water')" title="Semprot air murni 5 detik">
+            <span>🌸</span>
+            <span>Beri Minum</span>
+          </button>
+          <button class="btn-nurture btn-nurture-nutrient" onclick="nurtureBrocco('nutrient')" title="Beri suntikan vitamin mikro">
+            <span>✨</span>
+            <span>Beri Vitamin</span>
+          </button>
+          <button class="btn-nurture btn-nurture-breeze" onclick="nurtureBrocco('breeze')" title="Putar blower sirkulasi sejuk">
+            <span>🍃</span>
+            <span>Kipas Semilir</span>
+          </button>
+          <button id="btnSoundToggle" class="btn-sound" onclick="toggleAudio()" title="Aktifkan/matikan suara">
+            🎵 Musik: Nyala
+          </button>
         </div>
       </div>
 
-      <!-- Interactive SVG Mascot -->
-      <div id="broccoMascot" class="brocco-svg-container mood-happy" onclick="handleBroccoTap()" title="Sentuh Brocco untuk berinteraksi!">
-        <svg viewBox="0 0 200 210" width="100%" height="100%">
-          <defs>
-            <linearGradient id="stemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#86efac"/>
-              <stop offset="100%" stop-color="#34d399"/>
-            </linearGradient>
-            <linearGradient id="crownGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#48bb78"/>
-              <stop offset="60%" stop-color="#38a169"/>
-              <stop offset="100%" stop-color="#22543d"/>
-            </linearGradient>
-            <radialGradient id="blushGrad" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="rgba(251, 113, 133, 0.8)"/>
-              <stop offset="100%" stop-color="rgba(251, 113, 133, 0)"/>
-            </radialGradient>
-            <radialGradient id="heatBlushGrad" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="rgba(225, 29, 72, 0.9)"/>
-              <stop offset="100%" stop-color="rgba(225, 29, 72, 0)"/>
-            </radialGradient>
-          </defs>
+      <!-- Card 2: Companion Status Brief -->
+      <div class="card companion-overview-card">
+        <div class="card-header">
+          <span class="card-label">Buku Harian & Kesehatan Brocco 🌸</span>
+          <span id="broccoMoodBadge" class="badge badge-optimal">SANGAT PRIMA</span>
+        </div>
+        <div class="companion-stats-list">
+          <div class="comp-stat-item">
+            <span class="comp-stat-name">Skor Kenyamanan (PCS):</span>
+            <span id="compValPcs" class="comp-stat-val" style="color:var(--pastel-matcha-deep);">--%</span>
+          </div>
+          <div class="comp-stat-item">
+            <span class="comp-stat-name">Sensasi Tanaman:</span>
+            <span id="compValNeed" class="comp-stat-val">Sejuk, Ceria & Nyaman</span>
+          </div>
+          <div class="comp-stat-item">
+            <span class="comp-stat-name">Jadwal Lampu:</span>
+            <span id="compValLight" class="comp-stat-val" style="color:var(--pastel-sky-deep);">Fase Terang (16 Jam Aktif)</span>
+          </div>
+          <div class="comp-stat-item">
+            <span class="comp-stat-name">Respon Brocco:</span>
+            <span id="compValResponse" class="comp-stat-val" style="color:#059669;">Tumbuh Riang & Sehat 🌿</span>
+          </div>
+        </div>
+        <div class="comp-tip-box">
+          <span style="font-weight:700;">🎀 Catatan Kebun:</span>
+          <span id="compAgronomiTip" style="margin-left:4px;">Jaga suhu antara 18-22°C dan kelembapan 50-65% ya cantik, agar terhindar dari jamur Pythium!</span>
+        </div>
+      </div>
+    </div>
 
-          <!-- Shadow -->
-          <ellipse cx="100" cy="195" rx="55" ry="9" fill="rgba(60, 50, 40, 0.12)"/>
+    <!-- 4x Primary Telemetry Cards -->
+    <div class="telemetry-grid">
+      <div class="card" style="border-color:#fecdd3;">
+        <div class="card-header">
+          <span class="card-label">Suhu Udara</span>
+          <span class="card-target">Tgt: 18.0 - 22.0°C</span>
+        </div>
+        <div class="card-value">
+          <span id="valTemp">--.-</span>
+          <span class="card-unit">°C</span>
+        </div>
+        <div id="badgeTemp" class="badge badge-optimal">🌸 NYAMAN SEKALI</div>
+      </div>
 
-          <!-- Body / Stem -->
-          <g class="brocco-body-group">
-            <path d="M 82,125 C 75,155 70,185 80,195 C 90,200 110,200 120,195 C 130,185 125,155 118,125 Z" fill="url(#stemGrad)" stroke="#1f513b" stroke-width="2.5"/>
-            <!-- Little Leaf Hands -->
-            <path class="brocco-arm-left" d="M 76,155 C 55,150 50,135 62,130 C 72,135 74,148 76,155 Z" fill="#68d391" stroke="#1f513b" stroke-width="2"/>
-            <path class="brocco-arm-right" d="M 124,155 C 145,150 150,135 138,130 C 128,135 126,148 124,155 Z" fill="#68d391" stroke="#1f513b" stroke-width="2"/>
-          </g>
+      <div class="card" style="border-color:#bae6fd;">
+        <div class="card-header">
+          <span class="card-label">Kelembapan Udara</span>
+          <span class="card-target">Tgt: 50.0 - 65.0%</span>
+        </div>
+        <div class="card-value">
+          <span id="valRh">--.-</span>
+          <span class="card-unit">% RH</span>
+        </div>
+        <div id="badgeRh" class="badge badge-optimal">💧 SEGAR OPTIMAL</div>
+      </div>
 
-          <!-- Crown / Florets -->
-          <g class="brocco-crown-group" stroke="#1c452b" stroke-width="2.5">
-            <circle cx="65" cy="85" r="38" fill="url(#crownGrad)"/>
-            <circle cx="135" cy="85" r="38" fill="url(#crownGrad)"/>
-            <circle cx="100" cy="60" r="42" fill="url(#crownGrad)"/>
-            <circle cx="100" cy="92" r="36" fill="url(#crownGrad)"/>
-            <!-- Texture Dots -->
-            <circle cx="75" cy="65" r="4" fill="#a7f3d0" stroke="none"/>
-            <circle cx="120" cy="60" r="3.5" fill="#a7f3d0" stroke="none"/>
-            <circle cx="100" cy="78" r="4" fill="#a7f3d0" stroke="none"/>
-          </g>
+      <div class="card" style="border-color:#a7f3d0;">
+        <div class="card-header">
+          <span class="card-label">Kelembapan Media</span>
+          <span class="card-target">Tgt: 45.0 - 70.0%</span>
+        </div>
+        <div class="card-value">
+          <span id="valSoil">--.-</span>
+          <span class="card-unit">%</span>
+        </div>
+        <div id="badgeSoil" class="badge badge-optimal">🌱 LEMBAP PAS</div>
+      </div>
 
-          <!-- Face -->
-          <g class="brocco-face">
-            <!-- Cheeks -->
-            <ellipse class="brocco-cheek" cx="72" cy="115" rx="8" ry="5" fill="url(#blushGrad)"/>
-            <ellipse class="brocco-cheek" cx="128" cy="115" rx="8" ry="5" fill="url(#blushGrad)"/>
+      <div class="card" style="border-color:#e9d5ff;">
+        <div class="card-header">
+          <span class="card-label">Defisit Uap (VPD)</span>
+          <span class="card-target">Tgt: 0.40 - 0.80 kPa</span>
+        </div>
+        <div class="card-value">
+          <span id="valVpd">-.--</span>
+          <span class="card-unit">kPa</span>
+        </div>
+        <div id="badgeVpd" class="badge badge-optimal">✨ SEIMBANG</div>
+      </div>
+    </div>
 
-            <!-- Eyes: Happy / Open -->
-            <g class="eyes-open">
-              <ellipse cx="80" cy="98" rx="8" ry="11" fill="#1c2430"/>
-              <ellipse cx="120" cy="98" rx="8" ry="11" fill="#1c2430"/>
-              <circle cx="82" cy="94" r="3.5" fill="#ffffff"/>
-              <circle cx="78" cy="102" r="1.5" fill="#ffffff"/>
-              <circle cx="122" cy="94" r="3.5" fill="#ffffff"/>
-              <circle cx="118" cy="102" r="1.5" fill="#ffffff"/>
-            </g>
+    <!-- Secondary Instruments Grid -->
+    <div class="instruments-grid">
+      <!-- Plant Comfort Score (PCS) -->
+      <div class="card">
+        <div class="inst-title">
+          <span>Skor Kenyamanan (PCS)</span>
+          <span id="valPcsText" style="color:var(--pastel-pink-deep); font-weight:700;">--%</span>
+        </div>
+        <div class="card-value" style="font-size:2.6rem; margin-bottom:2px;">
+          <span id="valPcs">--</span><span class="card-unit">%</span>
+        </div>
+        <div class="pcs-meter">
+          <div id="pcsBar" class="pcs-fill" style="width:100%; transform:scaleX(0);"></div>
+        </div>
+        <div style="font-size:0.75rem; color:var(--text-sub); display:flex; justify-content:space-between; font-weight:600;">
+          <span>Risiko Patogen</span>
+          <span>Homeostasis Sempurna ✨</span>
+        </div>
+      </div>
 
-            <!-- Eyes: Sleeping -->
-            <g class="eyes-sleep">
-              <path d="M 72,100 Q 80,107 88,100" fill="none" stroke="#1c2430" stroke-width="3" stroke-linecap="round"/>
-              <path d="M 112,100 Q 120,107 128,100" fill="none" stroke="#1c2430" stroke-width="3" stroke-linecap="round"/>
-            </g>
+      <!-- Dual-Tank Reservoirs -->
+      <div class="card">
+        <div class="inst-title">
+          <span>Kapasitas Tangki Air 💧</span>
+          <span style="font-size:0.74rem; color:var(--text-sub);">KONSUMSI MIST</span>
+        </div>
+        <div class="tank-row">
+          <div class="tank-item">
+            <div class="tank-header">
+              <span>Tangki 1 (Air Baku)</span>
+              <span id="valTank1Text" style="color:var(--pastel-sky-deep);">1000 mL</span>
+            </div>
+            <div class="tank-bar">
+              <div id="tank1Bar" class="tank-fill-1" style="width:100%; transform:scaleX(1);"></div>
+            </div>
+          </div>
+          <div class="tank-item">
+            <div class="tank-header">
+              <span>Tangki 2 (Nutrisi Mikro)</span>
+              <span id="valTank2Text" style="color:var(--pastel-lavender-deep);">1000 mL</span>
+            </div>
+            <div class="tank-bar">
+              <div id="tank2Bar" class="tank-fill-2" style="width:100%; transform:scaleX(1);"></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:10px; display:flex; gap:8px;">
+          <button class="btn" style="flex:1; padding:7px 10px; font-size:0.75rem;" onclick="sendControl('action=refill&tank=1')">Isi Tangki 1</button>
+          <button class="btn" style="flex:1; padding:7px 10px; font-size:0.75rem;" onclick="sendControl('action=refill&tank=2')">Isi Tangki 2</button>
+        </div>
+      </div>
 
-            <!-- Eyes: Sad / Droop -->
-            <g class="eyes-sad">
-              <path d="M 72,102 Q 80,95 88,102" fill="none" stroke="#1c2430" stroke-width="3" stroke-linecap="round"/>
-              <path d="M 112,102 Q 120,95 128,102" fill="none" stroke="#1c2430" stroke-width="3" stroke-linecap="round"/>
-              <path d="M 76,108 C 74,115 80,118 80,113 C 80,110 77,108 76,108 Z" fill="#38bdf8"/>
-            </g>
+      <!-- Growth Phase Sequencer -->
+      <div class="card">
+        <div class="inst-title">
+          <span>Siklus Tumbuh 🌿</span>
+          <span id="valDayBadge" class="badge badge-optimal">HARI 1 / 10</span>
+        </div>
+        <div style="margin-bottom:10px;">
+          <div style="font-size:0.74rem; color:var(--text-sub); font-weight:700; text-transform:uppercase;">Regime Saat Ini</div>
+          <div id="valPhaseName" style="font-size:1.05rem; font-weight:700; color:var(--pastel-matcha-deep);">Germination Blackout</div>
+          <div id="valPhaseDesc" style="font-size:0.78rem; color:var(--text-sub); margin-top:3px; font-weight:600;">
+            Lampu Mati • Target RH 60-70% • Semprot Air Baku
+          </div>
+        </div>
+        <div class="pcs-meter" style="height:10px;">
+          <div id="phaseProgress" class="pcs-fill" style="width:100%; background:#38bdf8; transform:scaleX(0.1);"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:0.74rem; color:var(--text-sub); font-weight:600;">
+          <span>Hari 1 (Semai)</span>
+          <span>Hari 10 (Panen)</span>
+        </div>
+      </div>
+    </div>
 
-            <!-- Mouth Variations -->
-            <path class="mouth-happy" d="M 90,112 Q 100,124 110,112" fill="none" stroke="#1c2430" stroke-width="3" stroke-linecap="round"/>
-            <path class="mouth-pant" d="M 92,112 Q 100,126 108,112 Z" fill="#f87171" stroke="#1c2430" stroke-width="2"/>
-            <path class="mouth-shiver" d="M 91,114 Q 95,110 100,114 Q 105,110 109,114" fill="none" stroke="#1c2430" stroke-width="2.5" stroke-linecap="round"/>
-            <path class="mouth-sad" d="M 92,118 Q 100,110 108,118" fill="none" stroke="#1c2430" stroke-width="3" stroke-linecap="round"/>
-          </g>
+    <!-- Hardware Relays & Valve Matrix -->
+    <div class="card" style="margin-bottom:24px;">
+      <div class="inst-title" style="margin-bottom:8px;">
+        <span>Matriks Perangkat Keras 🌸</span>
+        <span style="font-size:0.74rem; color:var(--text-sub);">RELAY & KATUP AKTIF</span>
+      </div>
+      <div class="matrix-grid">
+        <div id="nodePeltier" class="matrix-node">
+          <div class="matrix-led"></div>
+          <div class="matrix-name">CH1: Peltier</div>
+          <div id="stPeltier" class="matrix-val">OFF</div>
+        </div>
+        <div id="nodeFan" class="matrix-node">
+          <div class="matrix-led"></div>
+          <div class="matrix-name">CH2: Heatsink</div>
+          <div id="stFan" class="matrix-val">OFF</div>
+        </div>
+        <div id="nodeBlower" class="matrix-node">
+          <div class="matrix-led"></div>
+          <div class="matrix-name">CH3: Blower</div>
+          <div id="stBlower" class="matrix-val">OFF</div>
+        </div>
+        <div id="nodeLight" class="matrix-node">
+          <div class="matrix-led"></div>
+          <div class="matrix-name">CH4: Grow Light</div>
+          <div id="stLight" class="matrix-val">OFF</div>
+        </div>
+        <div id="nodeSpray1" class="matrix-node">
+          <div class="matrix-led"></div>
+          <div class="matrix-name">CH5: Semprot T1</div>
+          <div id="stSpray1" class="matrix-val">OFF</div>
+        </div>
+        <div id="nodeSpray2" class="matrix-node">
+          <div class="matrix-led"></div>
+          <div class="matrix-name">CH6: Semprot T2</div>
+          <div id="stSpray2" class="matrix-val">OFF</div>
+        </div>
+        <div id="nodeValve1" class="matrix-node">
+          <div class="matrix-name">Katup Servo 1</div>
+          <div id="stValve1" class="matrix-val" style="color:var(--pastel-sky-deep);">0° (TUTUP)</div>
+        </div>
+        <div id="nodeValve2" class="matrix-node">
+          <div class="matrix-name">Katup Servo 2</div>
+          <div id="stValve2" class="matrix-val" style="color:var(--pastel-matcha-deep);">0° (TUTUP)</div>
+        </div>
+      </div>
+    </div>
 
-          <!-- Props & Effects -->
-          <g class="brocco-props">
-            <!-- Sweat Drops -->
-            <g class="prop-sweat">
-              <path d="M 148,70 C 145,78 152,82 152,77 C 152,73 149,70 148,70 Z" fill="#38bdf8"/>
-              <path d="M 52,75 C 49,83 56,87 56,82 C 56,78 53,75 52,75 Z" fill="#38bdf8"/>
-            </g>
+    <!-- Real-Time Trend Graph (SVG Canvas) -->
+    <div class="chart-card">
+      <div class="inst-title">
+        <span>Grafik Riwayat Telemetri (20 Titik Terakhir) 📈</span>
+        <div style="display:flex; gap:16px; font-size:0.76rem; text-transform:none;">
+          <span style="display:flex; align-items:center; gap:6px; font-weight:700;">
+            <span style="width:12px; height:3.5px; background:#16a34a; border-radius:2px; display:inline-block;"></span> Suhu (°C)
+          </span>
+          <span style="display:flex; align-items:center; gap:6px; font-weight:700;">
+            <span style="width:12px; height:3.5px; background:#0284c7; border-radius:2px; display:inline-block;"></span> RH (%)
+          </span>
+        </div>
+      </div>
+      <div class="chart-svg-container">
+        <svg id="trendSvg" width="100%" height="100%" viewBox="0 0 800 160" preserveAspectRatio="none">
+          <line x1="40" y1="20" x2="780" y2="20" stroke="#fbcfe8" stroke-dasharray="3"/>
+          <line x1="40" y1="55" x2="780" y2="55" stroke="#fbcfe8" stroke-dasharray="3"/>
+          <line x1="40" y1="90" x2="780" y2="90" stroke="#fbcfe8" stroke-dasharray="3"/>
+          <line x1="40" y1="125" x2="780" y2="125" stroke="#fbcfe8" stroke-dasharray="3"/>
 
-            <!-- Icicles (Cold) -->
-            <g class="prop-icicles">
-              <polygon points="62,115 65,130 68,115" fill="#38bdf8"/>
-              <polygon points="98,135 101,152 104,135" fill="#38bdf8"/>
-              <polygon points="132,115 135,130 138,115" fill="#38bdf8"/>
-            </g>
+          <text x="5" y="24" fill="#948590" font-size="10" font-family="'JetBrains Mono', monospace">50°/100%</text>
+          <text x="5" y="75" fill="#948590" font-size="10" font-family="'JetBrains Mono', monospace">25°/50%</text>
+          <text x="5" y="130" fill="#948590" font-size="10" font-family="'JetBrains Mono', monospace">0°/0%</text>
 
-            <!-- Zzz (Sleep) -->
-            <g class="prop-zzz">
-              <text x="145" y="60" fill="#0284c7" font-size="16" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" class="zzz-item z1">Z</text>
-              <text x="160" y="45" fill="#16a34a" font-size="12" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" class="zzz-item z2">z</text>
-              <text x="172" y="32" fill="#0284c7" font-size="9" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" class="zzz-item z3">z</text>
-            </g>
-
-            <!-- Sparkles -->
-            <g class="prop-sparkles">
-              <polygon points="45,50 48,42 50,50 58,52 50,54 48,62 45,54 37,52" fill="#fbbf24"/>
-              <polygon points="155,95 157,90 159,95 164,96 159,97 157,102 155,97 150,96" fill="#fbbf24"/>
-            </g>
-          </g>
+          <polyline id="rhPolyline" fill="none" stroke="#0284c7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points=""/>
+          <polyline id="tempPolyline" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points=""/>
         </svg>
       </div>
-
-      <!-- Action Buttons -->
-      <div class="brocco-actions">
-        <button class="btn-nurture btn-nurture-water" onclick="nurtureBrocco('water')" title="Semprot air baku 5 detik">
-          <span>💧</span>
-          <span>Beri Minum</span>
-        </button>
-        <button class="btn-nurture btn-nurture-nutrient" onclick="nurtureBrocco('nutrient')" title="Beri nutrisi mikro">
-          <span>🧪</span>
-          <span>Beri Vitamin</span>
-        </button>
-        <button class="btn-nurture btn-nurture-breeze" onclick="nurtureBrocco('breeze')" title="Putar blower sirkulasi sejuk">
-          <span>💨</span>
-          <span>Kipas Semilir</span>
-        </button>
-        <button id="btnSoundToggle" class="btn-sound" onclick="toggleAudio()" title="Aktifkan/matikan suara">
-          🔊 SFX: ON
-        </button>
-      </div>
     </div>
 
-    <!-- Card 2: Companion Status Brief -->
-    <div class="card companion-overview-card">
-      <div class="card-header">
-        <span class="card-label">Kondisi & Diary Tanaman</span>
-        <span id="broccoMoodBadge" class="badge badge-optimal">PRIMA</span>
-      </div>
-      <div class="companion-stats-list">
-        <div class="comp-stat-item">
-          <span class="comp-stat-name">Skor Kenyamanan (PCS):</span>
-          <span id="compValPcs" class="comp-stat-val" style="color:var(--pastel-mint-deep);">--%</span>
+    <!-- Interactive Control Panel & Garden Diary Log -->
+    <div class="controls-grid">
+      <div class="card">
+        <div class="inst-title">
+          <span>Panel Kendali Kebun 🎀</span>
+          <span id="lblMode" class="badge badge-optimal">OTOMATIS</span>
         </div>
-        <div class="comp-stat-item">
-          <span class="comp-stat-name">Sensasi Tanaman:</span>
-          <span id="compValNeed" class="comp-stat-val">Homeostasis Seimbang</span>
-        </div>
-        <div class="comp-stat-item">
-          <span class="comp-stat-name">Siklus Fotoperiode:</span>
-          <span id="compValLight" class="comp-stat-val" style="color:var(--pastel-sky-deep);">Fase Terang (16 Jam)</span>
-        </div>
-        <div class="comp-stat-item">
-          <span class="comp-stat-name">Respon Brocco:</span>
-          <span id="compValResponse" class="comp-stat-val" style="color:#16a34a;">Tumbuh Segar & Sehat</span>
-        </div>
-      </div>
-      <div class="comp-tip-box">
-        <span style="font-weight:700;">💡 Tips Kebun:</span>
-        <span id="compAgronomiTip" style="margin-left:4px;">Jaga suhu antara 18-22°C dan kelembapan 50-65% agar terhindar dari jamur Pythium.</span>
-      </div>
-    </div>
-  </div>
 
-  <!-- 4x Primary Telemetry Cards -->
-  <div class="telemetry-grid">
-    <div class="card">
-      <div class="card-header">
-        <span class="card-label">Suhu Udara</span>
-        <span class="card-target">Tgt: 18.0 - 22.0°C</span>
-      </div>
-      <div class="card-value">
-        <span id="valTemp">--.-</span>
-        <span class="card-unit">°C</span>
-      </div>
-      <div id="badgeTemp" class="badge badge-optimal">NORMAL</div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <span class="card-label">Kelembapan Udara</span>
-        <span class="card-target">Tgt: 50.0 - 65.0%</span>
-      </div>
-      <div class="card-value">
-        <span id="valRh">--.-</span>
-        <span class="card-unit">% RH</span>
-      </div>
-      <div id="badgeRh" class="badge badge-optimal">NORMAL</div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <span class="card-label">Kelembapan Media</span>
-        <span class="card-target">Tgt: 45.0 - 70.0%</span>
-      </div>
-      <div class="card-value">
-        <span id="valSoil">--.-</span>
-        <span class="card-unit">%</span>
-      </div>
-      <div id="badgeSoil" class="badge badge-optimal">NORMAL</div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <span class="card-label">Defisit Uap (VPD)</span>
-        <span class="card-target">Tgt: 0.40 - 0.80 kPa</span>
-      </div>
-      <div class="card-value">
-        <span id="valVpd">-.--</span>
-        <span class="card-unit">kPa</span>
-      </div>
-      <div id="badgeVpd" class="badge badge-optimal">SEIMBANG</div>
-    </div>
-  </div>
-
-  <!-- Secondary Instruments Grid -->
-  <div class="instruments-grid">
-    <!-- Plant Comfort Score (PCS) -->
-    <div class="card">
-      <div class="inst-title">
-        <span>Plant Comfort Score (PCS)</span>
-        <span id="valPcsText" style="color:var(--pastel-mint-deep); font-weight:800;">--%</span>
-      </div>
-      <div class="card-value" style="font-size:2.6rem; margin-bottom:2px;">
-        <span id="valPcs">--</span><span class="card-unit">%</span>
-      </div>
-      <div class="pcs-meter">
-        <div id="pcsBar" class="pcs-fill" style="width:100%; transform:scaleX(0);"></div>
-      </div>
-      <div style="font-size:0.75rem; color:var(--text-sub); display:flex; justify-content:space-between;">
-        <span>Risiko Patogen</span>
-        <span>Homeostasis Sempurna</span>
-      </div>
-    </div>
-
-    <!-- Dual-Tank Reservoirs -->
-    <div class="card">
-      <div class="inst-title">
-        <span>Kapasitas Tangki Air</span>
-        <span style="font-size:0.75rem; color:var(--text-sub);">KONSUMSI MIST</span>
-      </div>
-      <div class="tank-row">
-        <div class="tank-item">
-          <div class="tank-header">
-            <span>Tangki 1 (Air Baku Murni)</span>
-            <span id="valTank1Text" style="color:var(--pastel-sky-deep);">1000 mL</span>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Mode Operasi</div>
+            <div style="font-size:0.75rem; color:var(--text-sub); font-weight:600;">Beralih antara Kontrol Otomatis & Manual</div>
           </div>
-          <div class="tank-bar">
-            <div id="tank1Bar" class="tank-fill-1" style="width:100%; transform:scaleX(1);"></div>
+          <button id="btnModeToggle" class="btn btn-mint" onclick="toggleMode()">MODE MANUAL</button>
+        </div>
+
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Pilihan Fase Tumbuh</div>
+            <div style="font-size:0.75rem; color:var(--text-sub); font-weight:600;">Perkecambahan (Gelap) vs Vegetatif (Terang)</div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn" onclick="sendControl('action=phase&val=1')">Perkecambahan</button>
+            <button class="btn" onclick="sendControl('action=phase&val=2')">Vegetatif</button>
           </div>
         </div>
-        <div class="tank-item">
-          <div class="tank-header">
-            <span>Tangki 2 (Booster Nutrisi)</span>
-            <span id="valTank2Text" style="color:var(--pastel-lavender);">1000 mL</span>
+
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Tangki Aktif</div>
+            <div style="font-size:0.75rem; color:var(--text-sub); font-weight:600;">Pilih Jalur Utama Semprotan</div>
           </div>
-          <div class="tank-bar">
-            <div id="tank2Bar" class="tank-fill-2" style="width:100%; transform:scaleX(1);"></div>
+          <div style="display:flex; gap:8px;">
+            <button id="btnTank1" class="btn" onclick="sendControl('action=tank&val=1')">Tangki 1 (Air)</button>
+            <button id="btnTank2" class="btn" onclick="sendControl('action=tank&val=2')">Tangki 2 (Nutrisi)</button>
+          </div>
+        </div>
+
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Penyetel Hari Tumbuh</div>
+            <div style="font-size:0.75rem; color:var(--text-sub); font-weight:600;">Sesuaikan Penjejak Hari Budidaya</div>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <button class="btn" style="padding:6px 14px;" onclick="adjustDay(-1)">-1</button>
+            <span id="lblDayCount" style="font-weight:700; font-size:0.92rem;">Hari 1</span>
+            <button class="btn" style="padding:6px 14px;" onclick="adjustDay(1)">+1</button>
+          </div>
+        </div>
+
+        <div class="toggle-row" style="border-bottom:none; margin-top:4px;">
+          <div>
+            <div class="toggle-label" style="color:var(--pastel-pink-deep);">Siram Darurat (Flush) 💧</div>
+            <div style="font-size:0.75rem; color:var(--text-sub); font-weight:600;">Semprot 5 detik air murni Tangki 1</div>
+          </div>
+          <button class="btn btn-red" onclick="sendControl('action=flush')">⚡ Siram Darurat</button>
+        </div>
+
+        <!-- Manual Overrides -->
+        <div id="manualControls" style="display:none; margin-top:14px; padding-top:14px; border-top:1.5px solid #fce7ec;">
+          <div class="card-label" style="margin-bottom:8px; color:var(--pastel-peach-deep);">Kontrol Langsung (Mode Manual)</div>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <button class="btn" onclick="sendControl('action=toggleRelay&ch=1')">Peltier</button>
+            <button class="btn" onclick="sendControl('action=toggleRelay&ch=2')">Kipas</button>
+            <button class="btn" onclick="sendControl('action=toggleRelay&ch=3')">Blower</button>
+            <button class="btn" onclick="sendControl('action=toggleRelay&ch=4')">Grow Light</button>
+            <button class="btn" onclick="sendControl('action=toggleRelay&ch=5')">Semprot T1</button>
+            <button class="btn" onclick="sendControl('action=toggleRelay&ch=6')">Semprot T2</button>
           </div>
         </div>
       </div>
-      <div style="margin-top:10px; display:flex; gap:8px;">
-        <button class="btn" style="flex:1; padding:6px 10px; font-size:0.74rem;" onclick="sendControl('action=refill&tank=1')">Isi Tangki 1</button>
-        <button class="btn" style="flex:1; padding:6px 10px; font-size:0.74rem;" onclick="sendControl('action=refill&tank=2')">Isi Tangki 2</button>
-      </div>
-    </div>
 
-    <!-- Growth Phase Sequencer -->
-    <div class="card">
-      <div class="inst-title">
-        <span>Pelacak Siklus Tumbuh</span>
-        <span id="valDayBadge" class="badge badge-optimal">HARI 1 / 10</span>
-      </div>
-      <div style="margin-bottom:10px;">
-        <div style="font-size:0.74rem; color:var(--text-sub); font-weight:600; text-transform:uppercase;">Regime Saat Ini</div>
-        <div id="valPhaseName" style="font-size:1.05rem; font-weight:800; color:var(--pastel-mint-deep);">Germination Blackout</div>
-        <div id="valPhaseDesc" style="font-size:0.78rem; color:var(--text-sub); margin-top:3px;">
-          Lampu Mati • Target RH 60-70% • Semprot Air Baku
+      <!-- Garden Diary Log -->
+      <div class="terminal-card">
+        <div class="terminal-header">
+          <span class="term-dot term-red"></span>
+          <span class="term-dot term-yellow"></span>
+          <span class="term-dot term-green"></span>
+          <span style="margin-left:4px;">Buku Harian Kebun & Log</span>
         </div>
-      </div>
-      <div class="pcs-meter" style="height:8px;">
-        <div id="phaseProgress" class="pcs-fill" style="width:100%; background:#38bdf8; transform:scaleX(0.1);"></div>
-      </div>
-      <div style="display:flex; justify-content:space-between; font-size:0.74rem; color:var(--text-sub);">
-        <span>Hari 1 (Semai)</span>
-        <span>Hari 10 (Panen)</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Hardware Relays & Valve Matrix -->
-  <div class="card" style="margin-bottom:24px;">
-    <div class="inst-title" style="margin-bottom:8px;">
-      <span>Matriks Perangkat Keras & Aktuator</span>
-      <span style="font-size:0.74rem; color:var(--text-sub);">ACTIVE-LOW RELAY & SERVO</span>
-    </div>
-    <div class="matrix-grid">
-      <div id="nodePeltier" class="matrix-node">
-        <div class="matrix-led"></div>
-        <div class="matrix-name">CH1: Peltier</div>
-        <div id="stPeltier" class="matrix-val">OFF</div>
-      </div>
-      <div id="nodeFan" class="matrix-node">
-        <div class="matrix-led"></div>
-        <div class="matrix-name">CH2: Heatsink</div>
-        <div id="stFan" class="matrix-val">OFF</div>
-      </div>
-      <div id="nodeBlower" class="matrix-node">
-        <div class="matrix-led"></div>
-        <div class="matrix-name">CH3: Blower</div>
-        <div id="stBlower" class="matrix-val">OFF</div>
-      </div>
-      <div id="nodeLight" class="matrix-node">
-        <div class="matrix-led"></div>
-        <div class="matrix-name">CH4: Grow Light</div>
-        <div id="stLight" class="matrix-val">OFF</div>
-      </div>
-      <div id="nodeSpray1" class="matrix-node">
-        <div class="matrix-led"></div>
-        <div class="matrix-name">CH5: Semprot T1</div>
-        <div id="stSpray1" class="matrix-val">OFF</div>
-      </div>
-      <div id="nodeSpray2" class="matrix-node">
-        <div class="matrix-led"></div>
-        <div class="matrix-name">CH6: Semprot T2</div>
-        <div id="stSpray2" class="matrix-val">OFF</div>
-      </div>
-      <div id="nodeValve1" class="matrix-node">
-        <div class="matrix-name">Katup Servo 1</div>
-        <div id="stValve1" class="matrix-val" style="color:var(--pastel-sky-deep);">0° (TUTUP)</div>
-      </div>
-      <div id="nodeValve2" class="matrix-node">
-        <div class="matrix-name">Katup Servo 2</div>
-        <div id="stValve2" class="matrix-val" style="color:var(--pastel-mint-deep);">0° (TUTUP)</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Real-Time Trend Graph (SVG Canvas) -->
-  <div class="chart-card">
-    <div class="inst-title">
-      <span>Grafik Riwayat Telemetri (20 Titik Terakhir)</span>
-      <div style="display:flex; gap:16px; font-size:0.76rem; text-transform:none;">
-        <span style="display:flex; align-items:center; gap:6px;">
-          <span style="width:12px; height:3.5px; background:#16a34a; border-radius:2px; display:inline-block;"></span> Suhu (°C)
-        </span>
-        <span style="display:flex; align-items:center; gap:6px;">
-          <span style="width:12px; height:3.5px; background:#0284c7; border-radius:2px; display:inline-block;"></span> RH (%)
-        </span>
-      </div>
-    </div>
-    <div class="chart-svg-container">
-      <svg id="trendSvg" width="100%" height="100%" viewBox="0 0 800 160" preserveAspectRatio="none">
-        <line x1="40" y1="20" x2="780" y2="20" stroke="#e6e0d3" stroke-dasharray="3"/>
-        <line x1="40" y1="55" x2="780" y2="55" stroke="#e6e0d3" stroke-dasharray="3"/>
-        <line x1="40" y1="90" x2="780" y2="90" stroke="#e6e0d3" stroke-dasharray="3"/>
-        <line x1="40" y1="125" x2="780" y2="125" stroke="#e6e0d3" stroke-dasharray="3"/>
-        
-        <text x="5" y="24" fill="#94a3b8" font-size="10" font-family="'JetBrains Mono', monospace">50°/100%</text>
-        <text x="5" y="75" fill="#94a3b8" font-size="10" font-family="'JetBrains Mono', monospace">25°/50%</text>
-        <text x="5" y="130" fill="#94a3b8" font-size="10" font-family="'JetBrains Mono', monospace">0°/0%</text>
-
-        <polyline id="rhPolyline" fill="none" stroke="#0284c7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points=""/>
-        <polyline id="tempPolyline" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points=""/>
-      </svg>
-    </div>
-  </div>
-
-  <!-- Interactive Control Panel & Garden Log -->
-  <div class="controls-grid">
-    <div class="card">
-      <div class="inst-title">
-        <span>Panel Kendali Operasional</span>
-        <span id="lblMode" class="badge badge-optimal">OTOMATIS</span>
-      </div>
-
-      <div class="toggle-row">
-        <div>
-          <div class="toggle-label">Mode Operasi</div>
-          <div style="font-size:0.75rem; color:var(--text-sub);">Beralih antara Kontrol Otomatis & Manual</div>
-        </div>
-        <button id="btnModeToggle" class="btn btn-mint" onclick="toggleMode()">MODE MANUAL</button>
-      </div>
-
-      <div class="toggle-row">
-        <div>
-          <div class="toggle-label">Pilihan Fase Tumbuh</div>
-          <div style="font-size:0.75rem; color:var(--text-sub);">Perkecambahan (Gelap) vs Vegetatif (Terang)</div>
-        </div>
-        <div style="display:flex; gap:8px;">
-          <button class="btn" onclick="sendControl('action=phase&val=1')">Perkecambahan</button>
-          <button class="btn" onclick="sendControl('action=phase&val=2')">Vegetatif</button>
-        </div>
-      </div>
-
-      <div class="toggle-row">
-        <div>
-          <div class="toggle-label">Tangki Aktif</div>
-          <div style="font-size:0.75rem; color:var(--text-sub);">Pilih Jalur Utama Semprotan</div>
-        </div>
-        <div style="display:flex; gap:8px;">
-          <button id="btnTank1" class="btn" onclick="sendControl('action=tank&val=1')">Tangki 1 (Air)</button>
-          <button id="btnTank2" class="btn" onclick="sendControl('action=tank&val=2')">Tangki 2 (Nutrisi)</button>
-        </div>
-      </div>
-
-      <div class="toggle-row">
-        <div>
-          <div class="toggle-label">Penyetel Hari Tumbuh</div>
-          <div style="font-size:0.75rem; color:var(--text-sub);">Sesuaikan Penjejak Hari Budidaya</div>
-        </div>
-        <div style="display:flex; gap:8px; align-items:center;">
-          <button class="btn" style="padding:5px 12px;" onclick="adjustDay(-1)">-1</button>
-          <span id="lblDayCount" style="font-weight:800; font-size:0.9rem;">Hari 1</span>
-          <button class="btn" style="padding:5px 12px;" onclick="adjustDay(1)">+1</button>
-        </div>
-      </div>
-
-      <div class="toggle-row" style="border-bottom:none; margin-top:4px;">
-        <div>
-          <div class="toggle-label" style="color:var(--pastel-coral-deep);">Siram Darurat (Flush)</div>
-          <div style="font-size:0.75rem; color:var(--text-sub);">Semprot 5 detik air baku Tangki 1</div>
-        </div>
-        <button class="btn btn-red" onclick="sendControl('action=flush')">⚡ Siram Darurat</button>
-      </div>
-
-      <!-- Manual Overrides -->
-      <div id="manualControls" style="display:none; margin-top:14px; padding-top:14px; border-top:1px solid #eeeadf;">
-        <div class="card-label" style="margin-bottom:8px; color:var(--pastel-butter-deep);">Kontrol Langsung (Mode Manual Aktif)</div>
-        <div style="display:flex; flex-wrap:wrap; gap:8px;">
-          <button class="btn" onclick="sendControl('action=toggleRelay&ch=1')">Peltier</button>
-          <button class="btn" onclick="sendControl('action=toggleRelay&ch=2')">Kipas</button>
-          <button class="btn" onclick="sendControl('action=toggleRelay&ch=3')">Blower</button>
-          <button class="btn" onclick="sendControl('action=toggleRelay&ch=4')">Grow Light</button>
-          <button class="btn" onclick="sendControl('action=toggleRelay&ch=5')">Semprot T1</button>
-          <button class="btn" onclick="sendControl('action=toggleRelay&ch=6')">Semprot T2</button>
+        <div id="terminalLogs" class="terminal-body">
+          <div class="term-log"><span class="term-time">[00:00:00]</span><span class="term-msg">Inisialisasi Pengontrol Kabin Biosfer... 🌸</span></div>
         </div>
       </div>
     </div>
 
-    <!-- Garden Log -->
-    <div class="terminal-card">
-      <div class="terminal-header">
-        <span class="term-dot term-red"></span>
-        <span class="term-dot term-yellow"></span>
-        <span class="term-dot term-green"></span>
-        <span style="margin-left:4px;">Catatan Kebun & Log Sistem</span>
-      </div>
-      <div id="terminalLogs" class="terminal-body">
-        <div class="term-log"><span class="term-time">[00:00:00]</span><span class="term-msg">Inisialisasi Pengontrol Kabin Biosfer...</span></div>
-      </div>
-    </div>
-  </div>
+  </div> <!-- End .app-container -->
 
   <script>
     let isAutoMode = true;
@@ -1789,37 +1818,37 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
 
       if (type === 'tap') {
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(520, now);
-        osc.frequency.exponentialRampToValueAtTime(880, now + 0.12);
+        osc.frequency.setValueAtTime(587.33, now); // D5
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.12); // A5
         gain.gain.setValueAtTime(0.2, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
         osc.start(now);
         osc.stop(now + 0.12);
       } else if (type === 'water') {
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(400, now);
-        osc.frequency.linearRampToValueAtTime(800, now + 0.08);
-        osc.frequency.linearRampToValueAtTime(600, now + 0.16);
-        osc.frequency.linearRampToValueAtTime(950, now + 0.24);
-        gain.gain.setValueAtTime(0.25, now);
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.linearRampToValueAtTime(880, now + 0.08);
+        osc.frequency.linearRampToValueAtTime(659, now + 0.16);
+        osc.frequency.linearRampToValueAtTime(1046.5, now + 0.24);
+        gain.gain.setValueAtTime(0.22, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.28);
         osc.start(now);
         osc.stop(now + 0.28);
       } else if (type === 'nutrient') {
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(440, now);
-        osc.frequency.setValueAtTime(554, now + 0.07);
-        osc.frequency.setValueAtTime(659, now + 0.14);
-        osc.frequency.setValueAtTime(880, now + 0.21);
+        osc.frequency.setValueAtTime(523.25, now); // C5
+        osc.frequency.setValueAtTime(659.25, now + 0.07); // E5
+        osc.frequency.setValueAtTime(783.99, now + 0.14); // G5
+        osc.frequency.setValueAtTime(1046.5, now + 0.21); // C6
         gain.gain.setValueAtTime(0.2, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
         osc.start(now);
         osc.stop(now + 0.3);
       } else if (type === 'breeze') {
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(280, now);
-        osc.frequency.exponentialRampToValueAtTime(140, now + 0.25);
-        gain.gain.setValueAtTime(0.15, now);
+        osc.frequency.setValueAtTime(329.63, now);
+        osc.frequency.exponentialRampToValueAtTime(164.81, now + 0.25);
+        gain.gain.setValueAtTime(0.14, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
         osc.start(now);
         osc.stop(now + 0.25);
@@ -1830,15 +1859,15 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       audioMuted = !audioMuted;
       localStorage.setItem('brocco_audio_muted', audioMuted ? '1' : '0');
       const btn = document.getElementById('btnSoundToggle');
-      if (btn) btn.innerText = audioMuted ? '🔇 SFX: OFF' : '🔊 SFX: ON';
+      if (btn) btn.innerText = audioMuted ? '🔇 Musik: Mati' : '🎵 Musik: Nyala';
     }
 
     const cuteQuotes = [
-      "Hai! Senang dirawat sama kamu! 🌱",
-      "Suhu sejuk 20°C ini pas banget buat fotosintesis!",
-      "Daunku makin hijau dan renyah berkat cahaya LED!",
-      "Jangan lupa cek kadar nutrisi di Tangki 2 ya!",
-      "Brokoli microgreens kaya antioksidan sulforaphane lho!"
+      "Hai manis! Senang dirawat sama kamu! 🌸✨",
+      "Suhu sejuk 20°C ini pas banget buat kita tumbuh cantik! 🌿",
+      "Daunku makin hijau dan segar berkat kamu! 💖",
+      "Terima kasih sudah merawat kebun kecil kita ya! 🎀",
+      "Brokoli microgreens kaya antioksidan sulforaphane lho! 🌱"
     ];
 
     let speechLockUntil = 0;
@@ -1873,15 +1902,15 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       initAudio();
       if (action === 'water') {
         playChirp('water');
-        setBroccoSpeech("Aah, segaar! Semprotan air baku Tangki 1 aktif!", true);
+        setBroccoSpeech("Aah, segaar! Semprotan air murni aktif! 💧✨", true);
         sendControl('action=flush');
       } else if (action === 'nutrient') {
         playChirp('nutrient');
-        setBroccoSpeech("Yummy! Booster nutrisi mikro Tangki 2 diserap!", true);
+        setBroccoSpeech("Yummy! Booster vitamin mikro diserap! 🌸✨", true);
         sendControl('action=toggleRelay&ch=6');
       } else if (action === 'breeze') {
         playChirp('breeze');
-        setBroccoSpeech("Wussshh! Hembusan angin blower bikin daun sejuk!", true);
+        setBroccoSpeech("Wussshh! Hembusan angin sepoi-sepoi bikin sejuk! 🍃", true);
         sendControl('action=toggleRelay&ch=3');
       }
     }
@@ -1913,28 +1942,28 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
         setBroccoSpeech("Waduh sensor bermasalah! Sistem masuk Safe Mode darurat!");
       } else if (!d.relays.light && d.phase === 1) {
         mascot.classList.add('mood-sleep');
-        if (badge) { badge.className = 'badge badge-optimal'; badge.innerText = 'TIDUR'; }
+        if (badge) { badge.className = 'badge badge-optimal'; badge.innerText = 'TIDUR NYENYAK'; }
         if (compNeed) compNeed.innerText = 'Kegelapan Perkecambahan';
-        if (compResp) compResp.innerText = 'Tidur Pulas (Zzz)';
-        if (compTip) compTip.innerText = 'Fase Blackout (Hari 1-3): Jangan nyalakan lampu agar batang kecambah memanjang.';
-        setBroccoSpeech("Zzz... Fase perkecambahan gelap, aku sedang tidur nyenyak...");
+        if (compResp) compResp.innerText = 'Tidur Pulas (Zzz) 💤';
+        if (compTip) compTip.innerText = 'Fase Blackout (Hari 1-3): Jangan nyalakan lampu agar batang kecambah memanjang cantik.';
+        setBroccoSpeech("Zzz... Fase perkecambahan gelap, aku sedang tidur nyenyak ya...");
       } else if (!d.relays.light) {
         mascot.classList.add('mood-sleep');
-        if (badge) { badge.className = 'badge badge-optimal'; badge.innerText = 'TIDUR'; }
+        if (badge) { badge.className = 'badge badge-optimal'; badge.innerText = 'TIDUR MALAM'; }
         if (compNeed) compNeed.innerText = 'Istirahat Malam (8 Jam)';
-        if (compResp) compResp.innerText = 'Respirasi Malam';
-        if (compTip) compTip.innerText = 'Siklus gelap 8 jam penting untuk respirasi metabolisme tanaman.';
-        setBroccoSpeech("Zzz... Siklus fotoperiode malam, istirahat dulu ya...");
+        if (compResp) compResp.innerText = 'Respirasi Malam 💤';
+        if (compTip) compTip.innerText = 'Siklus gelap 8 jam penting untuk respirasi metabolisme tanaman brokoli.';
+        setBroccoSpeech("Zzz... Siklus fotoperiode malam, istirahat dulu ya teman...");
       } else if (d.temp > 24.0) {
         mascot.classList.add('mood-heat-crit');
         if (badge) { badge.className = 'badge badge-kritis'; badge.innerText = 'OVERHEAT'; }
         if (compNeed) compNeed.innerText = 'Pendinginan Darurat (<22°C)';
-        if (compResp) compResp.innerText = 'Terengah-engah Kepanasan';
+        if (compResp) compResp.innerText = 'Terengah-engah Panas';
         if (compTip) compTip.innerText = 'Bahaya kritis! Suhu > 24°C memicu patogen busuk akar Pythium!';
-        setBroccoSpeech("Aduh kepanasan (>24°C)! Bahaya busuk akar Pythium! Dinginkan segera!");
+        setBroccoSpeech("Aduh kepanasan (>24°C)! Dinginkan segera agar akar tidak busuk!");
       } else if (d.temp > 22.0) {
         mascot.classList.add('mood-heat');
-        if (badge) { badge.className = 'badge badge-waspada'; badge.innerText = 'GERAH'; }
+        if (badge) { badge.className = 'badge badge-waspada'; badge.innerText = 'AGAK GERAH'; }
         if (compNeed) compNeed.innerText = 'Sirkulasi & Pendinginan';
         if (compResp) compResp.innerText = 'Sedikit Gerah';
         if (compTip) compTip.innerText = 'Peltier CH1 aktif untuk menurunkan suhu ke rentang ideal 18-22°C.';
@@ -1948,25 +1977,25 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
         setBroccoSpeech("Brrr dingin banget (<18°C)! Aku menggigil kedinginan!");
       } else if (d.soil < 45.0) {
         mascot.classList.add('mood-thirsty');
-        if (badge) { badge.className = 'badge badge-waspada'; badge.innerText = 'HAUS'; }
-        if (compNeed) compNeed.innerText = 'Hidrasi Media Tanam';
-        if (compResp) compResp.innerText = 'Layu Kehausan';
+        if (badge) { badge.className = 'badge badge-waspada'; badge.innerText = 'HAUS SEKALI'; }
+        if (compNeed) compNeed.innerText = 'Semprot Air Baku';
+        if (compResp) compResp.innerText = 'Layu Kehausan 💧';
         if (compTip) compTip.innerText = 'Semprot air baku Tangki 1 untuk menaikkan kelembapan media tanam ke 45-70%.';
-        setBroccoSpeech("Tanahku kering kerontang (<45%)! Butuh semprotan air!");
+        setBroccoSpeech("Tanahku kering kerontang (<45%)! Boleh minta semprotan airnya? 💧");
       } else if (d.rh > 65.0) {
         mascot.classList.add('mood-stagnant');
-        if (badge) { badge.className = 'badge badge-waspada'; badge.innerText = 'PEKAT'; }
-        if (compNeed) compNeed.innerText = 'Sirkulasi Udara Blower';
+        if (badge) { badge.className = 'badge badge-waspada'; badge.innerText = 'PEKAT LEMBAP'; }
+        if (compNeed) compNeed.innerText = 'Hembusan Udara Blower';
         if (compResp) compResp.innerText = 'Gerah Lembap';
         if (compTip) compTip.innerText = 'Kelembapan > 65% menciptakan lapisan batas stagnant; blower aktif memecah embun.';
-        setBroccoSpeech("Kelembapan pekat (>65%). Blower aktif mengusir embun di daun!");
+        setBroccoSpeech("Kelembapan pekat (>65%). Blower aktif mengusir embun di daun ya!");
       } else {
         mascot.classList.add('mood-happy');
-        if (badge) { badge.className = 'badge badge-optimal'; badge.innerText = 'PRIMA'; }
+        if (badge) { badge.className = 'badge badge-optimal'; badge.innerText = 'SANGAT PRIMA'; }
         if (compNeed) compNeed.innerText = 'Pertahankan Kondisi Saat Ini';
-        if (compResp) compResp.innerText = 'Tumbuh Riang & Sehat';
+        if (compResp) compResp.innerText = 'Tumbuh Segar & Sehat 🌸';
         if (compTip) compTip.innerText = 'Lingkungan biosfer dalam kondisi homeostasis sempurna.';
-        setBroccoSpeech("Kondisi biosfer prima! Suhu sejuk dan aku bertumbuh cepat!");
+        setBroccoSpeech("Kondisi biosfer prima! Suhu sejuk dan aku bertumbuh cepat! 🌸✨");
       }
     }
 
@@ -1995,10 +2024,10 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       document.getElementById('valSoil').innerText = d.soil.toFixed(1);
       document.getElementById('valVpd').innerText = d.vpd.toFixed(2);
 
-      updateCardBadge('badgeTemp', d.temp >= 18.0 && d.temp <= 22.0, d.temp > 24.0, 'NORMAL', 'WASPADA', 'KRITIS');
-      updateCardBadge('badgeRh', d.rh >= 50.0 && d.rh <= 65.0, d.rh > 75.0, 'OPTIMAL', 'WASPADA', 'PEKAT');
-      updateCardBadge('badgeSoil', d.soil >= 45.0 && d.soil <= 70.0, d.soil < 35.0, 'LEMBAP PAS', 'WASPADA', 'KERING');
-      updateCardBadge('badgeVpd', d.vpd >= 0.40 && d.vpd <= 0.80, d.vpd < 0.20 || d.vpd > 1.20, 'SEIMBANG', 'DRIFT', 'KRITIS');
+      updateCardBadge('badgeTemp', d.temp >= 18.0 && d.temp <= 22.0, d.temp > 24.0, '🌸 NYAMAN SEKALI', 'AGAK HANGAT', 'OVERHEAT');
+      updateCardBadge('badgeRh', d.rh >= 50.0 && d.rh <= 65.0, d.rh > 75.0, '💧 SEGAR OPTIMAL', 'WASPADA', 'PEKAT');
+      updateCardBadge('badgeSoil', d.soil >= 45.0 && d.soil <= 70.0, d.soil < 35.0, '🌱 LEMBAP PAS', 'WASPADA', 'KERING');
+      updateCardBadge('badgeVpd', d.vpd >= 0.40 && d.vpd <= 0.80, d.vpd < 0.20 || d.vpd > 1.20, '✨ SEIMBANG', 'DRIFT', 'KRITIS');
 
       document.getElementById('valPcs').innerText = Math.round(d.pcs);
       document.getElementById('valPcsText').innerText = Math.round(d.pcs) + '%';
@@ -2130,7 +2159,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     }
 
     const initBtn = document.getElementById('btnSoundToggle');
-    if (initBtn) initBtn.innerText = audioMuted ? '🔇 SFX: OFF' : '🔊 SFX: ON';
+    if (initBtn) initBtn.innerText = audioMuted ? '🔇 Musik: Mati' : '🎵 Musik: Nyala';
 
     setInterval(fetchTelemetry, 1000);
     fetchTelemetry();
