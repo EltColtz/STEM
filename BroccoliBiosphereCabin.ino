@@ -85,6 +85,17 @@ struct AgronomicMetrics {
 };
 
 struct SystemState {
+  // Configurable Agronomic Setpoints / Thresholds
+  float targetTempMin = 18.0f;
+  float targetTempMax = 22.0f;
+  float targetRhMin   = 50.0f;
+  float targetRhMax   = 65.0f;
+  float targetSoilMin = 45.0f;
+  float targetSoilMax = 70.0f;
+  int soilDryRaw      = SOIL_DRY_RAW;
+  int soilWetRaw      = SOIL_WET_RAW;
+  int lastRawSoilAdc  = 2240;
+
   // Operational Modes
   bool autoMode;            // true = AUTOMATIC CLIMATE CONTROL, false = MANUAL OVERRIDE
   GrowthPhase phase;        // Current Growth Phase
@@ -392,6 +403,7 @@ void pollSensors() {
 
   // Capacitive Soil Moisture Sensor (ADC1, GPIO 34)
   int rawSoilAdc = analogRead(PIN_SOIL_ADC);
+  state.lastRawSoilAdc = rawSoilAdc;
   // Map inverted ADC values: SOIL_DRY_RAW (3200) -> 0%, SOIL_WET_RAW (1400) -> 100%
   float soilPct = (float)(SOIL_DRY_RAW - rawSoilAdc) * 100.0f / (float)(SOIL_DRY_RAW - SOIL_WET_RAW);
   metrics.soilMoisture = constrain(soilPct, 0.0f, 100.0f);
@@ -1380,6 +1392,120 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     }
     .term-time { color: var(--pastel-sky-deep); font-weight: 700; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; }
     .term-msg { color: var(--text-main); font-weight: 600; }
+
+    /* --- Interactive Relay & GPIO Controls --- */
+    .gpio-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--pastel-sky-deep);
+      background: var(--pastel-sky-soft);
+      padding: 2px 6px;
+      border-radius: var(--radius-pill);
+      border: 1px solid #bae6fd;
+      display: inline-block;
+      margin-bottom: 4px;
+    }
+    .matrix-toggle-btn {
+      margin-top: 8px;
+      width: 100%;
+      padding: 6px 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      border-radius: 10px;
+      border: 1.5px solid #d5cebe;
+      background: #ffffff;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .matrix-toggle-btn:hover {
+      background: #fdf2f4;
+      border-color: var(--pastel-pink);
+    }
+    .matrix-toggle-btn.btn-active-on {
+      background: var(--pastel-matcha-soft);
+      color: var(--pastel-matcha-deep);
+      border-color: var(--pastel-matcha);
+    }
+    .interlock-indicator {
+      font-size: 0.65rem;
+      color: #b45309;
+      background: #fef3c7;
+      border: 1px solid #fde68a;
+      border-radius: 6px;
+      padding: 2px 4px;
+      margin-top: 4px;
+      display: none;
+      font-weight: 600;
+    }
+
+    /* --- Sensor GPIO Diagnostics Panel --- */
+    .sensor-diag-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 14px;
+    }
+    .sensor-diag-card {
+      background: #fffafa;
+      border: 1.5px solid #f9d8e2;
+      border-radius: 18px;
+      padding: 16px;
+    }
+    .sensor-diag-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #fce7ec;
+    }
+    .diag-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 0;
+      font-size: 0.78rem;
+    }
+    .diag-label { color: var(--text-sub); font-weight: 600; }
+    .diag-value { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--text-main); }
+
+    /* --- Threshold Sliders --- */
+    .threshold-tuning-panel {
+      margin-top: 16px;
+      padding: 16px;
+      background: #faf8f2;
+      border: 1.5px solid #e8e3d6;
+      border-radius: 18px;
+    }
+    .threshold-slider-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 10px;
+    }
+    .slider-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .slider-input {
+      width: 100%;
+      accent-color: var(--pastel-matcha-deep);
+      cursor: pointer;
+    }
+
   </style>
 </head>
 <body>
@@ -1678,14 +1804,14 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
         <div class="card" style="border-color:#fecdd3;">
           <div class="card-header">
             <span class="card-label">Suhu Udara</span>
-            <span class="card-target">Aman: 18.0 - 22.0°C</span>
+            <span id="lblSafeTemp" class="card-target">Aman: 18.0 - 22.0°C</span>
           </div>
           <div class="card-value">
             <span id="valTemp">--.-</span><span class="card-unit">°C</span>
           </div>
           <div id="badgeTemp" class="badge badge-optimal">🌸 NYAMAN SEKALI</div>
-          <div class="range-track" title="Rentang Suhu: 10 - 35°C (Hijau: 18-22°C)">
-            <div class="range-safe-zone" style="left:32%; width:16%;"></div>
+          <div class="range-track" title="Rentang Suhu: 10 - 35°C (Hijau: Aman)">
+            <div id="zoneSafeTemp" class="range-safe-zone" style="left:32%; width:16%;"></div>
             <div id="pinTemp" class="range-pin" style="left:41%;"></div>
           </div>
         </div>
@@ -1693,14 +1819,14 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
         <div class="card" style="border-color:#bae6fd;">
           <div class="card-header">
             <span class="card-label">Kelembapan Udara</span>
-            <span class="card-target">Aman: 50.0 - 65.0%</span>
+            <span id="lblSafeRh" class="card-target">Aman: 50.0 - 65.0%</span>
           </div>
           <div class="card-value">
             <span id="valRh">--.-</span><span class="card-unit">% RH</span>
           </div>
           <div id="badgeRh" class="badge badge-optimal">💧 SEGAR OPTIMAL</div>
-          <div class="range-track" title="Rentang RH: 0 - 100% (Hijau: 50-65%)">
-            <div class="range-safe-zone" style="left:50%; width:15%;"></div>
+          <div class="range-track" title="Rentang RH: 0 - 100% (Hijau: Aman)">
+            <div id="zoneSafeRh" class="range-safe-zone" style="left:50%; width:15%;"></div>
             <div id="pinRh" class="range-pin" style="left:58%;"></div>
           </div>
         </div>
@@ -1708,14 +1834,14 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
         <div class="card" style="border-color:#a7f3d0;">
           <div class="card-header">
             <span class="card-label">Kelembapan Media</span>
-            <span class="card-target">Aman: 45.0 - 70.0%</span>
+            <span id="lblSafeSoil" class="card-target">Aman: 45.0 - 70.0%</span>
           </div>
           <div class="card-value">
             <span id="valSoil">--.-</span><span class="card-unit">%</span>
           </div>
           <div id="badgeSoil" class="badge badge-optimal">🌱 LEMBAP PAS</div>
-          <div class="range-track" title="Rentang Tanah: 0 - 100% (Hijau: 45-70%)">
-            <div class="range-safe-zone" style="left:45%; width:25%;"></div>
+          <div class="range-track" title="Rentang Tanah: 0 - 100% (Hijau: Aman)">
+            <div id="zoneSafeSoil" class="range-safe-zone" style="left:45%; width:25%;"></div>
             <div id="pinSoil" class="range-pin" style="left:56%;"></div>
           </div>
         </div>
@@ -1736,59 +1862,212 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
         </div>
       </div>
 
-      <!-- Hardware Matrix & Dual Tanks -->
+      <!-- Interactive Hardware Relay Matrix with Direct GPIO Controls -->
       <div class="card" style="margin-bottom:20px;">
         <div class="card-header">
-          <span class="card-label">Matriks Relay & Katup Servo Aktif</span>
-          <span class="card-target">ACTIVE-LOW 12V ISOLATED</span>
+          <div>
+            <span class="card-label">Matriks Relay & Aktuator (Kendali Langsung GPIO)</span>
+            <div style="font-size:0.75rem; color:var(--text-sub); margin-top:2px;">Klik tombol untuk override langsung relay pada pin mikrokontroler</div>
+          </div>
+          <span class="badge badge-sky">ACTIVE-LOW 12V</span>
         </div>
         <div class="matrix-grid">
+          <!-- CH1: Peltier -->
           <div id="nodePeltier" class="matrix-node">
+            <span class="gpio-badge">GPIO 19</span>
             <div class="matrix-led"></div>
             <div class="matrix-name">CH1: Peltier</div>
             <div id="stPeltier" class="matrix-val">OFF</div>
+            <button id="btnRelay1" class="matrix-toggle-btn" onclick="toggleHardwareRelay(1)">Nyalakan</button>
+            <div id="badgeInterlockFan" class="interlock-indicator">🔒 Heatsink Auto-ON</div>
           </div>
+
+          <!-- CH2: Heatsink Fan -->
           <div id="nodeFan" class="matrix-node">
+            <span class="gpio-badge">GPIO 18</span>
             <div class="matrix-led"></div>
             <div class="matrix-name">CH2: Heatsink</div>
             <div id="stFan" class="matrix-val">OFF</div>
+            <button id="btnRelay2" class="matrix-toggle-btn" onclick="toggleHardwareRelay(2)">Nyalakan</button>
+            <div id="badgeInterlockPeltier" class="interlock-indicator">🔒 Interlock Proteksi</div>
           </div>
+
+          <!-- CH3: Blower -->
           <div id="nodeBlower" class="matrix-node">
+            <span class="gpio-badge">GPIO 5</span>
             <div class="matrix-led"></div>
             <div class="matrix-name">CH3: Blower</div>
             <div id="stBlower" class="matrix-val">OFF</div>
+            <button id="btnRelay3" class="matrix-toggle-btn" onclick="toggleHardwareRelay(3)">Nyalakan</button>
           </div>
+
+          <!-- CH4: Grow Light -->
           <div id="nodeLight" class="matrix-node">
+            <span class="gpio-badge">GPIO 17</span>
             <div class="matrix-led"></div>
             <div class="matrix-name">CH4: Grow Light</div>
             <div id="stLight" class="matrix-val">OFF</div>
+            <button id="btnRelay4" class="matrix-toggle-btn" onclick="toggleHardwareRelay(4)">Nyalakan</button>
           </div>
+
+          <!-- CH5: Spray T1 -->
           <div id="nodeSpray1" class="matrix-node">
+            <span class="gpio-badge">GPIO 16</span>
             <div class="matrix-led"></div>
             <div class="matrix-name">CH5: Semprot T1</div>
             <div id="stSpray1" class="matrix-val">OFF</div>
+            <button id="btnRelay5" class="matrix-toggle-btn" onclick="toggleHardwareRelay(5)">Nyalakan</button>
           </div>
+
+          <!-- CH6: Spray T2 -->
           <div id="nodeSpray2" class="matrix-node">
+            <span class="gpio-badge">GPIO 4</span>
             <div class="matrix-led"></div>
             <div class="matrix-name">CH6: Semprot T2</div>
             <div id="stSpray2" class="matrix-val">OFF</div>
+            <button id="btnRelay6" class="matrix-toggle-btn" onclick="toggleHardwareRelay(6)">Nyalakan</button>
           </div>
+
+          <!-- Valve Servo 1 -->
           <div id="nodeValve1" class="matrix-node">
+            <span class="gpio-badge">GPIO 25</span>
             <div class="matrix-name">Katup Servo 1</div>
             <div id="stValve1" class="matrix-val" style="color:var(--pastel-sky-deep);">0° (TUTUP)</div>
+            <div style="display:flex; gap:4px; margin-top:6px;">
+              <button class="matrix-toggle-btn" style="flex:1; padding:4px;" onclick="setServoAngle(1, 0)">0°</button>
+              <button class="matrix-toggle-btn" style="flex:1; padding:4px;" onclick="setServoAngle(1, 90)">90°</button>
+            </div>
           </div>
+
+          <!-- Valve Servo 2 -->
           <div id="nodeValve2" class="matrix-node">
+            <span class="gpio-badge">GPIO 26</span>
             <div class="matrix-name">Katup Servo 2</div>
             <div id="stValve2" class="matrix-val" style="color:var(--pastel-matcha-deep);">0° (TUTUP)</div>
+            <div style="display:flex; gap:4px; margin-top:6px;">
+              <button class="matrix-toggle-btn" style="flex:1; padding:4px;" onclick="setServoAngle(2, 0)">0°</button>
+              <button class="matrix-toggle-btn" style="flex:1; padding:4px;" onclick="setServoAngle(2, 90)">90°</button>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Tank Levels -->
+      <!-- Sensor GPIO Pin Diagnostics & Live Breakdowns -->
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-header">
+          <div>
+            <span class="card-label">Diagnostik & Kalibrasi Pin Sensor</span>
+            <div style="font-size:0.75rem; color:var(--text-sub);">Data telemetri mentah ADC, sinyal 1-wire, dan tegangan analog</div>
+          </div>
+          <span class="badge badge-optimal">SINKRON</span>
+        </div>
+        <div class="sensor-diag-grid">
+          <!-- DHT22 Card -->
+          <div class="sensor-diag-card">
+            <div class="sensor-diag-title">
+              <span>DHT22 Suhu & RH</span>
+              <span class="gpio-badge">GPIO 14 (Digital)</span>
+            </div>
+            <div class="diag-row">
+              <span class="diag-label">Tekanan Uap Jenuh (VPsat):</span>
+              <span id="diagVpSat" class="diag-value">2.34 kPa</span>
+            </div>
+            <div class="diag-row">
+              <span class="diag-label">Tekanan Uap Aktual (VPact):</span>
+              <span id="diagVpAct" class="diag-value">1.40 kPa</span>
+            </div>
+            <div class="diag-row">
+              <span class="diag-label">Periode Polling:</span>
+              <span class="diag-value">2000 ms (0.5 Hz)</span>
+            </div>
+            <div class="diag-row">
+              <span class="diag-label">Status Sinyal:</span>
+              <span id="diagDhtStatus" class="diag-value" style="color:var(--pastel-matcha-deep);">Valid (Normal)</span>
+            </div>
+          </div>
+
+          <!-- Soil Moisture ADC Card -->
+          <div class="sensor-diag-card">
+            <div class="sensor-diag-title">
+              <span>Kelembapan Media Tanam</span>
+              <span class="gpio-badge">GPIO 34 (ADC1 In)</span>
+            </div>
+            <div class="diag-row">
+              <span class="diag-label">Raw ADC (12-Bit):</span>
+              <span id="diagRawSoil" class="diag-value">2240 / 4095</span>
+            </div>
+            <div class="diag-row">
+              <span class="diag-label">Estimasi Tegangan:</span>
+              <span id="diagVoltSoil" class="diag-value">1.81 V</span>
+            </div>
+            <div class="diag-row">
+              <span class="diag-label">Titik Kalibrasi Kering/Basah:</span>
+              <span id="diagCalibRange" class="diag-value">3200 ↔ 1400</span>
+            </div>
+            <div style="display:flex; gap:6px; margin-top:8px;">
+              <button class="btn" style="flex:1; padding:4px 8px; font-size:0.72rem;" onclick="calibrateSoilPoint('dry')">Set Kering (0%)</button>
+              <button class="btn" style="flex:1; padding:4px 8px; font-size:0.72rem;" onclick="calibrateSoilPoint('wet')">Set Basah (100%)</button>
+            </div>
+          </div>
+
+          <!-- System Status LED Card -->
+          <div class="sensor-diag-card">
+            <div class="sensor-diag-title">
+              <span>Detak Jantung Sistem</span>
+              <span class="gpio-badge">GPIO 27 (Out)</span>
+            </div>
+            <div class="diag-row">
+              <span class="diag-label">Frekuensi Kedip:</span>
+              <span id="diagLedBlink" class="diag-value">1000 ms (Normal)</span>
+            </div>
+            <div class="diag-row">
+              <span class="diag-label">Proteksi Interlock:</span>
+              <span class="diag-value" style="color:var(--pastel-matcha-deep);">Aktif & Aman</span>
+            </div>
+            <div class="diag-row">
+              <span class="diag-label">Siklus Purge Jamur:</span>
+              <span class="diag-value">Setiap 30 mnt (45s)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Agronomic Climate Setpoints (Thresholds) Tuning -->
+        <div class="threshold-tuning-panel">
+          <div class="card-header" style="margin-bottom:6px;">
+            <span class="card-label">Penyesuaian Ambang Batas Otomatis (Agronomic Setpoints)</span>
+            <span class="badge badge-sky">PENGATURAN</span>
+          </div>
+          <div class="threshold-slider-group">
+            <div class="slider-item">
+              <div class="slider-header">
+                <span>Target Suhu Ideal:</span>
+                <span id="valSliderTemp">18.0 - 22.0 °C</span>
+              </div>
+              <input type="range" class="slider-input" min="15" max="28" step="0.5" value="20" oninput="adjustThresholdSetpoint('temp', this.value)">
+            </div>
+            <div class="slider-item">
+              <div class="slider-header">
+                <span>Target Kelembapan RH:</span>
+                <span id="valSliderRh">50.0 - 65.0 %</span>
+              </div>
+              <input type="range" class="slider-input" min="40" max="80" step="1" value="58" oninput="adjustThresholdSetpoint('rh', this.value)">
+            </div>
+            <div class="slider-item">
+              <div class="slider-header">
+                <span>Target Kelembapan Tanah:</span>
+                <span id="valSliderSoil">45.0 - 70.0 %</span>
+              </div>
+              <input type="range" class="slider-input" min="30" max="85" step="1" value="55" oninput="adjustThresholdSetpoint('soil', this.value)">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tank Reservoirs -->
       <div class="card">
         <div class="card-header">
-          <span class="card-label">Kapasitas Tangki Mist</span>
-          <span class="card-target">VOLUME RESERVOIR (1000 mL)</span>
+          <span class="card-label">Kapasitas Tangki Mist Dual-Reservoir</span>
+          <span class="card-target">VOLUME 1000 mL</span>
         </div>
         <div class="tank-grid">
           <div class="tank-item">
@@ -2198,6 +2477,59 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       }
     }
 
+
+    async function toggleHardwareRelay(ch) {
+      initAudio();
+      playChirp('pet_giggle');
+      await sendControl('action=toggleRelay&ch=' + ch);
+    }
+
+    async function setServoAngle(servo, angle) {
+      initAudio();
+      playChirp('pet_giggle');
+      await sendControl('action=setServo&servo=' + servo + '&angle=' + angle);
+    }
+
+    async function adjustThresholdSetpoint(type, val) {
+      val = parseFloat(val);
+      if (type === 'temp') {
+        const minT = (val - 2.0).toFixed(1);
+        const maxT = (val + 2.0).toFixed(1);
+        document.getElementById('valSliderTemp').innerText = `${minT} - ${maxT} °C`;
+        document.getElementById('lblSafeTemp').innerText = `Aman: ${minT} - ${maxT}°C`;
+        const leftPct = Math.max(0, ((minT - 10) / 25) * 100);
+        const widthPct = Math.max(5, ((maxT - minT) / 25) * 100);
+        document.getElementById('zoneSafeTemp').style.left = leftPct + '%';
+        document.getElementById('zoneSafeTemp').style.width = widthPct + '%';
+        await sendControl(`action=setThreshold&param=tempMin&val=${minT}`);
+        await sendControl(`action=setThreshold&param=tempMax&val=${maxT}`);
+      } else if (type === 'rh') {
+        const minRh = (val - 7.5).toFixed(1);
+        const maxRh = (val + 7.5).toFixed(1);
+        document.getElementById('valSliderRh').innerText = `${minRh} - ${maxRh} %`;
+        document.getElementById('lblSafeRh').innerText = `Aman: ${minRh} - ${maxRh}%`;
+        document.getElementById('zoneSafeRh').style.left = minRh + '%';
+        document.getElementById('zoneSafeRh').style.width = (maxRh - minRh) + '%';
+        await sendControl(`action=setThreshold&param=rhMin&val=${minRh}`);
+        await sendControl(`action=setThreshold&param=rhMax&val=${maxRh}`);
+      } else if (type === 'soil') {
+        const minS = (val - 12.5).toFixed(1);
+        const maxS = (val + 12.5).toFixed(1);
+        document.getElementById('valSliderSoil').innerText = `${minS} - ${maxS} %`;
+        document.getElementById('lblSafeSoil').innerText = `Aman: ${minS} - ${maxS}%`;
+        document.getElementById('zoneSafeSoil').style.left = minS + '%';
+        document.getElementById('zoneSafeSoil').style.width = (maxS - minS) + '%';
+        await sendControl(`action=setThreshold&param=soilMin&val=${minS}`);
+        await sendControl(`action=setThreshold&param=soilMax&val=${maxS}`);
+      }
+    }
+
+    async function calibrateSoilPoint(type) {
+      if (confirm(`Apakah Anda yakin ingin mengatur titik kalibrasi ${type.toUpperCase()} pada nilai ADC saat ini?`)) {
+        await sendControl('action=calibrateSoil&type=' + type);
+      }
+    }
+
     function renderDashboard(d) {
       document.getElementById('valIp').innerText = d.ip || 'ESP32';
       document.getElementById('valUptime').innerText = d.uptime || '00:00:00';
@@ -2229,6 +2561,61 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       setNodeActive('nodeFan', 'stFan', d.relays.fan, true);
       setNodeActive('nodeBlower', 'stBlower', d.relays.blower, false);
       setNodeActive('nodeLight', 'stLight', d.relays.light, false);
+
+      // Update interactive relay buttons & interlock indicators
+      const btn1 = document.getElementById('btnRelay1');
+      if (btn1) {
+        btn1.innerText = d.relays.peltier ? 'Matikan' : 'Nyalakan';
+        btn1.className = 'matrix-toggle-btn ' + (d.relays.peltier ? 'btn-active-on' : '');
+      }
+      const btn2 = document.getElementById('btnRelay2');
+      if (btn2) {
+        btn2.innerText = d.relays.fan ? 'Matikan' : 'Nyalakan';
+        btn2.className = 'matrix-toggle-btn ' + (d.relays.fan ? 'btn-active-on' : '');
+      }
+      const btn3 = document.getElementById('btnRelay3');
+      if (btn3) {
+        btn3.innerText = d.relays.blower ? 'Matikan' : 'Nyalakan';
+        btn3.className = 'matrix-toggle-btn ' + (d.relays.blower ? 'btn-active-on' : '');
+      }
+      const btn4 = document.getElementById('btnRelay4');
+      if (btn4) {
+        btn4.innerText = d.relays.light ? 'Matikan' : 'Nyalakan';
+        btn4.className = 'matrix-toggle-btn ' + (d.relays.light ? 'btn-active-on' : '');
+      }
+      const btn5 = document.getElementById('btnRelay5');
+      if (btn5) {
+        btn5.innerText = d.relays.spray1 ? 'Matikan' : 'Nyalakan';
+        btn5.className = 'matrix-toggle-btn ' + (d.relays.spray1 ? 'btn-active-on' : '');
+      }
+      const btn6 = document.getElementById('btnRelay6');
+      if (btn6) {
+        btn6.innerText = d.relays.spray2 ? 'Matikan' : 'Nyalakan';
+        btn6.className = 'matrix-toggle-btn ' + (d.relays.spray2 ? 'btn-active-on' : '');
+      }
+
+      // Visual Interlock Indicators
+      const interlockFan = document.getElementById('badgeInterlockFan');
+      if (interlockFan) interlockFan.style.display = d.relays.peltier ? 'block' : 'none';
+      const interlockPeltier = document.getElementById('badgeInterlockPeltier');
+      if (interlockPeltier) interlockPeltier.style.display = (d.relays.peltier && d.relays.fan) ? 'block' : 'none';
+
+      // Update Sensor GPIO Diagnostic Card
+      if (d.rawSoilAdc !== undefined) {
+        document.getElementById('diagRawSoil').innerText = d.rawSoilAdc + ' / 4095';
+        document.getElementById('diagVoltSoil').innerText = (d.soilVoltage || (d.rawSoilAdc * 3.3 / 4095).toFixed(2)) + ' V';
+      }
+      if (d.vpSat !== undefined) document.getElementById('diagVpSat').innerText = d.vpSat.toFixed(2) + ' kPa';
+      if (d.vpAct !== undefined) document.getElementById('diagVpAct').innerText = d.vpAct.toFixed(2) + ' kPa';
+      if (d.status === 'SAFEMODE') {
+        document.getElementById('diagDhtStatus').innerText = 'CRITICAL (NaN Sensor Fault)';
+        document.getElementById('diagDhtStatus').style.color = 'var(--pastel-pink-deep)';
+        document.getElementById('diagLedBlink').innerText = '100 ms (Darurat)';
+      } else {
+        document.getElementById('diagDhtStatus').innerText = 'Valid (Normal)';
+        document.getElementById('diagDhtStatus').style.color = 'var(--pastel-matcha-deep)';
+        document.getElementById('diagLedBlink').innerText = '1000 ms (Normal)';
+      }
       setNodeActive('nodeSpray1', 'stSpray1', d.relays.spray1, false);
       setNodeActive('nodeSpray2', 'stSpray2', d.relays.spray2, false);
 
@@ -2414,6 +2801,28 @@ void handleTelemetryApi() {
   }
   json += "]";
 
+    // Hardware GPIO Pinout Mapping
+  json += "\"pins\":{\"dht\":14,\"soil\":34,\"peltier\":19,\"fan\":18,\"blower\":5,\"light\":17,\"spray1\":16,\"spray2\":4,\"servo1\":25,\"servo2\":26,\"led\":27},";
+
+  // Sensor Raw ADC & Calculations
+  float soilVolts = (float)state.lastRawSoilAdc * (3.3f / 4095.0f);
+  json += "\"rawSoilAdc\":" + String(state.lastRawSoilAdc) + ",";
+  json += "\"soilVoltage\":" + String(soilVolts, 2) + ",";
+  json += "\"vpSat\":" + String(metrics.vpSat, 3) + ",";
+  json += "\"vpAct\":" + String(metrics.vpAct, 3) + ",";
+
+  // Active Agronomic Thresholds
+  json += "\"thresholds\":{";
+  json += "\"tempMin\":" + String(state.targetTempMin, 1) + ",";
+  json += "\"tempMax\":" + String(state.targetTempMax, 1) + ",";
+  json += "\"rhMin\":" + String(state.targetRhMin, 1) + ",";
+  json += "\"rhMax\":" + String(state.targetRhMax, 1) + ",";
+  json += "\"soilMin\":" + String(state.targetSoilMin, 1) + ",";
+  json += "\"soilMax\":" + String(state.targetSoilMax, 1) + ",";
+  json += "\"dryRaw\":" + String(state.soilDryRaw) + ",";
+  json += "\"wetRaw\":" + String(state.soilWetRaw);
+  json += "},";
+
   json += "}";
 
   server.send(200, "application/json", json);
@@ -2482,39 +2891,66 @@ void handleControlApi() {
     }
   } 
   else if (action == "toggleRelay") {
+    // If in Auto mode, automatically switch to Manual override so the user's direct command takes effect
     if (state.autoMode) {
-      server.send(403, "application/json", "{\"error\":\"Cannot override relays while in AUTOMATIC mode\"}");
-      return;
+      state.autoMode = false;
+      addSystemLog("Relay toggled: Mode automatically switched to MANUAL OVERRIDE");
     }
     int ch = server.arg("ch").toInt();
     switch (ch) {
-      case 1: // Peltier (Interlock enforced)
+      case 1: // Peltier (GPIO 19) with Interlock to Fan (GPIO 18)
         applyPeltierInterlock(!state.peltier);
-        addSystemLog(state.peltier ? "Manual: Peltier ON" : "Manual: Peltier OFF");
+        addSystemLog(state.peltier ? "Manual: Peltier (GPIO 19) ON (Interlock Fan Active)" : "Manual: Peltier (GPIO 19) OFF");
         break;
-      case 2: // Fan
+      case 2: // Heatsink Fan (GPIO 18)
         applyHeatsinkFan(!state.heatsinkFan);
-        addSystemLog(state.heatsinkFan ? "Manual: Fan ON" : "Manual: Fan OFF");
+        addSystemLog(state.heatsinkFan ? "Manual: Heatsink Fan (GPIO 18) ON" : "Manual: Heatsink Fan (GPIO 18) OFF");
         break;
-      case 3: // Blower
+      case 3: // Blower (GPIO 5)
         applyBlower(!state.blower);
-        addSystemLog(state.blower ? "Manual: Blower ON" : "Manual: Blower OFF");
+        addSystemLog(state.blower ? "Manual: Blower (GPIO 5) ON" : "Manual: Blower (GPIO 5) OFF");
         break;
-      case 4: // Grow Light
+      case 4: // Grow Light (GPIO 17)
         applyGrowLight(!state.growLight);
-        addSystemLog(state.growLight ? "Manual: GrowLight ON" : "Manual: GrowLight OFF");
+        addSystemLog(state.growLight ? "Manual: Grow Light (GPIO 17) ON" : "Manual: Grow Light (GPIO 17) OFF");
         break;
-      case 5: // Spray T1
+      case 5: // Spray T1 (GPIO 16)
         applySprayAndValves(!state.sprayT1, false);
-        addSystemLog(state.sprayT1 ? "Manual: Spray T1 ON" : "Manual: Spray T1 OFF");
+        addSystemLog(state.sprayT1 ? "Manual: Spray T1 (GPIO 16) ON" : "Manual: Spray T1 (GPIO 16) OFF");
         break;
-      case 6: // Spray T2
+      case 6: // Spray T2 (GPIO 4)
         applySprayAndValves(false, !state.sprayT2);
-        addSystemLog(state.sprayT2 ? "Manual: Spray T2 ON" : "Manual: Spray T2 OFF");
+        addSystemLog(state.sprayT2 ? "Manual: Spray T2 (GPIO 4) ON" : "Manual: Spray T2 OFF");
         break;
       default:
         break;
     }
+  }
+  else if (action == "setServo") {
+    int s = server.arg("servo").toInt();
+    int angle = constrain(server.arg("angle").toInt(), 0, 90);
+    if (s == 1) {
+      servoValve1.write(angle);
+      state.valve1Angle = angle;
+      char msg[40]; snprintf(msg, sizeof(msg), "Servo 1 (GPIO 25) set to %d deg", angle);
+      addSystemLog(msg);
+    } else if (s == 2) {
+      servoValve2.write(angle);
+      state.valve2Angle = angle;
+      char msg[40]; snprintf(msg, sizeof(msg), "Servo 2 (GPIO 26) set to %d deg", angle);
+      addSystemLog(msg);
+    }
+  }
+  else if (action == "setThreshold") {
+    String param = server.arg("param");
+    float val = server.arg("val").toFloat();
+    if (param == "tempMin") state.targetTempMin = val;
+    else if (param == "tempMax") state.targetTempMax = val;
+    else if (param == "rhMin") state.targetRhMin = val;
+    else if (param == "rhMax") state.targetRhMax = val;
+    else if (param == "soilMin") state.targetSoilMin = val;
+    else if (param == "soilMax") state.targetSoilMax = val;
+    addSystemLog("Agronomic threshold parameter updated.");
   }
 
   server.send(200, "application/json", "{\"success\":true}");
