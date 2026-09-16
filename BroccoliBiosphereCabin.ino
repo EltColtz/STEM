@@ -968,6 +968,265 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     }
     .term-time { color: var(--neon-blue); }
     .term-msg { color: #d1d5db; }
+  
+    /* ================= BROCCO VIRTUAL PET STYLES ================= */
+    .hero-companion-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 992px) {
+      .hero-companion-grid { grid-template-columns: 1fr; }
+    }
+    .brocco-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px;
+      background: rgba(14, 21, 37, 0.78);
+      border: 1px solid rgba(0, 255, 157, 0.28);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 0 20px rgba(0, 255, 157, 0.05);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .brocco-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      position: relative;
+    }
+    .brocco-bubble-wrapper {
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      width: 100%;
+    }
+    .brocco-bubble {
+      background: rgba(10, 14, 23, 0.9);
+      border: 1.5px solid var(--neon-mint);
+      border-radius: 14px;
+      padding: 8px 14px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(0, 255, 157, 0.2);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      max-width: 90%;
+    }
+    .brocco-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -7px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 7px solid var(--neon-mint);
+    }
+    .brocco-svg-container {
+      width: 180px;
+      height: 190px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s;
+    }
+    .brocco-svg-container:hover {
+      transform: scale(1.04);
+    }
+    .brocco-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      width: 100%;
+      margin-top: 14px;
+      justify-content: center;
+    }
+    .btn-nurture {
+      flex: 1 1 45%;
+      font-size: 0.76rem;
+      padding: 8px 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(0, 255, 157, 0.25);
+      border-radius: 10px;
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .btn-nurture:hover {
+      background: rgba(0, 255, 157, 0.15);
+      border-color: var(--neon-mint);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,255,157,0.25);
+    }
+    .btn-nurture-water:hover { border-color: var(--neon-blue); box-shadow: 0 4px 12px rgba(0,180,216,0.3); }
+    .btn-nurture-nutrient:hover { border-color: var(--neon-mint); }
+    .btn-nurture-breeze:hover { border-color: #38bdf8; }
+    .btn-sound {
+      font-size: 0.72rem;
+      padding: 4px 12px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 999px;
+      color: var(--text-muted);
+      cursor: pointer;
+      margin-top: 8px;
+      transition: all 0.2s;
+    }
+    .btn-sound:hover {
+      color: var(--neon-mint);
+      border-color: var(--neon-mint);
+    }
+    .companion-overview-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .companion-stats-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 12px 0;
+    }
+    .comp-stat-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      font-size: 0.82rem;
+    }
+    .comp-stat-name { color: var(--text-muted); }
+    .comp-stat-val { font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+    .comp-tip-box {
+      background: rgba(0, 255, 157, 0.06);
+      border: 1px dashed rgba(0, 255, 157, 0.3);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 0.76rem;
+      color: #e2e8f0;
+      line-height: 1.4;
+    }
+
+    /* --- Mascot Dynamic Keyframe Animations --- */
+    @keyframes brocco-idle {
+      0%, 100% { transform: translateY(0) scale(1, 1); }
+      50% { transform: translateY(-4px) scale(0.98, 1.02); }
+    }
+    @keyframes brocco-shiver {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(-3px, 1px); }
+      75% { transform: translate(3px, -1px); }
+    }
+    @keyframes brocco-pant {
+      0%, 100% { transform: scale(1, 1); }
+      50% { transform: scale(1.04, 0.95) translateY(3px); }
+    }
+    @keyframes brocco-droop {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-5deg) translateY(4px); }
+    }
+    @keyframes brocco-hop {
+      0% { transform: scale(1, 1); }
+      30% { transform: scale(1.15, 0.85) translateY(6px); }
+      60% { transform: scale(0.9, 1.15) translateY(-14px); }
+      100% { transform: scale(1, 1) translateY(0); }
+    }
+    @keyframes float-zzz {
+      0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+      50% { opacity: 1; }
+      100% { opacity: 0; transform: translate(15px, -24px) scale(1.2); }
+    }
+    @keyframes float-sweat {
+      0%, 100% { transform: translateY(0); opacity: 0.8; }
+      50% { transform: translateY(3px); opacity: 1; }
+    }
+
+    /* Mascot Expression State Classes */
+    .brocco-svg-container svg {
+      animation: brocco-idle 3s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+    .brocco-bounce svg {
+      animation: brocco-hop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    }
+
+    /* Expression Defaults: Happy */
+    .eyes-open { display: block; }
+    .eyes-sleep, .eyes-sad { display: none; }
+    .mouth-happy { display: block; }
+    .mouth-pant, .mouth-shiver, .mouth-sad { display: none; }
+    .prop-sweat, .prop-icicles, .prop-zzz { display: none; }
+    .prop-sparkles { display: block; }
+
+    /* Mood: Cold */
+    .mood-cold svg { animation: brocco-shiver 0.12s linear infinite; }
+    .mood-cold .mouth-happy { display: none; }
+    .mood-cold .mouth-shiver { display: block; }
+    .mood-cold .prop-icicles { display: block; }
+    .mood-cold .prop-sparkles { display: none; }
+    .mood-cold .brocco-body-group path { stroke: #a5f3fc; }
+
+    /* Mood: Heat Stress */
+    .mood-heat svg { animation: brocco-pant 0.6s ease-in-out infinite; }
+    .mood-heat .mouth-happy { display: none; }
+    .mood-heat .mouth-pant { display: block; }
+    .mood-heat .prop-sweat { display: block; animation: float-sweat 0.8s infinite; }
+    .mood-heat .brocco-cheek { fill: url(#heatBlushGrad) !important; }
+
+    /* Mood: Heat Critical (Pythium) */
+    .mood-heat-crit svg { animation: brocco-pant 0.35s ease-in-out infinite; }
+    .mood-heat-crit .mouth-happy { display: none; }
+    .mood-heat-crit .mouth-pant { display: block; fill: #ff0055 !important; }
+    .mood-heat-crit .prop-sweat { display: block; }
+    .mood-heat-crit .brocco-cheek { fill: url(#heatBlushGrad) !important; transform: scale(1.4); }
+    .mood-heat-crit .brocco-crown-group circle { stroke: #ff0055; stroke-width: 2; }
+
+    /* Mood: Thirsty / Soil Dry */
+    .mood-thirsty svg { animation: brocco-droop 2.5s ease-in-out infinite; }
+    .mood-thirsty .eyes-open { display: none; }
+    .mood-thirsty .eyes-sad { display: block; }
+    .mood-thirsty .mouth-happy { display: none; }
+    .mood-thirsty .mouth-sad { display: block; }
+    .mood-thirsty .prop-sparkles { display: none; }
+
+    /* Mood: Stagnant Humidity */
+    .mood-stagnant svg { animation: brocco-droop 3s ease-in-out infinite; }
+    .mood-stagnant .mouth-happy { display: none; }
+    .mood-stagnant .mouth-pant { display: block; }
+    .mood-stagnant .prop-sweat { display: block; }
+
+    /* Mood: Sleep */
+    .mood-sleep svg { animation: brocco-idle 4s ease-in-out infinite; }
+    .mood-sleep .eyes-open { display: none; }
+    .mood-sleep .eyes-sleep { display: block; }
+    .mood-sleep .prop-zzz { display: block; }
+    .mood-sleep .zzz-item { animation: float-zzz 2.5s infinite; }
+    .mood-sleep .z2 { animation-delay: 0.6s; }
+    .mood-sleep .z3 { animation-delay: 1.2s; }
+    .mood-sleep .prop-sparkles { display: none; }
+
+    /* Mood: Panic */
+    .mood-panic svg { animation: brocco-shiver 0.08s infinite; }
+    .mood-panic .eyes-open { display: none; }
+    .mood-panic .eyes-sad { display: block; }
+    .mood-panic .mouth-happy { display: none; }
+    .mood-panic .mouth-shiver { display: block; stroke: #ff0055; }
+
   </style>
 </head>
 <body>
@@ -988,6 +1247,187 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       </div>
       <div class="badge" style="color: var(--text-muted); border-color: rgba(255,255,255,0.15);">
         UPTIME: <span id="valUptime" style="margin-left:4px;">00:00:00</span>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- Hero Companion Section (Talking Tom / Pou Style Virtual Pet) -->
+  <div class="hero-companion-grid">
+    <!-- Card 1: Interactive Brocco Mascot -->
+    <div class="card brocco-card">
+      <div class="brocco-stage">
+        <!-- Speech Bubble -->
+        <div class="brocco-bubble-wrapper">
+          <div id="broccoBubble" class="brocco-bubble">
+            <span id="broccoSpeech">Halo! Aku Brocco, maskot kabin biosfermu!</span>
+          </div>
+        </div>
+
+        <!-- Interactive SVG Vector Mascot -->
+        <div id="broccoMascot" class="brocco-svg-container mood-happy" onclick="handleBroccoTap()" title="Klik untuk mengelus Brocco!">
+          <svg viewBox="0 0 200 210" width="100%" height="100%">
+            <defs>
+              <linearGradient id="stemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#34d399"/>
+                <stop offset="100%" stop-color="#059669"/>
+              </linearGradient>
+              <linearGradient id="crownGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00ff9d"/>
+                <stop offset="50%" stop-color="#10b981"/>
+                <stop offset="100%" stop-color="#047857"/>
+              </linearGradient>
+              <radialGradient id="blushGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(0, 255, 157, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(0, 255, 157, 0)"/>
+              </radialGradient>
+              <radialGradient id="heatBlushGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(255, 0, 85, 0.9)"/>
+                <stop offset="100%" stop-color="rgba(255, 0, 85, 0)"/>
+              </radialGradient>
+              <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+            </defs>
+
+            <!-- Aura Glow Ground Shadow -->
+            <ellipse cx="100" cy="195" rx="55" ry="10" fill="rgba(0,255,157,0.2)"/>
+
+            <!-- Stem / Trunk -->
+            <g class="brocco-body-group">
+              <path d="M 82,125 C 75,155 70,185 80,195 C 90,200 110,200 120,195 C 130,185 125,155 118,125 Z" fill="url(#stemGrad)" stroke="rgba(0,255,157,0.3)" stroke-width="2"/>
+              <!-- Little Leaves / Arms -->
+              <path d="M 76,155 C 55,150 50,135 62,130 C 72,135 74,148 76,155 Z" fill="#34d399"/>
+              <path d="M 124,155 C 145,150 150,135 138,130 C 128,135 126,148 124,155 Z" fill="#34d399"/>
+            </g>
+
+            <!-- Crown (Florets Cluster) -->
+            <g class="brocco-crown-group">
+              <circle cx="65" cy="85" r="38" fill="url(#crownGrad)"/>
+              <circle cx="135" cy="85" r="38" fill="url(#crownGrad)"/>
+              <circle cx="100" cy="60" r="42" fill="url(#crownGrad)" filter="url(#neonGlow)"/>
+              <circle cx="100" cy="92" r="36" fill="url(#crownGrad)"/>
+              <circle cx="75" cy="65" r="4" fill="rgba(255,255,255,0.25)"/>
+              <circle cx="120" cy="60" r="3.5" fill="rgba(255,255,255,0.25)"/>
+              <circle cx="100" cy="78" r="4" fill="rgba(255,255,255,0.25)"/>
+            </g>
+
+            <!-- Face Elements -->
+            <g class="brocco-face">
+              <!-- Cheeks -->
+              <ellipse class="brocco-cheek" cx="72" cy="115" rx="8" ry="5" fill="url(#blushGrad)"/>
+              <ellipse class="brocco-cheek" cx="128" cy="115" rx="8" ry="5" fill="url(#blushGrad)"/>
+
+              <!-- Eyes: Happy / Open -->
+              <g class="eyes-open">
+                <ellipse cx="80" cy="98" rx="8" ry="11" fill="#0a0e17"/>
+                <ellipse cx="120" cy="98" rx="8" ry="11" fill="#0a0e17"/>
+                <circle cx="82" cy="94" r="3.5" fill="#ffffff"/>
+                <circle cx="78" cy="102" r="1.5" fill="#ffffff"/>
+                <circle cx="122" cy="94" r="3.5" fill="#ffffff"/>
+                <circle cx="118" cy="102" r="1.5" fill="#ffffff"/>
+              </g>
+
+              <!-- Eyes: Sleeping -->
+              <g class="eyes-sleep">
+                <path d="M 72,100 Q 80,107 88,100" fill="none" stroke="#0a0e17" stroke-width="3" stroke-linecap="round"/>
+                <path d="M 112,100 Q 120,107 128,100" fill="none" stroke="#0a0e17" stroke-width="3" stroke-linecap="round"/>
+              </g>
+
+              <!-- Eyes: Sad / Droop -->
+              <g class="eyes-sad">
+                <path d="M 72,102 Q 80,95 88,102" fill="none" stroke="#0a0e17" stroke-width="3" stroke-linecap="round"/>
+                <path d="M 112,102 Q 120,95 128,102" fill="none" stroke="#0a0e17" stroke-width="3" stroke-linecap="round"/>
+                <path d="M 76,108 C 74,115 80,118 80,113 C 80,110 77,108 76,108 Z" fill="#00b4d8"/>
+              </g>
+
+              <!-- Mouth Variations -->
+              <path class="mouth-happy" d="M 90,112 Q 100,124 110,112" fill="none" stroke="#0a0e17" stroke-width="3" stroke-linecap="round"/>
+              <path class="mouth-pant" d="M 92,112 Q 100,126 108,112 Z" fill="#ff0055" stroke="#0a0e17" stroke-width="2"/>
+              <path class="mouth-shiver" d="M 91,114 Q 95,110 100,114 Q 105,110 109,114" fill="none" stroke="#0a0e17" stroke-width="2.5" stroke-linecap="round"/>
+              <path class="mouth-sad" d="M 92,118 Q 100,110 108,118" fill="none" stroke="#0a0e17" stroke-width="3" stroke-linecap="round"/>
+            </g>
+
+            <!-- Props & Expressions -->
+            <g class="brocco-props">
+              <!-- Sweat Drops (Heat) -->
+              <g class="prop-sweat">
+                <path d="M 148,70 C 145,78 152,82 152,77 C 152,73 149,70 148,70 Z" fill="#00b4d8"/>
+                <path d="M 52,75 C 49,83 56,87 56,82 C 56,78 53,75 52,75 Z" fill="#00b4d8"/>
+              </g>
+
+              <!-- Icicles (Cold) -->
+              <g class="prop-icicles">
+                <polygon points="62,115 65,130 68,115" fill="#a5f3fc"/>
+                <polygon points="98,135 101,152 104,135" fill="#a5f3fc"/>
+                <polygon points="132,115 135,130 138,115" fill="#a5f3fc"/>
+              </g>
+
+              <!-- Zzz (Sleep) -->
+              <g class="prop-zzz">
+                <text x="145" y="60" fill="#00b4d8" font-size="16" font-family="'JetBrains Mono', monospace" font-weight="700" class="zzz-item z1">Z</text>
+                <text x="160" y="45" fill="#00ff9d" font-size="12" font-family="'JetBrains Mono', monospace" font-weight="700" class="zzz-item z2">z</text>
+                <text x="172" y="32" fill="#00b4d8" font-size="9" font-family="'JetBrains Mono', monospace" font-weight="700" class="zzz-item z3">z</text>
+              </g>
+
+              <!-- Sparkles (Optimal) -->
+              <g class="prop-sparkles">
+                <polygon points="45,50 48,42 50,50 58,52 50,54 48,62 45,54 37,52" fill="#00ff9d"/>
+                <polygon points="155,95 157,90 159,95 164,96 159,97 157,102 155,97 150,96" fill="#00ff9d"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Brocco Pet Nurture Actions -->
+      <div class="brocco-actions">
+        <button class="btn btn-nurture btn-nurture-water" onclick="nurtureBrocco('water')" title="Semprot 5 detik air baku murni">
+          <span>💧</span>
+          <span>Beri Minum</span>
+        </button>
+        <button class="btn btn-nurture btn-nurture-nutrient" onclick="nurtureBrocco('nutrient')" title="Beri semprotan booster nutrisi mikro">
+          <span>🧪</span>
+          <span>Beri Vitamin</span>
+        </button>
+        <button class="btn btn-nurture btn-nurture-breeze" onclick="nurtureBrocco('breeze')" title="Putar blower untuk sirkulasi udara">
+          <span>💨</span>
+          <span>Kipas Semilir</span>
+        </button>
+        <button id="btnSoundToggle" class="btn-sound" onclick="toggleAudio()" title="Aktifkan/nonaktifkan efek suara">
+          🔊 SFX: ON
+        </button>
+      </div>
+    </div>
+
+    <!-- Card 2: Companion Status Brief & Diagnostics -->
+    <div class="card companion-overview-card">
+      <div class="card-header">
+        <span class="card-label">Brocco Health & Biosphere Companion</span>
+        <span id="broccoMoodBadge" class="badge badge-optimal">PRIMA</span>
+      </div>
+      <div class="companion-stats-list">
+        <div class="comp-stat-item">
+          <span class="comp-stat-name">Tingkat Kenyamanan (PCS):</span>
+          <span id="compValPcs" class="comp-stat-val" style="color:var(--neon-mint);">--%</span>
+        </div>
+        <div class="comp-stat-item">
+          <span class="comp-stat-name">Sensasi Tanaman:</span>
+          <span id="compValNeed" class="comp-stat-val">Homeostasis Optimal</span>
+        </div>
+        <div class="comp-stat-item">
+          <span class="comp-stat-name">Siklus Fotoperiode:</span>
+          <span id="compValLight" class="comp-stat-val" style="color:var(--neon-blue);">Fase Terang (16h Aktif)</span>
+        </div>
+        <div class="comp-stat-item">
+          <span class="comp-stat-name">Status Respon:</span>
+          <span id="compValResponse" class="comp-stat-val" style="color:#a7f3d0;">Tumbuh Riang & Sehat</span>
+        </div>
+      </div>
+      <div class="comp-tip-box">
+        <span style="color:var(--neon-mint); font-weight:700;">💡 Tips Agronomi:</span>
+        <span id="compAgronomiTip" style="margin-left:4px;">Jaga suhu antara 18-22°C dan kelembapan 50-65% untuk mencegah jamur Pythium.</span>
       </div>
     </div>
   </div>
@@ -1288,6 +1728,214 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
   </div>
 
   <script>
+    /* ================= BROCCO VIRTUAL PET SCRIPTS ================= */
+    let audioCtx = null;
+    let audioMuted = (localStorage.getItem('brocco_audio_muted') === '1');
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) audioCtx = new AudioContextClass();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playChirp(type) {
+      if (audioMuted) return;
+      initAudio();
+      if (!audioCtx) return;
+
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      if (type === 'tap') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(520, now);
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.12);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      } else if (type === 'water') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.linearRampToValueAtTime(800, now + 0.08);
+        osc.frequency.linearRampToValueAtTime(600, now + 0.16);
+        osc.frequency.linearRampToValueAtTime(950, now + 0.24);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.28);
+        osc.start(now);
+        osc.stop(now + 0.28);
+      } else if (type === 'nutrient') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.setValueAtTime(554, now + 0.07);
+        osc.frequency.setValueAtTime(659, now + 0.14);
+        osc.frequency.setValueAtTime(880, now + 0.21);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      } else if (type === 'breeze') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(280, now);
+        osc.frequency.exponentialRampToValueAtTime(140, now + 0.25);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+        osc.start(now);
+        osc.stop(now + 0.25);
+      }
+    }
+
+    function toggleAudio() {
+      audioMuted = !audioMuted;
+      localStorage.setItem('brocco_audio_muted', audioMuted ? '1' : '0');
+      const btn = document.getElementById('btnSoundToggle');
+      if (btn) btn.innerText = audioMuted ? '🔇 SFX: OFF' : '🔊 SFX: ON';
+    }
+
+    const cuteQuotes = [
+      "Hai! Sentuh aku lagi kalau kangen!",
+      "Aku suka banget suasana sejuk di kabin ini!",
+      "Klorofilku makin pekat berkat LED Grow Light!",
+      "Jangan lupa cek kadar nutrisi di Tangki 2 ya!",
+      "Brokoli microgreens kaya antioksidan sulforaphane lho!"
+    ];
+
+    let speechLockUntil = 0;
+    function setBroccoSpeech(text, force = false) {
+      const now = Date.now();
+      if (!force && now < speechLockUntil) return;
+      const bubble = document.getElementById('broccoSpeech');
+      if (bubble && bubble.innerText !== text) {
+        bubble.style.opacity = '0';
+        setTimeout(() => {
+          bubble.innerText = text;
+          bubble.style.opacity = '1';
+        }, 120);
+      }
+      if (force) speechLockUntil = now + 4000;
+    }
+
+    function handleBroccoTap() {
+      initAudio();
+      playChirp('tap');
+      const mascot = document.getElementById('broccoMascot');
+      if (mascot) {
+        mascot.classList.remove('brocco-bounce');
+        void mascot.offsetWidth;
+        mascot.classList.add('brocco-bounce');
+      }
+      const randomQuote = cuteQuotes[Math.floor(Math.random() * cuteQuotes.length)];
+      setBroccoSpeech(randomQuote, true);
+    }
+
+    function nurtureBrocco(action) {
+      initAudio();
+      if (action === 'water') {
+        playChirp('water');
+        setBroccoSpeech("Aah, segaar! Semprotan air baku Tangki 1 aktif!", true);
+        sendControl('action=flush');
+      } else if (action === 'nutrient') {
+        playChirp('nutrient');
+        setBroccoSpeech("Yummy! Booster nutrisi mikro Tangki 2 diserap!", true);
+        sendControl('action=toggleRelay&ch=6');
+      } else if (action === 'breeze') {
+        playChirp('breeze');
+        setBroccoSpeech("Wussshh! Hembusan angin blower bikin daun sejuk!", true);
+        sendControl('action=toggleRelay&ch=3');
+      }
+    }
+
+    function updateBroccoMood(d) {
+      const mascot = document.getElementById('broccoMascot');
+      const badge = document.getElementById('broccoMoodBadge');
+      const compPcs = document.getElementById('compValPcs');
+      const compNeed = document.getElementById('compValNeed');
+      const compLight = document.getElementById('compValLight');
+      const compResp = document.getElementById('compValResponse');
+      const compTip = document.getElementById('compAgronomiTip');
+
+      if (compPcs) compPcs.innerText = Math.round(d.pcs) + '%';
+      if (compLight) {
+        compLight.innerText = d.relays.light ? 'Fase Terang (16h Aktif)' : 'Fase Gelap / Istirahat';
+      }
+
+      if (!mascot) return;
+
+      mascot.classList.remove('mood-happy', 'mood-cold', 'mood-heat', 'mood-heat-crit', 'mood-thirsty', 'mood-stagnant', 'mood-sleep', 'mood-panic');
+
+      if (d.status === 'SAFEMODE') {
+        mascot.classList.add('mood-panic');
+        if (badge) { badge.className = 'badge badge-safe'; badge.innerText = 'PANIK'; }
+        if (compNeed) compNeed.innerText = 'Pemulihan Sensor Segera';
+        if (compResp) compResp.innerText = 'Gemetar Takut';
+        if (compTip) compTip.innerText = 'Periksa kabel koneksi sensor DHT22 GPIO 14!';
+        setBroccoSpeech("Waduh sensor bermasalah! Sistem masuk Safe Mode darurat!");
+      } else if (!d.relays.light && d.phase === 1) {
+        mascot.classList.add('mood-sleep');
+        if (badge) { badge.className = 'badge badge-optimal'; badge.innerText = 'TIDUR'; }
+        if (compNeed) compNeed.innerText = 'Kegelapan Perkecambahan';
+        if (compResp) compResp.innerText = 'Tidur Pulas (Zzz)';
+        if (compTip) compTip.innerText = 'Fase Blackout (Hari 1-3): Jangan nyalakan lampu agar batang kecambah memanjang.';
+        setBroccoSpeech("Zzz... Fase perkecambahan gelap, aku sedang tidur nyenyak...");
+      } else if (!d.relays.light) {
+        mascot.classList.add('mood-sleep');
+        if (badge) { badge.className = 'badge badge-optimal'; badge.innerText = 'TIDUR'; }
+        if (compNeed) compNeed.innerText = 'Istirahat Malam (8 Jam)';
+        if (compResp) compResp.innerText = 'Respirasi Malam';
+        if (compTip) compTip.innerText = 'Siklus gelap 8 jam penting untuk respirasi metabolisme tanaman.';
+        setBroccoSpeech("Zzz... Siklus fotoperiode malam, istirahat dulu ya...");
+      } else if (d.temp > 24.0) {
+        mascot.classList.add('mood-heat-crit');
+        if (badge) { badge.className = 'badge badge-kritis'; badge.innerText = 'OVERHEAT'; }
+        if (compNeed) compNeed.innerText = 'Pendinginan Darurat (<22°C)';
+        if (compResp) compResp.innerText = 'Terengah-engah Kepanasan';
+        if (compTip) compTip.innerText = 'Bahaya kritis! Suhu > 24°C memicu patogen busuk akar Pythium!';
+        setBroccoSpeech("Aduh kepanasan (>24°C)! Bahaya busuk akar Pythium! Dinginkan segera!");
+      } else if (d.temp > 22.0) {
+        mascot.classList.add('mood-heat');
+        if (badge) { badge.className = 'badge badge-waspada'; badge.innerText = 'GERAH'; }
+        if (compNeed) compNeed.innerText = 'Sirkulasi & Pendinginan';
+        if (compResp) compResp.innerText = 'Sedikit Gerah';
+        if (compTip) compTip.innerText = 'Peltier CH1 aktif untuk menurunkan suhu ke rentang ideal 18-22°C.';
+        setBroccoSpeech("Agak gerah nih (>22°C). Peltier sedang mendinginkan kabin!");
+      } else if (d.temp < 18.0) {
+        mascot.classList.add('mood-cold');
+        if (badge) { badge.className = 'badge badge-waspada'; badge.innerText = 'MENGGIGIL'; }
+        if (compNeed) compNeed.innerText = 'Suhu Lebih Hangat (>18°C)';
+        if (compResp) compResp.innerText = 'Menggigil Kedinginan';
+        if (compTip) compTip.innerText = 'Suhu < 18°C memperlambat fotosintesis brokoli microgreens.';
+        setBroccoSpeech("Brrr dingin banget (<18°C)! Aku menggigil kedinginan!");
+      } else if (d.soil < 45.0) {
+        mascot.classList.add('mood-thirsty');
+        if (badge) { badge.className = 'badge badge-waspada'; badge.innerText = 'HAUS'; }
+        if (compNeed) compNeed.innerText = 'Hidrasi Media Tanam';
+        if (compResp) compResp.innerText = 'Layu Kehausan';
+        if (compTip) compTip.innerText = 'Semprot air baku Tangki 1 untuk menaikkan kelembapan media tanam ke 45-70%.';
+        setBroccoSpeech("Tanahku kering kerontang (<45%)! Butuh semprotan air!");
+      } else if (d.rh > 65.0) {
+        mascot.classList.add('mood-stagnant');
+        if (badge) { badge.className = 'badge badge-waspada'; badge.innerText = 'PEKAT'; }
+        if (compNeed) compNeed.innerText = 'Sirkulasi Udara Blower';
+        if (compResp) compResp.innerText = 'Gerah Lembap';
+        if (compTip) compTip.innerText = 'Kelembapan > 65% menciptakan lapisan batas stagnant; blower aktif memecah embun.';
+        setBroccoSpeech("Kelembapan pekat (>65%). Blower aktif mengusir embun di daun!");
+      } else {
+        mascot.classList.add('mood-happy');
+        if (badge) { badge.className = 'badge badge-optimal'; badge.innerText = 'PRIMA'; }
+        if (compNeed) compNeed.innerText = 'Pertahankan Kondisi Saat Ini';
+        if (compResp) compResp.innerText = 'Tumbuh Riang & Sehat';
+        if (compTip) compTip.innerText = 'Lingkungan biosfer dalam kondisi homeostasis sempurna.';
+        setBroccoSpeech("Kondisi biosfer prima! Suhu sejuk dan aku bertumbuh cepat!");
+      }
+    }
+
     let isAutoMode = true;
     let currentDay = 1;
 
@@ -1385,6 +2033,9 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
         });
         document.getElementById('terminalLogs').innerHTML = logHtml;
       }
+
+      // 11. Brocco Mascot Emotion Sync
+      updateBroccoMood(d);
     }
 
     function updateCardBadge(id, isOptimal, isCritical, txtOpt, txtWarn, txtCrit) {
@@ -1463,7 +2114,11 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     }
 
     // High frequency asynchronous telemetry refresh (every 1000ms, zero-reload)
-    setInterval(fetchTelemetry, 1000);
+    
+    // Set initial audio mute button text
+    const initBtn = document.getElementById('btnSoundToggle');
+    if (initBtn) initBtn.innerText = audioMuted ? '🔇 SFX: OFF' : '🔊 SFX: ON';
+setInterval(fetchTelemetry, 1000);
     fetchTelemetry();
   </script>
 </body>
