@@ -606,7 +606,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kebun Biosfer Brokoli | Smart Microgreens Cabin</title>
+  <title>Kebun Biosfer Brokoli | Pet Studio & Lab Kabin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -644,7 +644,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       --pastel-butter-soft: #fef9c3;
       --pastel-butter-deep: #854d0e;
 
-      /* Text Colors (High Contrast Warm Charcoal/Berry) */
+      /* Text Colors (Warm Berry Charcoal) */
       --text-main: #2e262c;
       --text-sub: #63535e;
       --text-muted: #948590;
@@ -669,24 +669,24 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       line-height: 1.5;
     }
 
-    /* --- Centered App Container for Generous Margins --- */
+    /* Centered Container with Generous Left & Right Margins */
     .app-container {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 32px 24px 60px;
+      padding: 30px 24px 60px;
     }
     @media (max-width: 640px) {
       .app-container { padding: 18px 14px 40px; }
     }
 
-    /* --- Top Navigation Header --- */
+    /* --- Navigation Header --- */
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 16px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       padding: 18px 24px;
       background: var(--bg-card);
       border: 1.5px solid var(--border-card);
@@ -742,17 +742,58 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       50% { opacity: 0.75; transform: scale(0.96); }
     }
 
-    /* --- Hero Companion Section (Brocco Virtual Pet) --- */
-    .hero-companion-grid {
-      display: grid;
-      grid-template-columns: 350px 1fr;
-      gap: 22px;
+    /* --- 3-Tab Navigation Bar --- */
+    .tab-bar {
+      display: flex;
+      gap: 10px;
       margin-bottom: 24px;
+      background: #fdf2f5;
+      padding: 6px;
+      border-radius: var(--radius-pill);
+      border: 1.5px solid var(--border-card);
     }
-    @media (max-width: 900px) {
-      .hero-companion-grid { grid-template-columns: 1fr; }
+    .tab-btn {
+      flex: 1;
+      padding: 10px 16px;
+      border: none;
+      background: transparent;
+      color: var(--text-sub);
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 700;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .tab-btn:hover {
+      color: var(--pastel-pink-deep);
+      background: rgba(255, 255, 255, 0.6);
+    }
+    .tab-btn.active-tab {
+      background: #ffffff;
+      color: var(--pastel-pink-deep);
+      box-shadow: 0 2px 10px rgba(244, 63, 94, 0.12);
+      border: 1.5px solid var(--pastel-pink);
     }
 
+    /* --- View Panes --- */
+    .view-pane {
+      display: none;
+    }
+    .view-pane.active-pane {
+      display: block;
+      animation: pane-fade-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes pane-fade-in {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- Common Card Styling --- */
     .card {
       background: var(--bg-card);
       border: 1.5px solid var(--border-card);
@@ -765,6 +806,17 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       box-shadow: var(--shadow-hover);
     }
 
+    /* ================= TAB 1: PET STUDIO ================= */
+    .studio-grid {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 22px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .studio-grid { grid-template-columns: 1fr; }
+    }
+
     .brocco-card {
       display: flex;
       flex-direction: column;
@@ -774,6 +826,23 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       border: 1.5px solid #f9ccd7;
       position: relative;
       overflow: hidden;
+    }
+
+    .brocco-stage-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .stage-level-tag {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--pastel-pink-deep);
+      background: var(--pastel-pink-soft);
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid #fecdd3;
     }
 
     .brocco-bubble-wrapper {
@@ -813,14 +882,20 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     }
 
     .brocco-svg-container {
-      width: 195px;
-      height: 205px;
-      cursor: pointer;
+      width: 205px;
+      height: 215px;
       user-select: none;
-      transition: transform 0.15s;
+      position: relative;
     }
-    .brocco-svg-container:hover {
-      transform: scale(1.05);
+
+    /* Hit-Box Overlays */
+    .hit-overlay {
+      cursor: pointer;
+      fill: transparent;
+      pointer-events: all;
+    }
+    .hit-overlay:hover {
+      fill: rgba(251, 113, 133, 0.12);
     }
 
     /* Brocco Actions */
@@ -854,25 +929,26 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       color: var(--pastel-sky-deep);
       border-color: #bae6fd;
     }
-    .btn-nurture-water:hover {
-      background: #bae6fd;
-    }
+    .btn-nurture-water:hover { background: #bae6fd; }
     .btn-nurture-nutrient {
       background: var(--pastel-lavender-soft);
       color: var(--pastel-lavender-deep);
       border-color: #e9d5ff;
     }
-    .btn-nurture-nutrient:hover {
-      background: #e9d5ff;
-    }
+    .btn-nurture-nutrient:hover { background: #e9d5ff; }
     .btn-nurture-breeze {
       background: var(--pastel-matcha-soft);
       color: var(--pastel-matcha-deep);
       border-color: #a7f3d0;
     }
-    .btn-nurture-breeze:hover {
-      background: #a7f3d0;
+    .btn-nurture-breeze:hover { background: #a7f3d0; }
+    .btn-nurture-light {
+      background: var(--pastel-butter-soft);
+      color: var(--pastel-butter-deep);
+      border-color: #fde047;
     }
+    .btn-nurture-light:hover { background: #fef08a; }
+
     .btn-sound {
       font-size: 0.72rem;
       font-weight: 700;
@@ -885,48 +961,62 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       margin-top: 6px;
       transition: all 0.15s;
     }
-    .btn-sound:hover {
-      background: #ffe4e6;
-    }
+    .btn-sound:hover { background: #ffe4e6; }
 
-    /* Companion Overview Card */
-    .companion-overview-card {
+    /* Studio Right: 4 Gamified Care Health Bars */
+    .studio-dashboard {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      gap: 16px;
     }
-    .card-label {
-      font-size: 0.78rem;
+    .care-bars-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 640px) {
+      .care-bars-grid { grid-template-columns: 1fr; }
+    }
+    .care-bar-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border-card);
+      border-radius: 18px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow-soft);
+    }
+    .care-bar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
       font-weight: 700;
-      color: var(--text-sub);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+      margin-bottom: 6px;
     }
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
+    .care-track {
+      height: 12px;
+      background: #fce7ec;
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+      margin-top: 6px;
     }
-    .companion-stats-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin: 10px 0;
+    .care-fill {
+      height: 100%;
+      border-radius: var(--radius-pill);
+      transform-origin: left;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .comp-stat-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 16px;
-      background: #fffafa;
-      border: 1px solid #f9d8e2;
-      border-radius: 14px;
-      font-size: 0.85rem;
+    .fill-water { background: linear-gradient(90deg, #38bdf8, #0284c7); }
+    .fill-energy { background: linear-gradient(90deg, #facc15, #f59e0b); }
+    .fill-nutrient { background: linear-gradient(90deg, #c084fc, #9333ea); }
+    .fill-happiness { background: linear-gradient(90deg, #fde047, #f472b6, #34d399); }
+
+    .diary-card {
+      background: #ffffff;
+      border: 1.5px solid #f9ccd7;
+      border-radius: 20px;
+      padding: 18px;
     }
-    .comp-stat-name { color: var(--text-sub); font-weight: 600; }
-    .comp-stat-val { font-weight: 700; color: var(--text-main); }
-    .comp-tip-box {
+    .diary-tip-box {
       background: var(--pastel-pink-soft);
       border: 1.5px dashed #f472b6;
       border-radius: 16px;
@@ -936,29 +1026,26 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       line-height: 1.5;
     }
 
-    /* --- Mascot Animations --- */
+    /* --- Mascot Animations & Morphology --- */
     @keyframes brocco-idle {
       0%, 100% { transform: translateY(0) scale(1, 1); }
       50% { transform: translateY(-3.5px) scale(0.99, 1.01); }
-    }
-    @keyframes brocco-shiver {
-      0%, 100% { transform: translate(0, 0); }
-      25% { transform: translate(-3px, 1px); }
-      75% { transform: translate(3px, -1px); }
-    }
-    @keyframes brocco-pant {
-      0%, 100% { transform: scale(1, 1); }
-      50% { transform: scale(1.04, 0.95) translateY(3px); }
-    }
-    @keyframes brocco-droop {
-      0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(-4deg) translateY(4px); }
     }
     @keyframes brocco-hop {
       0% { transform: scale(1, 1); }
       30% { transform: scale(1.12, 0.88) translateY(6px); }
       60% { transform: scale(0.92, 1.12) translateY(-16px); }
       100% { transform: scale(1, 1) translateY(0); }
+    }
+    @keyframes floret-jiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-6deg); }
+      75% { transform: rotate(6deg); }
+    }
+    @keyframes heart-burst {
+      0% { transform: scale(0.8); opacity: 0; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.9; }
     }
     @keyframes float-zzz {
       0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
@@ -974,7 +1061,18 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       animation: brocco-hop 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
     }
 
-    /* Mood Expression State Classes */
+    /* Morphology Stages */
+    .morph-sprout { display: none; }
+    .morph-microgreen { display: block; }
+    .morph-harvest { display: none; }
+
+    .stage-sprout .morph-sprout { display: block; }
+    .stage-sprout .morph-microgreen, .stage-sprout .morph-harvest { display: none; }
+
+    .stage-harvest .morph-harvest { display: block; }
+    .stage-harvest .morph-sprout, .stage-harvest .morph-microgreen { display: none; }
+
+    /* Expressions */
     .eyes-open { display: block; }
     .eyes-sleep, .eyes-sad { display: none; }
     .mouth-happy { display: block; }
@@ -1005,11 +1103,6 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     .mood-thirsty .mouth-sad { display: block; }
     .mood-thirsty .prop-sparkles { display: none; }
 
-    .mood-stagnant svg { animation: brocco-droop 3s ease-in-out infinite; }
-    .mood-stagnant .mouth-happy { display: none; }
-    .mood-stagnant .mouth-pant { display: block; }
-    .mood-stagnant .prop-sweat { display: block; }
-
     .mood-sleep svg { animation: brocco-idle 4s ease-in-out infinite; }
     .mood-sleep .eyes-open { display: none; }
     .mood-sleep .eyes-sleep { display: block; }
@@ -1019,18 +1112,25 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     .mood-sleep .z3 { animation-delay: 1.2s; }
     .mood-sleep .prop-sparkles { display: none; }
 
-    .mood-panic svg { animation: brocco-shiver 0.08s infinite; }
-    .mood-panic .eyes-open { display: none; }
-    .mood-panic .eyes-sad { display: block; }
-    .mood-panic .mouth-happy { display: none; }
-    .mood-panic .mouth-shiver { display: block; stroke: var(--pastel-pink); }
-
-    /* --- 4x Primary Telemetry Cards --- */
+    /* ================= TAB 2: LAB SENSOR & KONTROL ================= */
     .telemetry-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 20px;
+      gap: 18px;
       margin-bottom: 24px;
+    }
+    .card-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
     }
     .card-target {
       font-size: 0.72rem;
@@ -1038,88 +1138,52 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       color: var(--text-muted);
     }
     .card-value {
-      font-size: 2.3rem;
+      font-size: 2.2rem;
       font-weight: 700;
       letter-spacing: -0.03em;
       color: var(--text-main);
-      margin: 6px 0 10px;
+      margin: 4px 0 8px;
       display: flex;
       align-items: baseline;
       gap: 4px;
     }
     .card-unit {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 600;
       color: var(--text-sub);
     }
 
-    /* --- Secondary Instruments Grid --- */
-    .instruments-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 20px;
-      margin-bottom: 24px;
-    }
-    @media (max-width: 900px) {
-      .instruments-grid { grid-template-columns: 1fr; }
-    }
-    .inst-title {
-      font-size: 0.80rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--text-sub);
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .pcs-meter {
-      height: 14px;
-      background: #fce7ec;
+    /* Safe-Range Visual Track on Sensor Cards */
+    .range-track {
+      height: 6px;
+      background: #f1ede4;
       border-radius: var(--radius-pill);
-      overflow: hidden;
-      margin: 10px 0;
+      position: relative;
+      margin-top: 10px;
     }
-    .pcs-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #fde047, #f472b6, #34d399);
+    .range-safe-zone {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      background: #bbf7d0;
       border-radius: var(--radius-pill);
-      transform-origin: left;
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .range-pin {
+      position: absolute;
+      top: -3px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--pastel-mint-deep);
+      border: 2px solid #ffffff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+      transform: translateX(-50%);
+      transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .tank-row {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .tank-item {
-      background: #fffafa;
-      border: 1px solid #f9d8e2;
-      border-radius: 14px;
-      padding: 10px 14px;
-    }
-    .tank-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.80rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-    .tank-bar {
-      height: 10px;
-      background: #fce7ec;
-      border-radius: var(--radius-pill);
-      overflow: hidden;
-    }
-    .tank-fill-1 { height: 100%; background: #38bdf8; transform-origin: left; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
-    .tank-fill-2 { height: 100%; background: #c084fc; transform-origin: left; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
-
-    /* --- 6-Channel Hardware Matrix --- */
     .matrix-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
       gap: 12px;
       margin-top: 10px;
     }
@@ -1168,7 +1232,40 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       color: var(--text-main);
     }
 
-    /* --- Trend Graph --- */
+    /* Dual-Tank Grid */
+    .tank-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 10px;
+    }
+    @media (max-width: 640px) {
+      .tank-grid { grid-template-columns: 1fr; }
+    }
+    .tank-item {
+      background: #fffafa;
+      border: 1px solid #f9d8e2;
+      border-radius: 16px;
+      padding: 12px 16px;
+    }
+    .tank-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .tank-bar {
+      height: 10px;
+      background: #fce7ec;
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .tank-fill-1 { height: 100%; background: #38bdf8; transform-origin: left; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+    .tank-fill-2 { height: 100%; background: #c084fc; transform-origin: left; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+
+    /* ================= TAB 3: RIWAYAT & ANALISIS ================= */
     .chart-card {
       background: var(--bg-card);
       border: 1.5px solid var(--border-card);
@@ -1179,29 +1276,47 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     }
     .chart-svg-container {
       width: 100%;
-      height: 180px;
+      height: 190px;
       background: #fffafa;
       border: 1.5px solid #f9d8e2;
       border-radius: 16px;
       padding: 10px;
     }
 
-    /* --- Controls & Terminal Grid --- */
-    .controls-grid {
+    .analytics-grid {
       display: grid;
-      grid-template-columns: 2fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 20px;
-      margin-bottom: 24px;
     }
-    @media (max-width: 900px) {
-      .controls-grid { grid-template-columns: 1fr; }
+    @media (max-width: 768px) {
+      .analytics-grid { grid-template-columns: 1fr; }
     }
+
+    .controls-panel {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-card);
+      border-radius: var(--radius-card);
+      padding: 20px;
+    }
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #fce7ec;
+    }
+    .toggle-label {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
     .btn {
       background: #ffffff;
       color: var(--text-main);
       border: 1.5px solid var(--border-card);
       border-radius: var(--radius-btn);
-      padding: 10px 16px;
+      padding: 9px 14px;
       font-size: 0.80rem;
       font-weight: 700;
       cursor: pointer;
@@ -1211,43 +1326,22 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       gap: 6px;
       transition: all 0.15s ease;
     }
-    .btn:hover {
-      background: #fdf2f4;
-      border-color: #f9ccd7;
-    }
-    .btn:active {
-      transform: scale(0.97) translateY(2px);
-    }
+    .btn:hover { background: #fdf2f4; border-color: #f9ccd7; }
+    .btn:active { transform: scale(0.97) translateY(2px); }
     .btn-mint {
       background: var(--pastel-matcha-soft);
       border-color: #a7f3d0;
       color: var(--pastel-matcha-deep);
     }
-    .btn-mint:hover {
-      background: #a7f3d0;
-    }
+    .btn-mint:hover { background: #a7f3d0; }
     .btn-red {
       background: var(--pastel-pink-soft);
       border-color: #fecdd3;
       color: var(--pastel-pink-deep);
     }
-    .btn-red:hover {
-      background: #fecdd3;
-    }
-    .toggle-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px solid #fce7ec;
-    }
-    .toggle-label {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--text-main);
-    }
+    .btn-red:hover { background: #fecdd3; }
 
-    /* --- Garden Diary Notebook Log --- */
+    /* Log Diary */
     .terminal-card {
       background: #ffffff;
       border: 1.5px solid var(--border-card);
@@ -1290,14 +1384,14 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
 </head>
 <body>
 
-  <!-- Centered App Container for Comfortable Framing -->
+  <!-- Centered App Container -->
   <div class="app-container">
 
     <!-- Header -->
     <div class="header">
       <div class="title-group">
         <h1>🌸 Kebun Biosfer Brokoli</h1>
-        <p>Smart Monitored Microgreens Cabin (Brassica oleracea var. italica)</p>
+        <p>Smart Microgreens Cabin & Interactive Pet Studio</p>
       </div>
       <div class="header-badges">
         <div id="badgeStatus" class="badge badge-optimal">
@@ -1313,476 +1407,505 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       </div>
     </div>
 
-    <!-- Hero Companion Section (Brocco Virtual Pet) -->
-    <div class="hero-companion-grid">
-      <!-- Card 1: Interactive Brocco Mascot -->
-      <div class="card brocco-card">
-        <div class="brocco-bubble-wrapper">
-          <div id="broccoBubble" class="brocco-bubble">
-            <span id="broccoSpeech">Hai manis! 🌸 Aku Brocco, maskot kabin biosfermu!</span>
+    <!-- 3-Tab Navigation Bar -->
+    <div class="tab-bar">
+      <button class="tab-btn active-tab" onclick="switchTab('pet-studio')">
+        <span>🌸</span> Pet Studio Brocco
+      </button>
+      <button class="tab-btn" onclick="switchTab('lab-control')">
+        <span>🧪</span> Lab Sensor & Kontrol
+      </button>
+      <button class="tab-btn" onclick="switchTab('analytics')">
+        <span>📈</span> Riwayat & Analisis
+      </button>
+    </div>
+
+    <!-- ================= TAB 1: PET STUDIO ================= -->
+    <div id="pane-pet-studio" class="view-pane active-pane">
+      <div class="studio-grid">
+        <!-- Brocco Interactive Mascot Card -->
+        <div class="card brocco-card">
+          <div class="brocco-stage-header">
+            <span class="card-label">Brocco Avatar</span>
+            <span id="broccoStageBadge" class="stage-level-tag">Tahap 2: Tunas Ceria</span>
+          </div>
+
+          <!-- Speech Bubble -->
+          <div class="brocco-bubble-wrapper">
+            <div id="broccoBubble" class="brocco-bubble">
+              <span id="broccoSpeech">Hai manis! 🌸 Aku Brocco, sentuh aku yuk!</span>
+            </div>
+          </div>
+
+          <!-- Interactive Multi-Zone SVG Mascot -->
+          <div id="broccoMascot" class="brocco-svg-container stage-microgreen mood-happy">
+            <svg id="broccoSvg" viewBox="0 0 200 220" width="100%" height="100%">
+              <defs>
+                <linearGradient id="stemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#a7f3d0"/>
+                  <stop offset="100%" stop-color="#34d399"/>
+                </linearGradient>
+                <linearGradient id="crownGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#6ee7b7"/>
+                  <stop offset="50%" stop-color="#34d399"/>
+                  <stop offset="100%" stop-color="#059669"/>
+                </linearGradient>
+                <linearGradient id="harvestGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#34d399"/>
+                  <stop offset="50%" stop-color="#059669"/>
+                  <stop offset="100%" stop-color="#064e3b"/>
+                </linearGradient>
+                <radialGradient id="blushGrad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="rgba(251, 113, 133, 0.9)"/>
+                  <stop offset="100%" stop-color="rgba(251, 113, 133, 0)"/>
+                </radialGradient>
+              </defs>
+
+              <!-- Ground Shadow -->
+              <ellipse cx="100" cy="202" rx="55" ry="9" fill="rgba(244, 63, 94, 0.12)"/>
+
+              <!-- MORPHOLOGY STAGE 1: BABY SPROUT (Days 1-3) -->
+              <g class="morph-sprout">
+                <path d="M 94,150 C 92,175 88,195 95,200 C 102,202 108,202 112,198 C 114,185 106,160 102,150 Z" fill="url(#stemGrad)" stroke="#065f46" stroke-width="2.5"/>
+                <!-- Cotyledon Twin Heart-Leaves -->
+                <circle cx="82" cy="140" r="16" fill="#a7f3d0" stroke="#065f46" stroke-width="2"/>
+                <circle cx="118" cy="140" r="16" fill="#a7f3d0" stroke="#065f46" stroke-width="2"/>
+                <!-- Cute Sleeping Nightcap -->
+                <path d="M 85,128 Q 100,105 125,120 Q 135,100 145,105" fill="none" stroke="#fb7185" stroke-width="5" stroke-linecap="round"/>
+                <circle cx="148" cy="106" r="5" fill="#facc15"/>
+              </g>
+
+              <!-- MORPHOLOGY STAGE 2: YOUNG MICROGREEN (Days 4-7) -->
+              <g class="morph-microgreen">
+                <!-- Body / Stem -->
+                <g class="brocco-body-group">
+                  <path d="M 82,125 C 75,155 70,185 80,195 C 90,200 110,200 120,195 C 130,185 125,155 118,125 Z" fill="url(#stemGrad)" stroke="#065f46" stroke-width="2.5"/>
+                  <path class="brocco-arm-left" d="M 76,155 C 55,150 50,135 62,130 C 72,135 74,148 76,155 Z" fill="#6ee7b7" stroke="#065f46" stroke-width="2"/>
+                  <path class="brocco-arm-right" d="M 124,155 C 145,150 150,135 138,130 C 128,135 126,148 124,155 Z" fill="#6ee7b7" stroke="#065f46" stroke-width="2"/>
+                </g>
+
+                <!-- Crown Florets -->
+                <g class="brocco-crown-group" stroke="#065f46" stroke-width="2.5">
+                  <circle cx="65" cy="85" r="38" fill="url(#crownGrad)"/>
+                  <circle cx="135" cy="85" r="38" fill="url(#crownGrad)"/>
+                  <circle cx="100" cy="60" r="42" fill="url(#crownGrad)"/>
+                  <circle cx="100" cy="92" r="36" fill="url(#crownGrad)"/>
+                  <circle cx="75" cy="65" r="4" fill="#d1fae5" stroke="none"/>
+                  <circle cx="120" cy="60" r="3.5" fill="#d1fae5" stroke="none"/>
+                  <circle cx="100" cy="78" r="4" fill="#d1fae5" stroke="none"/>
+                </g>
+
+                <!-- Flower Pin -->
+                <g class="brocco-flower-pin">
+                  <circle cx="132" cy="46" r="6" fill="#fb7185"/>
+                  <circle cx="140" cy="51" r="6" fill="#fda4af"/>
+                  <circle cx="137" cy="60" r="6" fill="#ffe4e6"/>
+                  <circle cx="127" cy="60" r="6" fill="#fda4af"/>
+                  <circle cx="124" cy="51" r="6" fill="#fb7185"/>
+                  <circle cx="132" cy="53.5" r="4" fill="#facc15"/>
+                </g>
+              </g>
+
+              <!-- MORPHOLOGY STAGE 3: HARVEST MASTER (Days 8-10) -->
+              <g class="morph-harvest">
+                <g class="brocco-body-group">
+                  <path d="M 80,120 C 72,155 68,185 80,195 C 90,202 110,202 120,195 C 132,185 128,155 120,120 Z" fill="url(#stemGrad)" stroke="#064e3b" stroke-width="3"/>
+                  <path d="M 74,152 C 50,146 45,130 58,125 C 70,130 72,145 74,152 Z" fill="#34d399" stroke="#064e3b" stroke-width="2"/>
+                  <path d="M 126,152 C 150,146 155,130 142,125 C 130,130 128,145 126,152 Z" fill="#34d399" stroke="#064e3b" stroke-width="2"/>
+                </g>
+                <!-- Lush Dense Crown -->
+                <g stroke="#064e3b" stroke-width="2.5">
+                  <circle cx="50" cy="88" r="36" fill="url(#harvestGrad)"/>
+                  <circle cx="150" cy="88" r="36" fill="url(#harvestGrad)"/>
+                  <circle cx="68" cy="62" r="38" fill="url(#harvestGrad)"/>
+                  <circle cx="132" cy="62" r="38" fill="url(#harvestGrad)"/>
+                  <circle cx="100" cy="48" r="42" fill="url(#harvestGrad)"/>
+                  <circle cx="100" cy="88" r="40" fill="url(#harvestGrad)"/>
+                </g>
+                <!-- Golden Harvest Ribbon -->
+                <path d="M 70,118 Q 100,128 130,118" fill="none" stroke="#facc15" stroke-width="5" stroke-linecap="round"/>
+                <polygon points="100,122 95,134 105,134" fill="#facc15"/>
+              </g>
+
+              <!-- Shared Expressive Face Elements -->
+              <g class="brocco-face">
+                <ellipse class="brocco-cheek" cx="72" cy="115" rx="9" ry="6" fill="url(#blushGrad)"/>
+                <ellipse class="brocco-cheek" cx="128" cy="115" rx="9" ry="6" fill="url(#blushGrad)"/>
+
+                <!-- Eyes: Happy Sparkling Anime -->
+                <g class="eyes-open">
+                  <ellipse cx="80" cy="98" rx="8.5" ry="11.5" fill="#1f1a1d"/>
+                  <ellipse cx="120" cy="98" rx="8.5" ry="11.5" fill="#1f1a1d"/>
+                  <circle cx="82.5" cy="94" r="4" fill="#ffffff"/>
+                  <circle cx="77.5" cy="102" r="2" fill="#ffffff"/>
+                  <circle cx="122.5" cy="94" r="4" fill="#ffffff"/>
+                  <circle cx="117.5" cy="102" r="2" fill="#ffffff"/>
+                </g>
+
+                <!-- Eyes: Sleeping -->
+                <g class="eyes-sleep">
+                  <path d="M 72,100 Q 80,107 88,100" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M 112,100 Q 120,107 128,100" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round"/>
+                </g>
+
+                <!-- Eyes: Sad -->
+                <g class="eyes-sad">
+                  <path d="M 72,102 Q 80,95 88,102" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M 112,102 Q 120,95 128,102" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M 76,108 C 74,115 80,118 80,113 C 80,110 77,108 76,108 Z" fill="#38bdf8"/>
+                </g>
+
+                <!-- Mouths -->
+                <path class="mouth-happy" d="M 90,112 Q 100,124 110,112" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round"/>
+                <path class="mouth-pant" d="M 92,112 Q 100,126 108,112 Z" fill="#fb7185" stroke="#1f1a1d" stroke-width="2"/>
+                <path class="mouth-shiver" d="M 91,114 Q 95,110 100,114 Q 105,110 109,114" fill="none" stroke="#1f1a1d" stroke-width="2.5" stroke-linecap="round"/>
+                <path class="mouth-sad" d="M 92,118 Q 100,110 108,118" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round"/>
+              </g>
+
+              <!-- Props -->
+              <g class="brocco-props">
+                <g class="prop-sweat">
+                  <path d="M 148,70 C 145,78 152,82 152,77 C 152,73 149,70 148,70 Z" fill="#38bdf8"/>
+                  <path d="M 52,75 C 49,83 56,87 56,82 C 56,78 53,75 52,75 Z" fill="#38bdf8"/>
+                </g>
+                <g class="prop-icicles">
+                  <polygon points="62,115 65,130 68,115" fill="#38bdf8"/>
+                  <polygon points="98,135 101,152 104,135" fill="#38bdf8"/>
+                  <polygon points="132,115 135,130 138,115" fill="#38bdf8"/>
+                </g>
+                <g class="prop-zzz">
+                  <text x="145" y="60" fill="#c084fc" font-size="16" font-family="'Quicksand', sans-serif" font-weight="700" class="zzz-item z1">Z</text>
+                  <text x="160" y="45" fill="#fb7185" font-size="12" font-family="'Quicksand', sans-serif" font-weight="700" class="zzz-item z2">z</text>
+                  <text x="172" y="32" fill="#c084fc" font-size="9" font-family="'Quicksand', sans-serif" font-weight="700" class="zzz-item z3">z</text>
+                </g>
+                <g class="prop-sparkles">
+                  <polygon points="45,50 48,42 50,50 58,52 50,54 48,62 45,54 37,52" fill="#facc15"/>
+                  <polygon points="155,95 157,90 159,95 164,96 159,97 157,102 155,97 150,96" fill="#facc15"/>
+                </g>
+              </g>
+
+              <!-- Transparent Multi-Zone Interactive Hitboxes -->
+              <path id="hitCrown" class="hit-overlay" d="M 40,30 L 160,30 L 160,105 L 40,105 Z" onclick="handleZoneTap('crown')" title="Elus mahkota Brocco"/>
+              <path id="hitCheeks" class="hit-overlay" d="M 50,105 L 150,105 L 150,130 L 50,130 Z" onclick="handleZoneTap('cheeks')" title="Cubit pipi Brocco"/>
+              <path id="hitArms" class="hit-overlay" d="M 30,130 L 78,130 L 78,175 L 30,175 Z M 122,130 L 170,130 L 170,175 L 122,175 Z" onclick="handleZoneTap('arms')" title="Tos tangan Brocco"/>
+              <path id="hitStem" class="hit-overlay" d="M 78,130 L 122,130 L 122,205 L 78,205 Z" onclick="handleZoneTap('stem')" title="Geliin batang Brocco"/>
+            </svg>
+          </div>
+
+          <!-- Nurture Actions (Talking Tom / Pou style) -->
+          <div class="brocco-actions">
+            <button class="btn-nurture btn-nurture-water" onclick="nurtureBrocco('water')" title="Semprot air murni 5 detik">
+              <span>🌸</span> Beri Minum
+            </button>
+            <button class="btn-nurture btn-nurture-nutrient" onclick="nurtureBrocco('nutrient')" title="Beri semprotan vitamin booster">
+              <span>✨</span> Beri Vitamin
+            </button>
+            <button class="btn-nurture btn-nurture-breeze" onclick="nurtureBrocco('breeze')" title="Putar blower sirkulasi sejuk">
+              <span>🍃</span> Kipas Semilir
+            </button>
+            <button class="btn-nurture btn-nurture-light" onclick="nurtureBrocco('light')" title="Atur fotoperiode lampu">
+              <span>☀️</span> Atur Lampu
+            </button>
+            <button id="btnSoundToggle" class="btn-sound" onclick="toggleAudio()" title="Aktifkan/matikan audio">
+              🎵 Musik: Nyala
+            </button>
           </div>
         </div>
 
-        <!-- Interactive SVG Mascot with Girly Blossom Bow -->
-        <div id="broccoMascot" class="brocco-svg-container mood-happy" onclick="handleBroccoTap()" title="Sentuh Brocco untuk berinteraksi!">
-          <svg viewBox="0 0 200 215" width="100%" height="100%">
-            <defs>
-              <linearGradient id="stemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="#a7f3d0"/>
-                <stop offset="100%" stop-color="#34d399"/>
-              </linearGradient>
-              <linearGradient id="crownGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#6ee7b7"/>
-                <stop offset="50%" stop-color="#34d399"/>
-                <stop offset="100%" stop-color="#059669"/>
-              </linearGradient>
-              <radialGradient id="blushGrad" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="rgba(251, 113, 133, 0.85)"/>
-                <stop offset="100%" stop-color="rgba(251, 113, 133, 0)"/>
-              </radialGradient>
-              <radialGradient id="heatBlushGrad" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="rgba(244, 63, 94, 0.9)"/>
-                <stop offset="100%" stop-color="rgba(244, 63, 94, 0)"/>
-              </radialGradient>
-            </defs>
+        <!-- Studio Dashboard Right: 4 Gamified Health Meters & Diary -->
+        <div class="studio-dashboard">
+          <div class="care-bars-grid">
+            <div class="care-bar-card">
+              <div class="care-bar-header">
+                <span>💧 Level Hidrasi</span>
+                <span id="careValWater" style="color:var(--pastel-sky-deep);">56% (Pas)</span>
+              </div>
+              <div class="care-track">
+                <div id="careFillWater" class="care-fill fill-water" style="transform:scaleX(0.56);"></div>
+              </div>
+            </div>
 
-            <!-- Shadow -->
-            <ellipse cx="100" cy="198" rx="55" ry="9" fill="rgba(244, 63, 94, 0.12)"/>
+            <div class="care-bar-card">
+              <div class="care-bar-header">
+                <span>☀️ Energi Cahaya</span>
+                <span id="careValLight" style="color:var(--pastel-butter-deep);">16 Jam (Aktif)</span>
+              </div>
+              <div class="care-track">
+                <div id="careFillLight" class="care-fill fill-energy" style="transform:scaleX(1.0);"></div>
+              </div>
+            </div>
 
-            <!-- Body / Stem -->
-            <g class="brocco-body-group">
-              <path d="M 82,125 C 75,155 70,185 80,195 C 90,200 110,200 120,195 C 130,185 125,155 118,125 Z" fill="url(#stemGrad)" stroke="#065f46" stroke-width="2.5"/>
-              <!-- Little Leaf Hands -->
-              <path class="brocco-arm-left" d="M 76,155 C 55,150 50,135 62,130 C 72,135 74,148 76,155 Z" fill="#6ee7b7" stroke="#065f46" stroke-width="2"/>
-              <path class="brocco-arm-right" d="M 124,155 C 145,150 150,135 138,130 C 128,135 126,148 124,155 Z" fill="#6ee7b7" stroke="#065f46" stroke-width="2"/>
-            </g>
+            <div class="care-bar-card">
+              <div class="care-bar-header">
+                <span>🧪 Gizi & Vitamin</span>
+                <span id="careValNutrient" style="color:var(--pastel-lavender-deep);">92% (Tinggi)</span>
+              </div>
+              <div class="care-track">
+                <div id="careFillNutrient" class="care-fill fill-nutrient" style="transform:scaleX(0.92);"></div>
+              </div>
+            </div>
 
-            <!-- Crown / Florets -->
-            <g class="brocco-crown-group" stroke="#065f46" stroke-width="2.5">
-              <circle cx="65" cy="85" r="38" fill="url(#crownGrad)"/>
-              <circle cx="135" cy="85" r="38" fill="url(#crownGrad)"/>
-              <circle cx="100" cy="60" r="42" fill="url(#crownGrad)"/>
-              <circle cx="100" cy="92" r="36" fill="url(#crownGrad)"/>
-              <!-- Pastel Mint Texture Dots -->
-              <circle cx="75" cy="65" r="4" fill="#d1fae5" stroke="none"/>
-              <circle cx="120" cy="60" r="3.5" fill="#d1fae5" stroke="none"/>
-              <circle cx="100" cy="78" r="4" fill="#d1fae5" stroke="none"/>
-            </g>
-
-            <!-- Adorable Girly Cherry Blossom Flower Pin -->
-            <g class="brocco-flower-pin">
-              <circle cx="132" cy="46" r="6" fill="#fb7185"/>
-              <circle cx="140" cy="51" r="6" fill="#fda4af"/>
-              <circle cx="137" cy="60" r="6" fill="#ffe4e6"/>
-              <circle cx="127" cy="60" r="6" fill="#fda4af"/>
-              <circle cx="124" cy="51" r="6" fill="#fb7185"/>
-              <circle cx="132" cy="53.5" r="4" fill="#facc15"/>
-            </g>
-
-            <!-- Face -->
-            <g class="brocco-face">
-              <!-- Cheeks -->
-              <ellipse class="brocco-cheek" cx="72" cy="115" rx="9" ry="6" fill="url(#blushGrad)"/>
-              <ellipse class="brocco-cheek" cx="128" cy="115" rx="9" ry="6" fill="url(#blushGrad)"/>
-
-              <!-- Eyes: Happy Sparkling Anime Eyes -->
-              <g class="eyes-open">
-                <ellipse cx="80" cy="98" rx="8.5" ry="11.5" fill="#1f1a1d"/>
-                <ellipse cx="120" cy="98" rx="8.5" ry="11.5" fill="#1f1a1d"/>
-                <circle cx="82.5" cy="94" r="4" fill="#ffffff"/>
-                <circle cx="77.5" cy="102" r="2" fill="#ffffff"/>
-                <circle cx="122.5" cy="94" r="4" fill="#ffffff"/>
-                <circle cx="117.5" cy="102" r="2" fill="#ffffff"/>
-              </g>
-
-              <!-- Eyes: Sleeping -->
-              <g class="eyes-sleep">
-                <path d="M 72,100 Q 80,107 88,100" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round"/>
-                <path d="M 112,100 Q 120,107 128,100" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round"/>
-              </g>
-
-              <!-- Eyes: Sad / Droop -->
-              <g class="eyes-sad">
-                <path d="M 72,102 Q 80,95 88,102" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round"/>
-                <path d="M 112,102 Q 120,95 128,102" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round"/>
-                <path d="M 76,108 C 74,115 80,118 80,113 C 80,110 77,108 76,108 Z" fill="#38bdf8"/>
-              </g>
-
-              <!-- Mouth Variations -->
-              <path class="mouth-happy" d="M 90,112 Q 100,124 110,112" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round"/>
-              <path class="mouth-pant" d="M 92,112 Q 100,126 108,112 Z" fill="#fb7185" stroke="#1f1a1d" stroke-width="2"/>
-              <path class="mouth-shiver" d="M 91,114 Q 95,110 100,114 Q 105,110 109,114" fill="none" stroke="#1f1a1d" stroke-width="2.5" stroke-linecap="round"/>
-              <path class="mouth-sad" d="M 92,118 Q 100,110 108,118" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round"/>
-            </g>
-
-            <!-- Props & Effects -->
-            <g class="brocco-props">
-              <!-- Sweat Drops -->
-              <g class="prop-sweat">
-                <path d="M 148,70 C 145,78 152,82 152,77 C 152,73 149,70 148,70 Z" fill="#38bdf8"/>
-                <path d="M 52,75 C 49,83 56,87 56,82 C 56,78 53,75 52,75 Z" fill="#38bdf8"/>
-              </g>
-
-              <!-- Icicles (Cold) -->
-              <g class="prop-icicles">
-                <polygon points="62,115 65,130 68,115" fill="#38bdf8"/>
-                <polygon points="98,135 101,152 104,135" fill="#38bdf8"/>
-                <polygon points="132,115 135,130 138,115" fill="#38bdf8"/>
-              </g>
-
-              <!-- Zzz (Sleep) -->
-              <g class="prop-zzz">
-                <text x="145" y="60" fill="#c084fc" font-size="16" font-family="'Quicksand', sans-serif" font-weight="700" class="zzz-item z1">Z</text>
-                <text x="160" y="45" fill="#fb7185" font-size="12" font-family="'Quicksand', sans-serif" font-weight="700" class="zzz-item z2">z</text>
-                <text x="172" y="32" fill="#c084fc" font-size="9" font-family="'Quicksand', sans-serif" font-weight="700" class="zzz-item z3">z</text>
-              </g>
-
-              <!-- Sparkles -->
-              <g class="prop-sparkles">
-                <polygon points="45,50 48,42 50,50 58,52 50,54 48,62 45,54 37,52" fill="#facc15"/>
-                <polygon points="155,95 157,90 159,95 164,96 159,97 157,102 155,97 150,96" fill="#facc15"/>
-              </g>
-            </g>
-          </svg>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="brocco-actions">
-          <button class="btn-nurture btn-nurture-water" onclick="nurtureBrocco('water')" title="Semprot air murni 5 detik">
-            <span>🌸</span>
-            <span>Beri Minum</span>
-          </button>
-          <button class="btn-nurture btn-nurture-nutrient" onclick="nurtureBrocco('nutrient')" title="Beri suntikan vitamin mikro">
-            <span>✨</span>
-            <span>Beri Vitamin</span>
-          </button>
-          <button class="btn-nurture btn-nurture-breeze" onclick="nurtureBrocco('breeze')" title="Putar blower sirkulasi sejuk">
-            <span>🍃</span>
-            <span>Kipas Semilir</span>
-          </button>
-          <button id="btnSoundToggle" class="btn-sound" onclick="toggleAudio()" title="Aktifkan/matikan suara">
-            🎵 Musik: Nyala
-          </button>
-        </div>
-      </div>
-
-      <!-- Card 2: Companion Status Brief -->
-      <div class="card companion-overview-card">
-        <div class="card-header">
-          <span class="card-label">Buku Harian & Kesehatan Brocco 🌸</span>
-          <span id="broccoMoodBadge" class="badge badge-optimal">SANGAT PRIMA</span>
-        </div>
-        <div class="companion-stats-list">
-          <div class="comp-stat-item">
-            <span class="comp-stat-name">Skor Kenyamanan (PCS):</span>
-            <span id="compValPcs" class="comp-stat-val" style="color:var(--pastel-matcha-deep);">--%</span>
+            <div class="care-bar-card">
+              <div class="care-bar-header">
+                <span>🌸 Kebahagiaan</span>
+                <span id="careValHappy" style="color:var(--pastel-pink-deep);">97% (Prima)</span>
+              </div>
+              <div class="care-track">
+                <div id="careFillHappy" class="care-fill fill-happiness" style="transform:scaleX(0.97);"></div>
+              </div>
+            </div>
           </div>
-          <div class="comp-stat-item">
-            <span class="comp-stat-name">Sensasi Tanaman:</span>
-            <span id="compValNeed" class="comp-stat-val">Sejuk, Ceria & Nyaman</span>
+
+          <!-- Garden Diary Box -->
+          <div class="diary-card">
+            <div class="card-header" style="margin-bottom:8px;">
+              <span class="card-label">Buku Harian & Status Kebun 🎀</span>
+              <span id="broccoMoodBadge" class="badge badge-optimal">SANGAT PRIMA</span>
+            </div>
+            <div class="diary-tip-box">
+              <span style="font-weight:700;">🌸 Catatan Hari Ini:</span>
+              <span id="compAgronomiTip" style="margin-left:4px;">Brocco dalam kondisi prima! Pertahankan suhu 18-22°C dan kelembapan 50-65% agar terhindar dari jamur Pythium.</span>
+            </div>
           </div>
-          <div class="comp-stat-item">
-            <span class="comp-stat-name">Jadwal Lampu:</span>
-            <span id="compValLight" class="comp-stat-val" style="color:var(--pastel-sky-deep);">Fase Terang (16 Jam Aktif)</span>
-          </div>
-          <div class="comp-stat-item">
-            <span class="comp-stat-name">Respon Brocco:</span>
-            <span id="compValResponse" class="comp-stat-val" style="color:#059669;">Tumbuh Riang & Sehat 🌿</span>
-          </div>
-        </div>
-        <div class="comp-tip-box">
-          <span style="font-weight:700;">🎀 Catatan Kebun:</span>
-          <span id="compAgronomiTip" style="margin-left:4px;">Jaga suhu antara 18-22°C dan kelembapan 50-65% ya cantik, agar terhindar dari jamur Pythium!</span>
         </div>
       </div>
     </div>
 
-    <!-- 4x Primary Telemetry Cards -->
-    <div class="telemetry-grid">
-      <div class="card" style="border-color:#fecdd3;">
-        <div class="card-header">
-          <span class="card-label">Suhu Udara</span>
-          <span class="card-target">Tgt: 18.0 - 22.0°C</span>
+    <!-- ================= TAB 2: LAB SENSOR & KONTROL ================= -->
+    <div id="pane-lab-control" class="view-pane">
+      <!-- 4 Telemetry Cards with Safe-Range Visual Trackers -->
+      <div class="telemetry-grid">
+        <div class="card" style="border-color:#fecdd3;">
+          <div class="card-header">
+            <span class="card-label">Suhu Udara</span>
+            <span class="card-target">Aman: 18.0 - 22.0°C</span>
+          </div>
+          <div class="card-value">
+            <span id="valTemp">--.-</span><span class="card-unit">°C</span>
+          </div>
+          <div id="badgeTemp" class="badge badge-optimal">🌸 NYAMAN SEKALI</div>
+          <div class="range-track" title="Rentang Suhu: 10 - 35°C (Hijau: 18-22°C)">
+            <div class="range-safe-zone" style="left:32%; width:16%;"></div>
+            <div id="pinTemp" class="range-pin" style="left:41%;"></div>
+          </div>
         </div>
-        <div class="card-value">
-          <span id="valTemp">--.-</span>
-          <span class="card-unit">°C</span>
+
+        <div class="card" style="border-color:#bae6fd;">
+          <div class="card-header">
+            <span class="card-label">Kelembapan Udara</span>
+            <span class="card-target">Aman: 50.0 - 65.0%</span>
+          </div>
+          <div class="card-value">
+            <span id="valRh">--.-</span><span class="card-unit">% RH</span>
+          </div>
+          <div id="badgeRh" class="badge badge-optimal">💧 SEGAR OPTIMAL</div>
+          <div class="range-track" title="Rentang RH: 0 - 100% (Hijau: 50-65%)">
+            <div class="range-safe-zone" style="left:50%; width:15%;"></div>
+            <div id="pinRh" class="range-pin" style="left:58%;"></div>
+          </div>
         </div>
-        <div id="badgeTemp" class="badge badge-optimal">🌸 NYAMAN SEKALI</div>
+
+        <div class="card" style="border-color:#a7f3d0;">
+          <div class="card-header">
+            <span class="card-label">Kelembapan Media</span>
+            <span class="card-target">Aman: 45.0 - 70.0%</span>
+          </div>
+          <div class="card-value">
+            <span id="valSoil">--.-</span><span class="card-unit">%</span>
+          </div>
+          <div id="badgeSoil" class="badge badge-optimal">🌱 LEMBAP PAS</div>
+          <div class="range-track" title="Rentang Tanah: 0 - 100% (Hijau: 45-70%)">
+            <div class="range-safe-zone" style="left:45%; width:25%;"></div>
+            <div id="pinSoil" class="range-pin" style="left:56%;"></div>
+          </div>
+        </div>
+
+        <div class="card" style="border-color:#e9d5ff;">
+          <div class="card-header">
+            <span class="card-label">Defisit Uap (VPD)</span>
+            <span class="card-target">Aman: 0.40 - 0.80 kPa</span>
+          </div>
+          <div class="card-value">
+            <span id="valVpd">-.--</span><span class="card-unit">kPa</span>
+          </div>
+          <div id="badgeVpd" class="badge badge-optimal">✨ SEIMBANG</div>
+          <div class="range-track" title="Rentang VPD: 0 - 2.0 kPa (Hijau: 0.4-0.8 kPa)">
+            <div class="range-safe-zone" style="left:20%; width:20%;"></div>
+            <div id="pinVpd" class="range-pin" style="left:31%;"></div>
+          </div>
+        </div>
       </div>
 
-      <div class="card" style="border-color:#bae6fd;">
+      <!-- Hardware Matrix & Dual Tanks -->
+      <div class="card" style="margin-bottom:20px;">
         <div class="card-header">
-          <span class="card-label">Kelembapan Udara</span>
-          <span class="card-target">Tgt: 50.0 - 65.0%</span>
+          <span class="card-label">Matriks Relay & Katup Servo Aktif</span>
+          <span class="card-target">ACTIVE-LOW 12V ISOLATED</span>
         </div>
-        <div class="card-value">
-          <span id="valRh">--.-</span>
-          <span class="card-unit">% RH</span>
+        <div class="matrix-grid">
+          <div id="nodePeltier" class="matrix-node">
+            <div class="matrix-led"></div>
+            <div class="matrix-name">CH1: Peltier</div>
+            <div id="stPeltier" class="matrix-val">OFF</div>
+          </div>
+          <div id="nodeFan" class="matrix-node">
+            <div class="matrix-led"></div>
+            <div class="matrix-name">CH2: Heatsink</div>
+            <div id="stFan" class="matrix-val">OFF</div>
+          </div>
+          <div id="nodeBlower" class="matrix-node">
+            <div class="matrix-led"></div>
+            <div class="matrix-name">CH3: Blower</div>
+            <div id="stBlower" class="matrix-val">OFF</div>
+          </div>
+          <div id="nodeLight" class="matrix-node">
+            <div class="matrix-led"></div>
+            <div class="matrix-name">CH4: Grow Light</div>
+            <div id="stLight" class="matrix-val">OFF</div>
+          </div>
+          <div id="nodeSpray1" class="matrix-node">
+            <div class="matrix-led"></div>
+            <div class="matrix-name">CH5: Semprot T1</div>
+            <div id="stSpray1" class="matrix-val">OFF</div>
+          </div>
+          <div id="nodeSpray2" class="matrix-node">
+            <div class="matrix-led"></div>
+            <div class="matrix-name">CH6: Semprot T2</div>
+            <div id="stSpray2" class="matrix-val">OFF</div>
+          </div>
+          <div id="nodeValve1" class="matrix-node">
+            <div class="matrix-name">Katup Servo 1</div>
+            <div id="stValve1" class="matrix-val" style="color:var(--pastel-sky-deep);">0° (TUTUP)</div>
+          </div>
+          <div id="nodeValve2" class="matrix-node">
+            <div class="matrix-name">Katup Servo 2</div>
+            <div id="stValve2" class="matrix-val" style="color:var(--pastel-matcha-deep);">0° (TUTUP)</div>
+          </div>
         </div>
-        <div id="badgeRh" class="badge badge-optimal">💧 SEGAR OPTIMAL</div>
       </div>
 
-      <div class="card" style="border-color:#a7f3d0;">
-        <div class="card-header">
-          <span class="card-label">Kelembapan Media</span>
-          <span class="card-target">Tgt: 45.0 - 70.0%</span>
-        </div>
-        <div class="card-value">
-          <span id="valSoil">--.-</span>
-          <span class="card-unit">%</span>
-        </div>
-        <div id="badgeSoil" class="badge badge-optimal">🌱 LEMBAP PAS</div>
-      </div>
-
-      <div class="card" style="border-color:#e9d5ff;">
-        <div class="card-header">
-          <span class="card-label">Defisit Uap (VPD)</span>
-          <span class="card-target">Tgt: 0.40 - 0.80 kPa</span>
-        </div>
-        <div class="card-value">
-          <span id="valVpd">-.--</span>
-          <span class="card-unit">kPa</span>
-        </div>
-        <div id="badgeVpd" class="badge badge-optimal">✨ SEIMBANG</div>
-      </div>
-    </div>
-
-    <!-- Secondary Instruments Grid -->
-    <div class="instruments-grid">
-      <!-- Plant Comfort Score (PCS) -->
+      <!-- Tank Levels -->
       <div class="card">
-        <div class="inst-title">
-          <span>Skor Kenyamanan (PCS)</span>
-          <span id="valPcsText" style="color:var(--pastel-pink-deep); font-weight:700;">--%</span>
+        <div class="card-header">
+          <span class="card-label">Kapasitas Tangki Mist</span>
+          <span class="card-target">VOLUME RESERVOIR (1000 mL)</span>
         </div>
-        <div class="card-value" style="font-size:2.6rem; margin-bottom:2px;">
-          <span id="valPcs">--</span><span class="card-unit">%</span>
-        </div>
-        <div class="pcs-meter">
-          <div id="pcsBar" class="pcs-fill" style="width:100%; transform:scaleX(0);"></div>
-        </div>
-        <div style="font-size:0.75rem; color:var(--text-sub); display:flex; justify-content:space-between; font-weight:600;">
-          <span>Risiko Patogen</span>
-          <span>Homeostasis Sempurna ✨</span>
-        </div>
-      </div>
-
-      <!-- Dual-Tank Reservoirs -->
-      <div class="card">
-        <div class="inst-title">
-          <span>Kapasitas Tangki Air 💧</span>
-          <span style="font-size:0.74rem; color:var(--text-sub);">KONSUMSI MIST</span>
-        </div>
-        <div class="tank-row">
+        <div class="tank-grid">
           <div class="tank-item">
             <div class="tank-header">
-              <span>Tangki 1 (Air Baku)</span>
+              <span>Tangki 1 (Air Baku Murni)</span>
               <span id="valTank1Text" style="color:var(--pastel-sky-deep);">1000 mL</span>
             </div>
             <div class="tank-bar">
               <div id="tank1Bar" class="tank-fill-1" style="width:100%; transform:scaleX(1);"></div>
             </div>
+            <button class="btn" style="width:100%; padding:6px; font-size:0.75rem;" onclick="sendControl('action=refill&tank=1')">Isi Ulang Tangki 1</button>
           </div>
           <div class="tank-item">
             <div class="tank-header">
-              <span>Tangki 2 (Nutrisi Mikro)</span>
+              <span>Tangki 2 (Booster Nutrisi)</span>
               <span id="valTank2Text" style="color:var(--pastel-lavender-deep);">1000 mL</span>
             </div>
             <div class="tank-bar">
               <div id="tank2Bar" class="tank-fill-2" style="width:100%; transform:scaleX(1);"></div>
             </div>
+            <button class="btn" style="width:100%; padding:6px; font-size:0.75rem;" onclick="sendControl('action=refill&tank=2')">Isi Ulang Tangki 2</button>
           </div>
-        </div>
-        <div style="margin-top:10px; display:flex; gap:8px;">
-          <button class="btn" style="flex:1; padding:7px 10px; font-size:0.75rem;" onclick="sendControl('action=refill&tank=1')">Isi Tangki 1</button>
-          <button class="btn" style="flex:1; padding:7px 10px; font-size:0.75rem;" onclick="sendControl('action=refill&tank=2')">Isi Tangki 2</button>
-        </div>
-      </div>
-
-      <!-- Growth Phase Sequencer -->
-      <div class="card">
-        <div class="inst-title">
-          <span>Siklus Tumbuh 🌿</span>
-          <span id="valDayBadge" class="badge badge-optimal">HARI 1 / 10</span>
-        </div>
-        <div style="margin-bottom:10px;">
-          <div style="font-size:0.74rem; color:var(--text-sub); font-weight:700; text-transform:uppercase;">Regime Saat Ini</div>
-          <div id="valPhaseName" style="font-size:1.05rem; font-weight:700; color:var(--pastel-matcha-deep);">Germination Blackout</div>
-          <div id="valPhaseDesc" style="font-size:0.78rem; color:var(--text-sub); margin-top:3px; font-weight:600;">
-            Lampu Mati • Target RH 60-70% • Semprot Air Baku
-          </div>
-        </div>
-        <div class="pcs-meter" style="height:10px;">
-          <div id="phaseProgress" class="pcs-fill" style="width:100%; background:#38bdf8; transform:scaleX(0.1);"></div>
-        </div>
-        <div style="display:flex; justify-content:space-between; font-size:0.74rem; color:var(--text-sub); font-weight:600;">
-          <span>Hari 1 (Semai)</span>
-          <span>Hari 10 (Panen)</span>
         </div>
       </div>
     </div>
 
-    <!-- Hardware Relays & Valve Matrix -->
-    <div class="card" style="margin-bottom:24px;">
-      <div class="inst-title" style="margin-bottom:8px;">
-        <span>Matriks Perangkat Keras 🌸</span>
-        <span style="font-size:0.74rem; color:var(--text-sub);">RELAY & KATUP AKTIF</span>
-      </div>
-      <div class="matrix-grid">
-        <div id="nodePeltier" class="matrix-node">
-          <div class="matrix-led"></div>
-          <div class="matrix-name">CH1: Peltier</div>
-          <div id="stPeltier" class="matrix-val">OFF</div>
-        </div>
-        <div id="nodeFan" class="matrix-node">
-          <div class="matrix-led"></div>
-          <div class="matrix-name">CH2: Heatsink</div>
-          <div id="stFan" class="matrix-val">OFF</div>
-        </div>
-        <div id="nodeBlower" class="matrix-node">
-          <div class="matrix-led"></div>
-          <div class="matrix-name">CH3: Blower</div>
-          <div id="stBlower" class="matrix-val">OFF</div>
-        </div>
-        <div id="nodeLight" class="matrix-node">
-          <div class="matrix-led"></div>
-          <div class="matrix-name">CH4: Grow Light</div>
-          <div id="stLight" class="matrix-val">OFF</div>
-        </div>
-        <div id="nodeSpray1" class="matrix-node">
-          <div class="matrix-led"></div>
-          <div class="matrix-name">CH5: Semprot T1</div>
-          <div id="stSpray1" class="matrix-val">OFF</div>
-        </div>
-        <div id="nodeSpray2" class="matrix-node">
-          <div class="matrix-led"></div>
-          <div class="matrix-name">CH6: Semprot T2</div>
-          <div id="stSpray2" class="matrix-val">OFF</div>
-        </div>
-        <div id="nodeValve1" class="matrix-node">
-          <div class="matrix-name">Katup Servo 1</div>
-          <div id="stValve1" class="matrix-val" style="color:var(--pastel-sky-deep);">0° (TUTUP)</div>
-        </div>
-        <div id="nodeValve2" class="matrix-node">
-          <div class="matrix-name">Katup Servo 2</div>
-          <div id="stValve2" class="matrix-val" style="color:var(--pastel-matcha-deep);">0° (TUTUP)</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Real-Time Trend Graph (SVG Canvas) -->
-    <div class="chart-card">
-      <div class="inst-title">
-        <span>Grafik Riwayat Telemetri (20 Titik Terakhir) 📈</span>
-        <div style="display:flex; gap:16px; font-size:0.76rem; text-transform:none;">
-          <span style="display:flex; align-items:center; gap:6px; font-weight:700;">
-            <span style="width:12px; height:3.5px; background:#16a34a; border-radius:2px; display:inline-block;"></span> Suhu (°C)
-          </span>
-          <span style="display:flex; align-items:center; gap:6px; font-weight:700;">
-            <span style="width:12px; height:3.5px; background:#0284c7; border-radius:2px; display:inline-block;"></span> RH (%)
-          </span>
-        </div>
-      </div>
-      <div class="chart-svg-container">
-        <svg id="trendSvg" width="100%" height="100%" viewBox="0 0 800 160" preserveAspectRatio="none">
-          <line x1="40" y1="20" x2="780" y2="20" stroke="#fbcfe8" stroke-dasharray="3"/>
-          <line x1="40" y1="55" x2="780" y2="55" stroke="#fbcfe8" stroke-dasharray="3"/>
-          <line x1="40" y1="90" x2="780" y2="90" stroke="#fbcfe8" stroke-dasharray="3"/>
-          <line x1="40" y1="125" x2="780" y2="125" stroke="#fbcfe8" stroke-dasharray="3"/>
-
-          <text x="5" y="24" fill="#948590" font-size="10" font-family="'JetBrains Mono', monospace">50°/100%</text>
-          <text x="5" y="75" fill="#948590" font-size="10" font-family="'JetBrains Mono', monospace">25°/50%</text>
-          <text x="5" y="130" fill="#948590" font-size="10" font-family="'JetBrains Mono', monospace">0°/0%</text>
-
-          <polyline id="rhPolyline" fill="none" stroke="#0284c7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points=""/>
-          <polyline id="tempPolyline" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points=""/>
-        </svg>
-      </div>
-    </div>
-
-    <!-- Interactive Control Panel & Garden Diary Log -->
-    <div class="controls-grid">
-      <div class="card">
-        <div class="inst-title">
-          <span>Panel Kendali Kebun 🎀</span>
-          <span id="lblMode" class="badge badge-optimal">OTOMATIS</span>
-        </div>
-
-        <div class="toggle-row">
-          <div>
-            <div class="toggle-label">Mode Operasi</div>
-            <div style="font-size:0.75rem; color:var(--text-sub); font-weight:600;">Beralih antara Kontrol Otomatis & Manual</div>
-          </div>
-          <button id="btnModeToggle" class="btn btn-mint" onclick="toggleMode()">MODE MANUAL</button>
-        </div>
-
-        <div class="toggle-row">
-          <div>
-            <div class="toggle-label">Pilihan Fase Tumbuh</div>
-            <div style="font-size:0.75rem; color:var(--text-sub); font-weight:600;">Perkecambahan (Gelap) vs Vegetatif (Terang)</div>
-          </div>
-          <div style="display:flex; gap:8px;">
-            <button class="btn" onclick="sendControl('action=phase&val=1')">Perkecambahan</button>
-            <button class="btn" onclick="sendControl('action=phase&val=2')">Vegetatif</button>
+    <!-- ================= TAB 3: RIWAYAT & ANALISIS ================= -->
+    <div id="pane-analytics" class="view-pane">
+      <!-- Real-Time Trend Graph -->
+      <div class="chart-card">
+        <div class="card-header">
+          <span class="card-label">Grafik Riwayat Telemetri (20 Titik Terakhir) 📈</span>
+          <div style="display:flex; gap:14px; font-size:0.76rem; font-weight:700;">
+            <span style="display:flex; align-items:center; gap:5px;">
+              <span style="width:12px; height:3.5px; background:#16a34a; border-radius:2px; display:inline-block;"></span> Suhu (°C)
+            </span>
+            <span style="display:flex; align-items:center; gap:5px;">
+              <span style="width:12px; height:3.5px; background:#0284c7; border-radius:2px; display:inline-block;"></span> RH (%)
+            </span>
           </div>
         </div>
+        <div class="chart-svg-container">
+          <svg id="trendSvg" width="100%" height="100%" viewBox="0 0 800 160" preserveAspectRatio="none">
+            <line x1="40" y1="20" x2="780" y2="20" stroke="#fbcfe8" stroke-dasharray="3"/>
+            <line x1="40" y1="55" x2="780" y2="55" stroke="#fbcfe8" stroke-dasharray="3"/>
+            <line x1="40" y1="90" x2="780" y2="90" stroke="#fbcfe8" stroke-dasharray="3"/>
+            <line x1="40" y1="125" x2="780" y2="125" stroke="#fbcfe8" stroke-dasharray="3"/>
 
-        <div class="toggle-row">
-          <div>
-            <div class="toggle-label">Tangki Aktif</div>
-            <div style="font-size:0.75rem; color:var(--text-sub); font-weight:600;">Pilih Jalur Utama Semprotan</div>
-          </div>
-          <div style="display:flex; gap:8px;">
-            <button id="btnTank1" class="btn" onclick="sendControl('action=tank&val=1')">Tangki 1 (Air)</button>
-            <button id="btnTank2" class="btn" onclick="sendControl('action=tank&val=2')">Tangki 2 (Nutrisi)</button>
-          </div>
-        </div>
+            <text x="5" y="24" fill="#948590" font-size="10" font-family="'JetBrains Mono', monospace">50°/100%</text>
+            <text x="5" y="75" fill="#948590" font-size="10" font-family="'JetBrains Mono', monospace">25°/50%</text>
+            <text x="5" y="130" fill="#948590" font-size="10" font-family="'JetBrains Mono', monospace">0°/0%</text>
 
-        <div class="toggle-row">
-          <div>
-            <div class="toggle-label">Penyetel Hari Tumbuh</div>
-            <div style="font-size:0.75rem; color:var(--text-sub); font-weight:600;">Sesuaikan Penjejak Hari Budidaya</div>
-          </div>
-          <div style="display:flex; gap:8px; align-items:center;">
-            <button class="btn" style="padding:6px 14px;" onclick="adjustDay(-1)">-1</button>
-            <span id="lblDayCount" style="font-weight:700; font-size:0.92rem;">Hari 1</span>
-            <button class="btn" style="padding:6px 14px;" onclick="adjustDay(1)">+1</button>
-          </div>
-        </div>
-
-        <div class="toggle-row" style="border-bottom:none; margin-top:4px;">
-          <div>
-            <div class="toggle-label" style="color:var(--pastel-pink-deep);">Siram Darurat (Flush) 💧</div>
-            <div style="font-size:0.75rem; color:var(--text-sub); font-weight:600;">Semprot 5 detik air murni Tangki 1</div>
-          </div>
-          <button class="btn btn-red" onclick="sendControl('action=flush')">⚡ Siram Darurat</button>
-        </div>
-
-        <!-- Manual Overrides -->
-        <div id="manualControls" style="display:none; margin-top:14px; padding-top:14px; border-top:1.5px solid #fce7ec;">
-          <div class="card-label" style="margin-bottom:8px; color:var(--pastel-peach-deep);">Kontrol Langsung (Mode Manual)</div>
-          <div style="display:flex; flex-wrap:wrap; gap:8px;">
-            <button class="btn" onclick="sendControl('action=toggleRelay&ch=1')">Peltier</button>
-            <button class="btn" onclick="sendControl('action=toggleRelay&ch=2')">Kipas</button>
-            <button class="btn" onclick="sendControl('action=toggleRelay&ch=3')">Blower</button>
-            <button class="btn" onclick="sendControl('action=toggleRelay&ch=4')">Grow Light</button>
-            <button class="btn" onclick="sendControl('action=toggleRelay&ch=5')">Semprot T1</button>
-            <button class="btn" onclick="sendControl('action=toggleRelay&ch=6')">Semprot T2</button>
-          </div>
+            <polyline id="rhPolyline" fill="none" stroke="#0284c7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points=""/>
+            <polyline id="tempPolyline" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points=""/>
+          </svg>
         </div>
       </div>
 
-      <!-- Garden Diary Log -->
-      <div class="terminal-card">
-        <div class="terminal-header">
-          <span class="term-dot term-red"></span>
-          <span class="term-dot term-yellow"></span>
-          <span class="term-dot term-green"></span>
-          <span style="margin-left:4px;">Buku Harian Kebun & Log</span>
+      <!-- Controls & Garden Log -->
+      <div class="analytics-grid">
+        <div class="controls-panel">
+          <div class="card-header">
+            <span class="card-label">Pengaturan & Siklus</span>
+            <span id="lblMode" class="badge badge-optimal">OTOMATIS</span>
+          </div>
+
+          <div class="toggle-row">
+            <div>
+              <div class="toggle-label">Mode Kontrol</div>
+              <div style="font-size:0.75rem; color:var(--text-sub);">Otomatis Iklim vs Manual</div>
+            </div>
+            <button id="btnModeToggle" class="btn btn-mint" onclick="toggleMode()">MODE MANUAL</button>
+          </div>
+
+          <div class="toggle-row">
+            <div>
+              <div class="toggle-label">Fase Tumbuh</div>
+              <div style="font-size:0.75rem; color:var(--text-sub);">Perkecambahan vs Vegetatif</div>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <button class="btn" onclick="sendControl('action=phase&val=1')">Semai</button>
+              <button class="btn" onclick="sendControl('action=phase&val=2')">Terang</button>
+            </div>
+          </div>
+
+          <div class="toggle-row">
+            <div>
+              <div class="toggle-label">Penyetel Hari</div>
+              <div style="font-size:0.75rem; color:var(--text-sub);">Hari Budidaya (1-10)</div>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <button class="btn" style="padding:4px 12px;" onclick="adjustDay(-1)">-1</button>
+              <span id="lblDayCount" style="font-weight:700;">Hari 1</span>
+              <button class="btn" style="padding:4px 12px;" onclick="adjustDay(1)">+1</button>
+            </div>
+          </div>
+
+          <div class="toggle-row" style="border-bottom:none; margin-top:4px;">
+            <div>
+              <div class="toggle-label" style="color:var(--pastel-pink-deep);">Siram Darurat ⚡</div>
+              <div style="font-size:0.75rem; color:var(--text-sub);">Semprot 5 detik Tangki 1</div>
+            </div>
+            <button class="btn btn-red" onclick="sendControl('action=flush')">Siram Darurat</button>
+          </div>
         </div>
-        <div id="terminalLogs" class="terminal-body">
-          <div class="term-log"><span class="term-time">[00:00:00]</span><span class="term-msg">Inisialisasi Pengontrol Kabin Biosfer... 🌸</span></div>
+
+        <!-- System Event Log -->
+        <div class="terminal-card">
+          <div class="terminal-header">
+            <span class="term-dot term-red"></span>
+            <span class="term-dot term-yellow"></span>
+            <span class="term-dot term-green"></span>
+            <span style="margin-left:4px;">Buku Harian & Log Sistem 🌸</span>
+          </div>
+          <div id="terminalLogs" class="terminal-body">
+            <div class="term-log"><span class="term-time">[00:00:00]</span><span class="term-msg">Inisialisasi Pet Studio & Lab Kabin...</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1794,6 +1917,22 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     let currentDay = 1;
     let audioCtx = null;
     let audioMuted = (localStorage.getItem('brocco_audio_muted') === '1');
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-tab'));
+      document.querySelectorAll('.view-pane').forEach(p => p.classList.remove('active-pane'));
+
+      if (tabId === 'pet-studio') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active-tab');
+        document.getElementById('pane-pet-studio').classList.add('active-pane');
+      } else if (tabId === 'lab-control') {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active-tab');
+        document.getElementById('pane-lab-control').classList.add('active-pane');
+      } else if (tabId === 'analytics') {
+        document.querySelectorAll('.tab-btn')[2].classList.add('active-tab');
+        document.getElementById('pane-analytics').classList.add('active-pane');
+      }
+    }
 
     function initAudio() {
       if (!audioCtx) {
@@ -1816,15 +1955,15 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       osc.connect(gain);
       gain.connect(audioCtx.destination);
 
-      if (type === 'tap') {
+      if (type === 'pet_giggle') {
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(587.33, now); // D5
-        osc.frequency.exponentialRampToValueAtTime(880, now + 0.12); // A5
+        osc.frequency.setValueAtTime(587.33, now);
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.12);
         gain.gain.setValueAtTime(0.2, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
         osc.start(now);
         osc.stop(now + 0.12);
-      } else if (type === 'water') {
+      } else if (type === 'feed_water') {
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(440, now);
         osc.frequency.linearRampToValueAtTime(880, now + 0.08);
@@ -1834,17 +1973,17 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.28);
         osc.start(now);
         osc.stop(now + 0.28);
-      } else if (type === 'nutrient') {
+      } else if (type === 'feed_vitamin') {
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(523.25, now); // C5
-        osc.frequency.setValueAtTime(659.25, now + 0.07); // E5
-        osc.frequency.setValueAtTime(783.99, now + 0.14); // G5
-        osc.frequency.setValueAtTime(1046.5, now + 0.21); // C6
+        osc.frequency.setValueAtTime(523.25, now);
+        osc.frequency.setValueAtTime(659.25, now + 0.07);
+        osc.frequency.setValueAtTime(783.99, now + 0.14);
+        osc.frequency.setValueAtTime(1046.5, now + 0.21);
         gain.gain.setValueAtTime(0.2, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
         osc.start(now);
         osc.stop(now + 0.3);
-      } else if (type === 'breeze') {
+      } else if (type === 'breeze_fan') {
         osc.type = 'sine';
         osc.frequency.setValueAtTime(329.63, now);
         osc.frequency.exponentialRampToValueAtTime(164.81, now + 0.25);
@@ -1852,6 +1991,14 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
         osc.start(now);
         osc.stop(now + 0.25);
+      } else if (type === 'hop') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(300, now);
+        osc.frequency.exponentialRampToValueAtTime(600, now + 0.15);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+        osc.start(now);
+        osc.stop(now + 0.15);
       }
     }
 
@@ -1861,14 +2008,6 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       const btn = document.getElementById('btnSoundToggle');
       if (btn) btn.innerText = audioMuted ? '🔇 Musik: Mati' : '🎵 Musik: Nyala';
     }
-
-    const cuteQuotes = [
-      "Hai manis! Senang dirawat sama kamu! 🌸✨",
-      "Suhu sejuk 20°C ini pas banget buat kita tumbuh cantik! 🌿",
-      "Daunku makin hijau dan segar berkat kamu! 💖",
-      "Terima kasih sudah merawat kebun kecil kita ya! 🎀",
-      "Brokoli microgreens kaya antioksidan sulforaphane lho! 🌱"
-    ];
 
     let speechLockUntil = 0;
     function setBroccoSpeech(text, force = false) {
@@ -1885,117 +2024,166 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       if (force) speechLockUntil = now + 4000;
     }
 
-    function handleBroccoTap() {
+    function handleZoneTap(zone) {
       initAudio();
-      playChirp('tap');
       const mascot = document.getElementById('broccoMascot');
       if (mascot) {
         mascot.classList.remove('brocco-bounce');
         void mascot.offsetWidth;
         mascot.classList.add('brocco-bounce');
       }
-      const randomQuote = cuteQuotes[Math.floor(Math.random() * cuteQuotes.length)];
-      setBroccoSpeech(randomQuote, true);
+
+      if (zone === 'crown') {
+        playChirp('pet_giggle');
+        setBroccoSpeech("Geli banget di mahkotaku! 🌸 Hihihi!", true);
+      } else if (zone === 'cheeks') {
+        playChirp('feed_vitamin');
+        setBroccoSpeech("Pipi Brocco merona merah muda! Senang disayang! 💖", true);
+      } else if (zone === 'arms') {
+        playChirp('pet_giggle');
+        setBroccoSpeech("Tos teman kebun! Semangat bertumbuh sehat! 🌿✨", true);
+      } else if (zone === 'stem') {
+        playChirp('hop');
+        setBroccoSpeech("Hup! Lompat ceria di kebun kecil kita! 🎀", true);
+      }
     }
 
     function nurtureBrocco(action) {
       initAudio();
       if (action === 'water') {
-        playChirp('water');
-        setBroccoSpeech("Aah, segaar! Semprotan air murni aktif! 💧✨", true);
+        playChirp('feed_water');
+        setBroccoSpeech("Aah, segaar! Semprotan air baku aktif! 💧✨", true);
         sendControl('action=flush');
       } else if (action === 'nutrient') {
-        playChirp('nutrient');
+        playChirp('feed_vitamin');
         setBroccoSpeech("Yummy! Booster vitamin mikro diserap! 🌸✨", true);
         sendControl('action=toggleRelay&ch=6');
       } else if (action === 'breeze') {
-        playChirp('breeze');
+        playChirp('breeze_fan');
         setBroccoSpeech("Wussshh! Hembusan angin sepoi-sepoi bikin sejuk! 🍃", true);
         sendControl('action=toggleRelay&ch=3');
+      } else if (action === 'light') {
+        playChirp('feed_vitamin');
+        setBroccoSpeech("Cahaya LED Grow Light disesuaikan! ☀️", true);
+        sendControl('action=toggleRelay&ch=4');
       }
     }
 
     function updateBroccoMood(d) {
       const mascot = document.getElementById('broccoMascot');
       const badge = document.getElementById('broccoMoodBadge');
-      const compPcs = document.getElementById('compValPcs');
-      const compNeed = document.getElementById('compValNeed');
-      const compLight = document.getElementById('compValLight');
-      const compResp = document.getElementById('compValResponse');
+      const stageBadge = document.getElementById('broccoStageBadge');
       const compTip = document.getElementById('compAgronomiTip');
 
-      if (compPcs) compPcs.innerText = Math.round(d.pcs) + '%';
-      if (compLight) {
-        compLight.innerText = d.relays.light ? 'Fase Terang (16 Jam)' : 'Fase Gelap / Istirahat';
+      // Update Developmental Growth Morphology Stage
+      if (mascot) {
+        mascot.classList.remove('stage-sprout', 'stage-microgreen', 'stage-harvest');
+        if (d.day <= 3) {
+          mascot.classList.add('stage-sprout');
+          if (stageBadge) stageBadge.innerText = 'Tahap 1: Semai Kecambah 🌱';
+        } else if (d.day <= 7) {
+          mascot.classList.add('stage-microgreen');
+          if (stageBadge) stageBadge.innerText = 'Tahap 2: Tunas Ceria 🌸';
+        } else {
+          mascot.classList.add('stage-harvest');
+          if (stageBadge) stageBadge.innerText = 'Tahap 3: Siap Panen! 👑';
+        }
+
+        mascot.classList.remove('mood-happy', 'mood-cold', 'mood-heat', 'mood-heat-crit', 'mood-thirsty', 'mood-stagnant', 'mood-sleep', 'mood-panic');
+
+        if (d.status === 'SAFEMODE') {
+          mascot.classList.add('mood-panic');
+          if (badge) { badge.className = 'badge badge-safe'; badge.innerText = 'PANIK'; }
+          if (compTip) compTip.innerText = 'Periksa kabel koneksi sensor DHT22 GPIO 14!';
+          setBroccoSpeech("Waduh sensor bermasalah! Sistem masuk Safe Mode darurat!");
+        } else if (!d.relays.light && d.phase === 1) {
+          mascot.classList.add('mood-sleep');
+          if (badge) { badge.className = 'badge badge-optimal'; badge.innerText = 'TIDUR NYENYAK'; }
+          if (compTip) compTip.innerText = 'Fase Blackout (Hari 1-3): Jangan nyalakan lampu agar batang kecambah memanjang cantik.';
+          setBroccoSpeech("Zzz... Fase perkecambahan gelap, aku sedang tidur nyenyak ya...");
+        } else if (!d.relays.light) {
+          mascot.classList.add('mood-sleep');
+          if (badge) { badge.className = 'badge badge-optimal'; badge.innerText = 'TIDUR MALAM'; }
+          if (compTip) compTip.innerText = 'Siklus gelap 8 jam penting untuk respirasi metabolisme tanaman brokoli.';
+          setBroccoSpeech("Zzz... Siklus fotoperiode malam, istirahat dulu ya teman...");
+        } else if (d.temp > 24.0) {
+          mascot.classList.add('mood-heat-crit');
+          if (badge) { badge.className = 'badge badge-kritis'; badge.innerText = 'OVERHEAT'; }
+          if (compTip) compTip.innerText = 'Bahaya kritis! Suhu > 24°C memicu patogen busuk akar Pythium!';
+          setBroccoSpeech("Aduh kepanasan (>24°C)! Dinginkan segera agar akar tidak busuk!");
+        } else if (d.temp > 22.0) {
+          mascot.classList.add('mood-heat');
+          if (badge) { badge.className = 'badge badge-waspada'; badge.innerText = 'AGAK GERAH'; }
+          if (compTip) compTip.innerText = 'Peltier CH1 aktif untuk menurunkan suhu ke rentang ideal 18-22°C.';
+          setBroccoSpeech("Agak gerah nih (>22°C). Peltier sedang mendinginkan kabin!");
+        } else if (d.temp < 18.0) {
+          mascot.classList.add('mood-cold');
+          if (badge) { badge.className = 'badge badge-waspada'; badge.innerText = 'MENGGIGIL'; }
+          if (compTip) compTip.innerText = 'Suhu < 18°C memperlambat fotosintesis brokoli microgreens.';
+          setBroccoSpeech("Brrr dingin banget (<18°C)! Aku menggigil kedinginan!");
+        } else if (d.soil < 45.0) {
+          mascot.classList.add('mood-thirsty');
+          if (badge) { badge.className = 'badge badge-waspada'; badge.innerText = 'HAUS SEKALI'; }
+          if (compTip) compTip.innerText = 'Semprot air baku Tangki 1 untuk menaikkan kelembapan media tanam ke 45-70%.';
+          setBroccoSpeech("Tanahku kering kerontang (<45%)! Boleh minta semprotan airnya? 💧");
+        } else {
+          mascot.classList.add('mood-happy');
+          if (badge) { badge.className = 'badge badge-optimal'; badge.innerText = 'SANGAT PRIMA'; }
+          if (compTip) compTip.innerText = 'Lingkungan biosfer dalam kondisi homeostasis sempurna.';
+          setBroccoSpeech("Kondisi biosfer prima! Suhu sejuk dan aku bertumbuh cepat! 🌸✨");
+        }
       }
 
-      if (!mascot) return;
+      // Update 4 Gamified Care Health Bars
+      const careWater = document.getElementById('careValWater');
+      const fillWater = document.getElementById('careFillWater');
+      if (careWater && fillWater) {
+        const soilRatio = Math.min(1, Math.max(0, d.soil / 100));
+        careWater.innerText = Math.round(d.soil) + '% ' + (d.soil >= 45 && d.soil <= 70 ? '(Pas)' : (d.soil < 45 ? '(Haus)' : '(Basah)'));
+        fillWater.style.transform = `scaleX(${soilRatio})`;
+      }
 
-      mascot.classList.remove('mood-happy', 'mood-cold', 'mood-heat', 'mood-heat-crit', 'mood-thirsty', 'mood-stagnant', 'mood-sleep', 'mood-panic');
+      const careLight = document.getElementById('careValLight');
+      const fillLight = document.getElementById('careFillLight');
+      if (careLight && fillLight) {
+        careLight.innerText = d.relays.light ? '16 Jam (Aktif)' : '0 Jam (Malam)';
+        fillLight.style.transform = `scaleX(${d.relays.light ? 1 : 0.2})`;
+      }
 
-      if (d.status === 'SAFEMODE') {
-        mascot.classList.add('mood-panic');
-        if (badge) { badge.className = 'badge badge-safe'; badge.innerText = 'PANIK'; }
-        if (compNeed) compNeed.innerText = 'Pemulihan Sensor Segera';
-        if (compResp) compResp.innerText = 'Gemetar Takut';
-        if (compTip) compTip.innerText = 'Periksa kabel koneksi sensor DHT22 GPIO 14!';
-        setBroccoSpeech("Waduh sensor bermasalah! Sistem masuk Safe Mode darurat!");
-      } else if (!d.relays.light && d.phase === 1) {
-        mascot.classList.add('mood-sleep');
-        if (badge) { badge.className = 'badge badge-optimal'; badge.innerText = 'TIDUR NYENYAK'; }
-        if (compNeed) compNeed.innerText = 'Kegelapan Perkecambahan';
-        if (compResp) compResp.innerText = 'Tidur Pulas (Zzz) 💤';
-        if (compTip) compTip.innerText = 'Fase Blackout (Hari 1-3): Jangan nyalakan lampu agar batang kecambah memanjang cantik.';
-        setBroccoSpeech("Zzz... Fase perkecambahan gelap, aku sedang tidur nyenyak ya...");
-      } else if (!d.relays.light) {
-        mascot.classList.add('mood-sleep');
-        if (badge) { badge.className = 'badge badge-optimal'; badge.innerText = 'TIDUR MALAM'; }
-        if (compNeed) compNeed.innerText = 'Istirahat Malam (8 Jam)';
-        if (compResp) compResp.innerText = 'Respirasi Malam 💤';
-        if (compTip) compTip.innerText = 'Siklus gelap 8 jam penting untuk respirasi metabolisme tanaman brokoli.';
-        setBroccoSpeech("Zzz... Siklus fotoperiode malam, istirahat dulu ya teman...");
-      } else if (d.temp > 24.0) {
-        mascot.classList.add('mood-heat-crit');
-        if (badge) { badge.className = 'badge badge-kritis'; badge.innerText = 'OVERHEAT'; }
-        if (compNeed) compNeed.innerText = 'Pendinginan Darurat (<22°C)';
-        if (compResp) compResp.innerText = 'Terengah-engah Panas';
-        if (compTip) compTip.innerText = 'Bahaya kritis! Suhu > 24°C memicu patogen busuk akar Pythium!';
-        setBroccoSpeech("Aduh kepanasan (>24°C)! Dinginkan segera agar akar tidak busuk!");
-      } else if (d.temp > 22.0) {
-        mascot.classList.add('mood-heat');
-        if (badge) { badge.className = 'badge badge-waspada'; badge.innerText = 'AGAK GERAH'; }
-        if (compNeed) compNeed.innerText = 'Sirkulasi & Pendinginan';
-        if (compResp) compResp.innerText = 'Sedikit Gerah';
-        if (compTip) compTip.innerText = 'Peltier CH1 aktif untuk menurunkan suhu ke rentang ideal 18-22°C.';
-        setBroccoSpeech("Agak gerah nih (>22°C). Peltier sedang mendinginkan kabin!");
-      } else if (d.temp < 18.0) {
-        mascot.classList.add('mood-cold');
-        if (badge) { badge.className = 'badge badge-waspada'; badge.innerText = 'MENGGIGIL'; }
-        if (compNeed) compNeed.innerText = 'Suhu Lebih Hangat (>18°C)';
-        if (compResp) compResp.innerText = 'Menggigil Kedinginan';
-        if (compTip) compTip.innerText = 'Suhu < 18°C memperlambat fotosintesis brokoli microgreens.';
-        setBroccoSpeech("Brrr dingin banget (<18°C)! Aku menggigil kedinginan!");
-      } else if (d.soil < 45.0) {
-        mascot.classList.add('mood-thirsty');
-        if (badge) { badge.className = 'badge badge-waspada'; badge.innerText = 'HAUS SEKALI'; }
-        if (compNeed) compNeed.innerText = 'Semprot Air Baku';
-        if (compResp) compResp.innerText = 'Layu Kehausan 💧';
-        if (compTip) compTip.innerText = 'Semprot air baku Tangki 1 untuk menaikkan kelembapan media tanam ke 45-70%.';
-        setBroccoSpeech("Tanahku kering kerontang (<45%)! Boleh minta semprotan airnya? 💧");
-      } else if (d.rh > 65.0) {
-        mascot.classList.add('mood-stagnant');
-        if (badge) { badge.className = 'badge badge-waspada'; badge.innerText = 'PEKAT LEMBAP'; }
-        if (compNeed) compNeed.innerText = 'Hembusan Udara Blower';
-        if (compResp) compResp.innerText = 'Gerah Lembap';
-        if (compTip) compTip.innerText = 'Kelembapan > 65% menciptakan lapisan batas stagnant; blower aktif memecah embun.';
-        setBroccoSpeech("Kelembapan pekat (>65%). Blower aktif mengusir embun di daun ya!");
-      } else {
-        mascot.classList.add('mood-happy');
-        if (badge) { badge.className = 'badge badge-optimal'; badge.innerText = 'SANGAT PRIMA'; }
-        if (compNeed) compNeed.innerText = 'Pertahankan Kondisi Saat Ini';
-        if (compResp) compResp.innerText = 'Tumbuh Segar & Sehat 🌸';
-        if (compTip) compTip.innerText = 'Lingkungan biosfer dalam kondisi homeostasis sempurna.';
-        setBroccoSpeech("Kondisi biosfer prima! Suhu sejuk dan aku bertumbuh cepat! 🌸✨");
+      const careNutrient = document.getElementById('careValNutrient');
+      const fillNutrient = document.getElementById('careFillNutrient');
+      if (careNutrient && fillNutrient) {
+        const nutRatio = Math.min(1, Math.max(0, d.tank2Vol / 1000));
+        careNutrient.innerText = Math.round(nutRatio * 100) + '% (Tersedia)';
+        fillNutrient.style.transform = `scaleX(${nutRatio})`;
+      }
+
+      const careHappy = document.getElementById('careValHappy');
+      const fillHappy = document.getElementById('careFillHappy');
+      if (careHappy && fillHappy) {
+        const happyRatio = Math.min(1, Math.max(0, d.pcs / 100));
+        careHappy.innerText = Math.round(d.pcs) + '% ' + (d.pcs >= 85 ? '(Prima)' : '(Waspada)');
+        fillHappy.style.transform = `scaleX(${happyRatio})`;
+      }
+
+      // Update Lab View Safe-Range Pins (Min/Max Visual Trackers)
+      // Temp: 10 to 35°C range
+      const pinTemp = document.getElementById('pinTemp');
+      if (pinTemp) {
+        const tPct = Math.min(100, Math.max(0, ((d.temp - 10) / 25) * 100));
+        pinTemp.style.left = tPct + '%';
+      }
+      // RH: 0 to 100%
+      const pinRh = document.getElementById('pinRh');
+      if (pinRh) pinRh.style.left = Math.min(100, Math.max(0, d.rh)) + '%';
+      // Soil: 0 to 100%
+      const pinSoil = document.getElementById('pinSoil');
+      if (pinSoil) pinSoil.style.left = Math.min(100, Math.max(0, d.soil)) + '%';
+      // VPD: 0 to 2.0 kPa
+      const pinVpd = document.getElementById('pinVpd');
+      if (pinVpd) {
+        const vpdPct = Math.min(100, Math.max(0, (d.vpd / 2.0) * 100));
+        pinVpd.style.left = vpdPct + '%';
       }
     }
 
@@ -2029,27 +2217,13 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       updateCardBadge('badgeSoil', d.soil >= 45.0 && d.soil <= 70.0, d.soil < 35.0, '🌱 LEMBAP PAS', 'WASPADA', 'KERING');
       updateCardBadge('badgeVpd', d.vpd >= 0.40 && d.vpd <= 0.80, d.vpd < 0.20 || d.vpd > 1.20, '✨ SEIMBANG', 'DRIFT', 'KRITIS');
 
-      document.getElementById('valPcs').innerText = Math.round(d.pcs);
-      document.getElementById('valPcsText').innerText = Math.round(d.pcs) + '%';
-      document.getElementById('pcsBar').style.transform = `scaleX(${Math.min(1, Math.max(0, d.pcs / 100))})`;
-
       document.getElementById('valTank1Text').innerText = Math.round(d.tank1Vol) + ' mL';
       document.getElementById('valTank2Text').innerText = Math.round(d.tank2Vol) + ' mL';
       document.getElementById('tank1Bar').style.transform = `scaleX(${Math.min(1, Math.max(0, d.tank1Vol / 1000))})`;
       document.getElementById('tank2Bar').style.transform = `scaleX(${Math.min(1, Math.max(0, d.tank2Vol / 1000))})`;
 
       currentDay = d.day;
-      document.getElementById('valDayBadge').innerText = 'HARI ' + d.day + ' / 10';
       document.getElementById('lblDayCount').innerText = 'Hari ' + d.day;
-      document.getElementById('phaseProgress').style.transform = `scaleX(${Math.min(1, Math.max(0, d.day / 10))})`;
-
-      if (d.phase === 1) {
-        document.getElementById('valPhaseName').innerText = 'Germination Blackout';
-        document.getElementById('valPhaseDesc').innerText = 'Lampu Mati • Target RH 60-70% • Semprot Air Baku';
-      } else {
-        document.getElementById('valPhaseName').innerText = 'Fase Autotrofik';
-        document.getElementById('valPhaseDesc').innerText = '16 Jam Terang • Target VPD 0.6-0.8 kPa • Semprot Nutrisi';
-      }
 
       setNodeActive('nodePeltier', 'stPeltier', d.relays.peltier, false);
       setNodeActive('nodeFan', 'stFan', d.relays.fan, true);
@@ -2065,10 +2239,6 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       document.getElementById('lblMode').innerText = isAutoMode ? 'OTOMATIS' : 'MANUAL';
       document.getElementById('lblMode').className = 'badge ' + (isAutoMode ? 'badge-optimal' : 'badge-waspada');
       document.getElementById('btnModeToggle').innerText = isAutoMode ? 'MODE MANUAL' : 'MODE OTOMATIS';
-      document.getElementById('manualControls').style.display = isAutoMode ? 'none' : 'block';
-
-      document.getElementById('btnTank1').className = 'btn ' + (d.activeTank === 1 ? 'btn-mint' : '');
-      document.getElementById('btnTank2').className = 'btn ' + (d.activeTank === 2 ? 'btn-mint' : '');
 
       if (d.history && d.history.temp && d.history.rh) {
         renderSvgHistory(d.history.temp, d.history.rh);
