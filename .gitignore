@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Arduino / PlatformIO build artifacts
+build/
+.pio/
+*.hex
+*.bin
+*.elf
+
+# Environment & local files
+.env
+.env.local
+
+# Operating System files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Editor artifacts
+.vscode/
+.idea/
+*.swp
+*.swo
